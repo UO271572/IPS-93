@@ -1,9 +1,11 @@
 package giis.demo.tkrun.ut;
-import junit.framework.*;
-import giis.demo.tkrun.*;
-import ips.util.*;
+import java.util.Date;
+import java.util.List;
 
-import java.util.*;
+import ips.persistence.carreras.CarrerasModel;
+import ips.util.Database;
+import ips.util.Util;
+import junit.framework.TestCase;
 
 /**
  * Ejemplo de pruebas con JUnit3 (incluye las pruebas de getListaCarreras y las invalidas de getDescuentoRecargo)

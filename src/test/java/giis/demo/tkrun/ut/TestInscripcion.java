@@ -1,16 +1,22 @@
 package giis.demo.tkrun.ut;
-import org.junit.*;
 import static org.junit.Assert.assertEquals;
 
+import java.util.Date;
+import java.util.List;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-import giis.demo.tkrun.*;
-import ips.util.*;
-
-import java.util.Date;
-import java.util.List;
+import ips.business.carreras.CarreraDisplayDTO;
+import ips.persistence.carreras.CarrerasModel;
+import ips.util.ApplicationException;
+import ips.util.Database;
+import ips.util.Util;
 
 /**
  * Pruebas del ejemplo de Inscripciones en carreras populares (primer ejemplo) con JUnit4

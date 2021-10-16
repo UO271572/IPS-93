@@ -1,15 +1,17 @@
 package giis.demo.tkrun.ut;
-import org.junit.*;
 import static org.junit.Assert.assertEquals;
 
-import org.junit.runner.RunWith;
-import junitparams.Parameters;
-import junitparams.JUnitParamsRunner;
-
-import giis.demo.tkrun.*;
-import ips.util.*;
-
 import java.util.Date;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import ips.persistence.carreras.CarrerasModel;
+import ips.util.Database;
+import ips.util.Util;
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
 
 /**
  * Alternativa para pruebas parametrizadas utilizando JUnitParams (https://github.com/Pragmatists/JUnitParams):

@@ -1,11 +1,14 @@
 package giis.demo.tkrun.ut;
-import org.junit.*;
 import static org.junit.Assert.assertEquals;
 
-import giis.demo.tkrun.*;
-import ips.util.*;
-
 import java.util.List;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import ips.persistence.carreras.CarrerasModel;
+import ips.util.Database;
+import ips.util.Util;
 
 /**
  * Ejemplo de comprobación de resultados en pruebas que actualizan la base de datos.

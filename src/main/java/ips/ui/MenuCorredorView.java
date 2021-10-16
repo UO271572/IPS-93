@@ -88,7 +88,7 @@ public class MenuCorredorView extends JFrame{
 	private JScrollPane getScrollPane() {
 		if (scrollPane == null) {
 			scrollPane = new JScrollPane();
-			scrollPane.setBounds(121, 107, 209, 146);
+			scrollPane.setBounds(57, 115, 357, 146);
 			scrollPane.setViewportView(getListCorredores());
 		}
 		return scrollPane;

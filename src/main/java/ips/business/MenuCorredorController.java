@@ -16,38 +16,32 @@ import ips.util.Printer;
 public class MenuCorredorController {
 
 	private MenuCorredorView view;
-	
+
 	public MenuCorredorController(MenuCorredorView view) {
 		this.view = view;
 	}
 
-
 	public void initController() {
 		inicializarComboBox();
-		//view.getBtnOrganizador().addActionListener(accionBotonOrganizador());
-		
+		// view.getBtnOrganizador().addActionListener(accionBotonOrganizador());
+
 	}
-	
 
 	private void inicializarComboBox() {
-		view.getCbCorredores().addItem("Ver competiciones abiertas");  
+		view.getCbCorredores().addItem("Ver competiciones abiertas");
 		view.getBtnGo().addActionListener(accionBotonGo(view.getCbCorredores().getSelectedIndex()));
 	}
 
-
-	
-	
-	
-	//Acciones
+	// Acciones
 	private ActionListener accionBotonGo(int index) {
 		return new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				CarrerasController carreraController = new CarrerasController(new CarrerasModel(),new CarrerasView());
-				switch(index) {
-					case 0:
-						
+				CarrerasController carreraController = new CarrerasController(new CarrerasModel(), new CarrerasView());
+				switch (index) {
+				case 0:
+
 					try {
 						List<CarreraDisplayDTO> listaCarreras = carreraController.getListaCarreras();
 						DefaultListModel dlm = new DefaultListModel();
@@ -57,12 +51,10 @@ public class MenuCorredorController {
 						Printer.printBusinessException(e1);
 						break;
 					}
-						
-						
+
 				}
 			}
 		};
 	}
-	
-	
+
 }

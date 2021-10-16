@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 
 import ips.business.inscripciones.InscripcionController;
 import ips.business.inscripciones.InscripcionDto;
@@ -57,8 +58,11 @@ public class MenuInscripcionController {
 						List<InscripcionDto> listaActualizacion = controller.actualizarPagoConTarjeta(view.getTxCorredor().getSelectedText(), Integer.parseInt(view.getTxIdentificadorCarrera().getSelectedText()));
 						model.addAll(listaActualizacion);
 						view.getListUpdates().setModel(model);//añadir al componente la lista de actualizaciones;
+						//simular con jdialog la pasarela de pago
+						JOptionPane.showMessageDialog(null, "Se esta tramitando el pago... Inscripcion realizada!");
 					}
 				} catch (BusinessException e1) {
+					JOptionPane.showMessageDialog(null, "No se puedo realizar la inscripcion");
 					Printer.printBusinessException(e1);
 				}
 			}

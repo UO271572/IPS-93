@@ -3,9 +3,11 @@ package ips.business;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import ips.business.inscripciones.InscripcionController;
 import ips.ui.MenuCorredorView;
 import ips.ui.MenuOrganizadorView;
 import ips.ui.MenuRolSelectionView;
+import ips.ui.inscripciones.InscripcionView;
 
 public class MenuRolSelectionController {
 
@@ -47,6 +49,21 @@ public class MenuRolSelectionController {
 			}
 		};
 	}
+	
+	
+	
+	private ActionListener actionBotonInscribirse() {
+		return new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				InscripcionView frame = new InscripcionView();
+				//InscripcionController controller = new InscripcionController(null, frame);
+			}
+		};
+	}
+	
+	
 	
 	
 }

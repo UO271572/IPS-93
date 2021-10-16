@@ -10,13 +10,14 @@ import javax.swing.JScrollPane;
 
 import ips.business.carreras.CarreraDisplayDTO;
 
-public class MenuOrganizadorView extends JFrame{
+public class MenuOrganizadorView extends JFrame {
 	private JComboBox<String> cbOpciones;
 	private JButton btnGo;
 	private JScrollPane scrollPaneCorredores;
 	private JList listCorredores;
 	private JButton btnBuscarCorredores;
 	private JComboBox<CarreraDisplayDTO> cbCarreras;
+
 	public MenuOrganizadorView() {
 
 		setBounds(100, 100, 854, 427);
@@ -28,6 +29,7 @@ public class MenuOrganizadorView extends JFrame{
 		getContentPane().add(getBtnBuscarCorredores());
 		getContentPane().add(getCbCarreras());
 	}
+
 	public JComboBox<String> getCbOpciones() {
 		if (cbOpciones == null) {
 			cbOpciones = new JComboBox<String>();
@@ -35,6 +37,7 @@ public class MenuOrganizadorView extends JFrame{
 		}
 		return cbOpciones;
 	}
+
 	public JButton getBtnGo() {
 		if (btnGo == null) {
 			btnGo = new JButton("Go");
@@ -42,6 +45,7 @@ public class MenuOrganizadorView extends JFrame{
 		}
 		return btnGo;
 	}
+
 	private JScrollPane getScrollPaneCorredores() {
 		if (scrollPaneCorredores == null) {
 			scrollPaneCorredores = new JScrollPane();
@@ -50,6 +54,7 @@ public class MenuOrganizadorView extends JFrame{
 		}
 		return scrollPaneCorredores;
 	}
+
 	public JList getListCorredores() {
 		if (listCorredores == null) {
 			listCorredores = new JList();
@@ -58,6 +63,7 @@ public class MenuOrganizadorView extends JFrame{
 		}
 		return listCorredores;
 	}
+
 	public JButton getBtnBuscarCorredores() {
 		if (btnBuscarCorredores == null) {
 			btnBuscarCorredores = new JButton("Buscar corredores");
@@ -66,6 +72,7 @@ public class MenuOrganizadorView extends JFrame{
 		}
 		return btnBuscarCorredores;
 	}
+
 	public JComboBox<CarreraDisplayDTO> getCbCarreras() {
 		if (cbCarreras == null) {
 			cbCarreras = new JComboBox<CarreraDisplayDTO>();
@@ -73,5 +80,4 @@ public class MenuOrganizadorView extends JFrame{
 		}
 		return cbCarreras;
 	}
-	}
-
+}

@@ -21,8 +21,6 @@ public class CarrerasController {
 		List<CarreraDisplayDTO> carreras=model.getListaCarreras();
 		BusinessCheck.isTrue(!carreras.isEmpty(),"No hay carreras disponibles");
 		return carreras;
-		
-		
 	}
 
 	public CarreraDisplayDTO findByIdCarrera(int idCarrera) throws BusinessException {

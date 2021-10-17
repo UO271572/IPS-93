@@ -9,8 +9,8 @@ import javax.swing.JFrame;
 import ips.business.BusinessException;
 import ips.business.carreras.CarreraDisplayDTO;
 import ips.ui.carreras.CarrerasView;
-import ips.ui.carreras.EstadoInscripcionesIU;
-import ips.ui.carreras.InscripcionIU;
+import ips.ui.carreras.EstadoInscripcionesView;
+import ips.ui.carreras.InscripcionView;
 import ips.util.Printer;
 import javax.swing.JComboBox;
 import java.awt.BorderLayout;
@@ -122,9 +122,9 @@ public class MenuCorredorView extends JFrame{
 			btnVerInscripciones = new JButton("Ver inscripciones");
 			btnVerInscripciones.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					EstadoInscripcionesIU estado = null;
+					EstadoInscripcionesView estado = null;
 					try {
-						estado = new EstadoInscripcionesIU();
+						estado = new EstadoInscripcionesView();
 					} catch (BusinessException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -141,9 +141,9 @@ public class MenuCorredorView extends JFrame{
 			btnInscribirse = new JButton("Inscribirse");
 			btnInscribirse.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					InscripcionIU inscripcion = null;
+					InscripcionView inscripcion = null;
 					try {
-						inscripcion = new InscripcionIU();
+						inscripcion = new InscripcionView();
 					} catch (BusinessException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();

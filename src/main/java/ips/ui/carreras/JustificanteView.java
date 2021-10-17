@@ -9,17 +9,17 @@ import ips.business.BusinessException;
 import ips.business.carreras.CarreraDisplayDTO;
 import ips.business.corredores.CorredorDTO;
 
-public class JustificanteIU extends JDialog {
+public class JustificanteView extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 
 	private JPanel pnContenido;
 	private JButton btFinalizar;
 	
-	private InscripcionIU iiu;
+	private InscripcionView iiu;
 	private JTextArea txtMensaje;
 	
-	public JustificanteIU(InscripcionIU iiu) throws BusinessException {
+	public JustificanteView(InscripcionView iiu) throws BusinessException {
 		this.iiu = iiu;
 		
 		setTitle("Inscripción: Justificante");

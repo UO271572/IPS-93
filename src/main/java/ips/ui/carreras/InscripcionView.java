@@ -23,7 +23,7 @@ import ips.business.carreras.CarrerasController;
 import ips.business.corredores.CorredorDTO;
 import ips.ui.corredores.CorredoresView;
 
-public class InscripcionIU extends JDialog {
+public class InscripcionView extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 
@@ -38,7 +38,7 @@ public class InscripcionIU extends JDialog {
 	
 	CarrerasController controller;
 
-	public InscripcionIU() throws BusinessException {
+	public InscripcionView() throws BusinessException {
 		controller = new CarrerasController();
 		
 		setTitle("Inscripción");
@@ -153,7 +153,7 @@ public class InscripcionIU extends JDialog {
 			carrera.setPlazasDisponibles(carrera.getPlazasDisponibles() - 1);
 			corredor.setEstadoInscripcion("Pre-inscrito");
 
-			JustificanteIU jv = new JustificanteIU(this);
+			JustificanteView jv = new JustificanteView(this);
 			jv.setVisible(true);
 		}
 	}

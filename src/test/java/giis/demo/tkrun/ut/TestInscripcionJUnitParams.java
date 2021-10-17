@@ -7,6 +7,7 @@ import junitparams.Parameters;
 import junitparams.JUnitParamsRunner;
 
 import giis.demo.tkrun.*;
+import ips.persistence.carreras.CarrerasModel;
 import ips.util.*;
 
 import java.util.Date;

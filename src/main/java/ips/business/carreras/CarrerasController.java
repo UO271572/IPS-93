@@ -17,6 +17,11 @@ public class CarrerasController {
 		this.view = v;
 	}
 	
+	public CarrerasController() {
+		model = new CarrerasModel();
+		view = new CarrerasView();
+	}
+
 	public  List<CarreraDisplayDTO> getListaCarreras() throws BusinessException {
 		List<CarreraDisplayDTO> carreras=model.getListaCarreras();
 		BusinessCheck.isTrue(!carreras.isEmpty(),"No hay carreras disponibles");
@@ -30,4 +35,31 @@ public class CarrerasController {
 		BusinessCheck.isTrue(!carrera.isEmpty(),"La carrera no existe");
 		return carrera.get(0);
 	}
+	
+	
+	// [ADRI]
+	
+	public List<CarreraDisplayDTO> getCarrerasInscripcion() throws BusinessException {
+		List<CarreraDisplayDTO> carreras = model.getCarrerasInscripcion();
+		BusinessCheck.isTrue(!carreras.isEmpty(),"No hay carreras disponibles para la inscripción");
+		return carreras;
+	}
+	
+	public List<CarreraDisplayDTO> getCarrerasById(String idCarrera) throws BusinessException {
+		List<CarreraDisplayDTO> carreras = model.getCarreraById(idCarrera);
+		BusinessCheck.isTrue(!carreras.isEmpty(),"No hay carreras con dicho identificador");
+		return carreras;
+	}
+	
+	public List<CarreraDisplayDTO> getCompeticiones() throws BusinessException {
+		CarrerasController carrerasController = new CarrerasController(new CarrerasModel(),new CarrerasView());
+        return carrerasController.getListaCarreras();
+	}
+	
+	public CarreraDisplayDTO[] getCompeticionesInscripcion() throws BusinessException {
+		CarrerasController carrerasController = new CarrerasController(new CarrerasModel(),new CarrerasView());
+        return carrerasController.getCarrerasInscripcion().toArray(new CarreraDisplayDTO[carrerasController.getCarrerasInscripcion().size()]);
+	}
+	
+	
 }

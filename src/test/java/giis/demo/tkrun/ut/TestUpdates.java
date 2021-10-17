@@ -3,6 +3,7 @@ import org.junit.*;
 import static org.junit.Assert.assertEquals;
 
 import giis.demo.tkrun.*;
+import ips.persistence.carreras.CarrerasModel;
 import ips.util.*;
 
 import java.util.List;

@@ -1,6 +1,7 @@
 package giis.demo.tkrun.ut;
 import junit.framework.*;
 import giis.demo.tkrun.*;
+import ips.persistence.carreras.CarrerasModel;
 import ips.util.*;
 
 import java.util.*;

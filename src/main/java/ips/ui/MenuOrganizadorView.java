@@ -18,6 +18,7 @@ public class MenuOrganizadorView extends JFrame{
 	private JButton btnBuscarCorredores;
 	private JComboBox<CarreraDisplayDTO> cbCarreras;
 	public MenuOrganizadorView() {
+		setResizable(false);
 
 		setBounds(100, 100, 854, 427);
 		getContentPane().setBackground(Color.WHITE);

@@ -13,7 +13,14 @@ import javax.swing.JComboBox;
 
 import java.awt.Dimension;
 import java.awt.SystemColor;
+import java.util.List;
+
 import javax.swing.UIManager;
+
+import ips.business.BusinessException;
+import ips.business.carreras.CarreraDisplayDTO;
+import ips.business.carreras.CarrerasController;
+import ips.persistence.carreras.CarrerasModel;
 
 /**
  * Vista de la pantalla que muestra las carreras activas y permite interactuar con ellas.
@@ -121,4 +128,15 @@ public class CarrerasView {
 	public void setDescuentoNoAplicable() { this.descuento.setText("N/A"); }
 	public JTable getDetalleCarrera() { return this.tabDetalle; }
 	
+	// [ADRI]
+	
+	public CarreraDisplayDTO[] getCompeticionesInscripcion() throws BusinessException {
+		CarrerasController carrerasController = new CarrerasController(new CarrerasModel(),new CarrerasView());
+        return carrerasController.getCarrerasInscripcion().toArray(new CarreraDisplayDTO[carrerasController.getCarrerasInscripcion().size()]);
+	}
+	
+	public List<CarreraDisplayDTO> getCarrerasById(String idCarrera) throws BusinessException {
+		CarrerasController carrerasController = new CarrerasController(new CarrerasModel(),new CarrerasView());
+        return carrerasController.getCarrerasById(idCarrera);
+	}
 }

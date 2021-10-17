@@ -14,5 +14,12 @@ public class CorredoresView {
         List<CorredorDTO> corredores = corredoresControler.getCorredoresByIdCarrera(opcionCarrera);
 		return corredores;
     }
+	
+	// [ADRI]
+	public List<CorredorDTO> getCorredorByEmail(String email) throws BusinessException {
+		CorredoresController corredoresControler= new CorredoresController(new CorredoresModel(), new CorredoresView());
+        List<CorredorDTO> corredores = corredoresControler.getCorredorByEmail(email);
+		return corredores;
+    }
 
 }

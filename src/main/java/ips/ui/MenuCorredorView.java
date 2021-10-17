@@ -9,6 +9,8 @@ import javax.swing.JFrame;
 import ips.business.BusinessException;
 import ips.business.carreras.CarreraDisplayDTO;
 import ips.ui.carreras.CarrerasView;
+import ips.ui.carreras.EstadoInscripcionesIU;
+import ips.ui.carreras.InscripcionIU;
 import ips.util.Printer;
 import javax.swing.JComboBox;
 import java.awt.BorderLayout;
@@ -16,14 +18,19 @@ import java.awt.Color;
 import javax.swing.JScrollPane;
 import javax.swing.JList;
 import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class MenuCorredorView extends JFrame{
 	private JComboBox cbCorredores;
 	private JScrollPane scrollPane;
 	private JList listCorredores;
 	private JButton btnGo;
+	private JButton btnVerInscripciones;
+	private JButton btnInscribirse;
 	
 	public MenuCorredorView() {
+		setResizable(false);
 
 		setBounds(100, 100, 854, 427);
 		getContentPane().setBackground(Color.WHITE);
@@ -31,6 +38,8 @@ public class MenuCorredorView extends JFrame{
 		getContentPane().add(getCbCorredores());
 		getContentPane().add(getScrollPane());
 		getContentPane().add(getBtnGo());
+		getContentPane().add(getBtnVerInscripciones());
+		getContentPane().add(getBtnInscribirse());
 	}
 	/*public void execute() throws BusinessException{
 		 
@@ -105,5 +114,46 @@ public class MenuCorredorView extends JFrame{
 			btnGo.setBounds(171, 81, 85, 21);
 		}
 		return btnGo;
+	}
+	
+	// [ADRI]
+	private JButton getBtnVerInscripciones() {
+		if (btnVerInscripciones == null) {
+			btnVerInscripciones = new JButton("Ver inscripciones");
+			btnVerInscripciones.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					EstadoInscripcionesIU estado = null;
+					try {
+						estado = new EstadoInscripcionesIU();
+					} catch (BusinessException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+                    estado.setVisible(true);
+				}
+			});
+			btnVerInscripciones.setBounds(572, 342, 134, 38);
+		}
+		return btnVerInscripciones;
+	}
+	private JButton getBtnInscribirse() {
+		if (btnInscribirse == null) {
+			btnInscribirse = new JButton("Inscribirse");
+			btnInscribirse.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					InscripcionIU inscripcion = null;
+					try {
+						inscripcion = new InscripcionIU();
+					} catch (BusinessException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+                    inscripcion.setVisible(true);
+				}
+			});
+			btnInscribirse.setEnabled(true);
+			btnInscribirse.setBounds(725, 342, 105, 38);
+		}
+		return btnInscribirse;
 	}
 }

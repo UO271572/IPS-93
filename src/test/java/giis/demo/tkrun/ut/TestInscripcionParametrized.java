@@ -7,6 +7,7 @@ import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
 
 import giis.demo.tkrun.*;
+import ips.persistence.carreras.CarrerasModel;
 import ips.util.*;
 
 import java.util.Arrays;

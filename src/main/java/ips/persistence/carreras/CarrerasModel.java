@@ -15,6 +15,10 @@ public class CarrerasModel {
 	
 	public static final String SQL_CARRERA_BY_IDCARRERA= "SELECT * FROM CARRERAS WHERE IDCARRERA=? and fechafin>=? and fechaInicio<=?";
 	
+	public static final String SQL_CARRERAS_INSCRIPCION = "SELECT * FROM CARRERAS where fechafin>=? and fechaInicio<=? and plazasDisponibles>0";
+	
+	public static final String SQL_CARRERA_BY_ID = "SELECT * FROM CARRERAS WHERE IDCARRERA=?";
+	
 	public List<CarreraDisplayDTO> getListaCarreras() {
 		//List<CarreraDisplayDTO> listCarreras = new ArrayList<CarreraDisplayDTO>();
 		Date fecha = java.sql.Date.valueOf(LocalDate.now());
@@ -24,6 +28,18 @@ public class CarrerasModel {
 		// FOrmas de no hacer el cast? DUDA
 		Date fecha = java.sql.Date.valueOf(LocalDate.now());
 		List<CarreraDisplayDTO> carrera = db.executeQueryPojo(CarreraDisplayDTO.class, SQL_CARRERA_BY_IDCARRERA,idCarrera,fecha,fecha);
+		return carrera;
+	}
+	
+	// [ADRI]
+	
+	public List<CarreraDisplayDTO> getCarrerasInscripcion() {
+		Date fecha = java.sql.Date.valueOf(LocalDate.now());
+		return db.executeQueryPojo(CarreraDisplayDTO.class, SQL_CARRERAS_INSCRIPCION, fecha, fecha);
+	}
+	
+	public List<CarreraDisplayDTO> getCarreraById(String idCarrera) throws BusinessException {
+		List<CarreraDisplayDTO> carrera = db.executeQueryPojo(CarreraDisplayDTO.class, SQL_CARRERA_BY_ID, idCarrera);
 		return carrera;
 	}
 

@@ -74,5 +74,5 @@ public class MenuOrganizadorView extends JFrame{
 		}
 		return cbCarreras;
 	}
-	}
+}
 

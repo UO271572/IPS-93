@@ -5,6 +5,8 @@ import java.awt.Font;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -22,6 +24,7 @@ import ips.business.carreras.CarreraDisplayDTO;
 import ips.business.carreras.CarrerasController;
 import ips.business.corredores.CorredorDTO;
 import ips.ui.corredores.CorredoresView;
+import javax.swing.JRadioButton;
 
 public class InscripcionView extends JDialog {
 
@@ -37,6 +40,7 @@ public class InscripcionView extends JDialog {
 	private JButton btCancelar;
 	
 	CarrerasController controller;
+	private JRadioButton rdbtnTransferenciaBancaria;
 
 	public InscripcionView() throws BusinessException {
 		controller = new CarrerasController();
@@ -59,6 +63,7 @@ public class InscripcionView extends JDialog {
 		contentPane.add(getTxtEmail());
 		contentPane.add(getBtSiguiente());
 		contentPane.add(getBtCancelar());
+		contentPane.add(getRdbtnTransferenciaBancaria());
 	}
 
 	private JLabel getLbInscripcion() {
@@ -131,7 +136,14 @@ public class InscripcionView extends JDialog {
 			btSiguiente.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					try {
+						
 						mostrarVentanaJustificante();
+						
+						if(getRdbtnTransferenciaBancaria().isSelected()) {
+							System.out.println("Se va a emitir un justificante");
+							emitirJustificante();
+						}
+						
 					} catch (BusinessException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -145,6 +157,25 @@ public class InscripcionView extends JDialog {
 		return btSiguiente;
 	}
 	
+	protected void emitirJustificante() throws BusinessException { // [ADRI] Pasar a clase business
+		try {
+			  CorredorDTO corredor = obtenerCorredor();
+		      FileWriter myWriter = new FileWriter("justificante" + corredor.getEmail() + corredor.getIdCarrera() + ".txt");
+		      myWriter.write("Datos de la cuenta a abonar \n"
+		      		+ "Titular: Carreras INC.\n"
+		      		+ "Número de cuenta: 123456789\n"
+		      		+ "IBAN: 123456 123456 123456 123456\n"
+		      		+ "El corredor " + corredor.getNombre() + " " + corredor.getApellidos()
+		      		+ " que se dispone a correr en la carrera " + corredor.getIdCarrera()
+		      		+ " debe abonar " + obtenerCarreraSeleccionada().getPrecio() + "€ a dicha cuenta");
+		      myWriter.close();
+		      corredor.setEstadoInscripcion("Inscrito");
+		      
+		    } catch (IOException e) {
+		      e.printStackTrace();
+		    }
+	}
+
 	private void mostrarVentanaJustificante() throws BusinessException {
 		CorredorDTO corredor = obtenerCorredor();
 		CarreraDisplayDTO carrera = obtenerCarreraSeleccionada();
@@ -195,5 +226,12 @@ public class InscripcionView extends JDialog {
 		}
 		return btCancelar;
 	}
-	
+	private JRadioButton getRdbtnTransferenciaBancaria() {
+		if (rdbtnTransferenciaBancaria == null) {
+			rdbtnTransferenciaBancaria = new JRadioButton("Transferencia bancaria");
+			rdbtnTransferenciaBancaria.setBackground(Color.WHITE);
+			rdbtnTransferenciaBancaria.setBounds(6, 337, 161, 22);
+		}
+		return rdbtnTransferenciaBancaria;
+	}
 }

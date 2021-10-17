@@ -111,8 +111,6 @@ public class CorredorDTO {
 		int edad = Period.between(LocalDate.of(calendar1.get(Calendar.YEAR),calendar1.get(Calendar.MONTH),calendar1.get(Calendar.DAY_OF_MONTH)),
 				LocalDate.now()).getYears();
 		
-		System.out.println(edad);
-		
 		if(edad>40) {
 			res += "Adulto - Mayor de 40 años";
 		} else if (edad >= 35) {

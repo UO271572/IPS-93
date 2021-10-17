@@ -73,8 +73,8 @@ public class MenuOrganizadorController {
 						
 					try {
 						List<CarreraDisplayDTO> listaCarreras = carreraController.getListaCarreras();
-						DefaultListModel dlm = new DefaultListModel();
-						dlm.addAll(listaCarreras);
+//						DefaultListModel dlm = new DefaultListModel();
+//						dlm.addAll(listaCarreras);
 						CarreraDisplayDTO[] carreras = arrayListToArray(listaCarreras);
 						view.getCbCarreras().setModel(new DefaultComboBoxModel<CarreraDisplayDTO>(carreras));
 						view.getBtnBuscarCorredores().setEnabled(true);

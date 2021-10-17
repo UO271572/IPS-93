@@ -101,7 +101,7 @@ public class MenuRolSelectionView extends JFrame{
 	}
 	
 	
-	private JButton getBtInscribirse() {
+	public JButton getBtInscribirse() {
 		if (btInscribirse == null) {
 			btInscribirse = new JButton("Inscribirse");
 			btInscribirse.setFont(new Font("Tahoma", Font.PLAIN, 18));

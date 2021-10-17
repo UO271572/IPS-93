@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 
 import ips.business.inscripciones.InscripcionController;
 import ips.ui.MenuCorredorView;
+import ips.ui.MenuInscripcionView;
 import ips.ui.MenuOrganizadorView;
 import ips.ui.MenuRolSelectionView;
 import ips.ui.inscripciones.InscripcionView;
@@ -21,6 +22,7 @@ public class MenuRolSelectionController {
 	public void initController() {
 		view.getBtnCorredor().addActionListener(accionBotonCorredor());
 		view.getBtnOrganizador().addActionListener(accionBotonOrganizador());
+		view.getBtInscribirse().addActionListener(actionBotonInscribirse());
 		
 	}
 	
@@ -57,8 +59,10 @@ public class MenuRolSelectionController {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				InscripcionView frame = new InscripcionView();
-				//InscripcionController controller = new InscripcionController(null, frame);
+				MenuInscripcionView frame = new MenuInscripcionView();
+				MenuInscripcionController controller = new MenuInscripcionController(frame);
+				controller.initController();
+				frame.setVisible(true);
 			}
 		};
 	}

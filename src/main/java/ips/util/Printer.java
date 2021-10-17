@@ -4,6 +4,7 @@ import java.util.List;
 
 import ips.business.carreras.CarreraDisplayDTO;
 import ips.business.corredores.CorredorDTO;
+import ips.business.inscripciones.InscripcionDTO;
 
 public class Printer {
 
@@ -44,6 +45,27 @@ public class Printer {
 		return sb.toString();
 		
 	}
+	
+	
+	
+	public static String print(InscripcionDTO inscripcion) {
+
+		StringBuilder sb = new StringBuilder();
+		sb.append("DNI: " + inscripcion.getDnicorredor());
+		sb.append(" ");
+		sb.append("Nombre: " + inscripcion.getIdcarrera());
+		sb.append(" ");
+		sb.append("Estado inscripcion: "  + inscripcion.getEstadoinscripcion());
+		sb.append(" ");
+		sb.append("Fecha inscripcion: " + inscripcion.getFechainscripcion());
+		
+		
+		return sb.toString();
+		
+	}
+	
+	
+	
 
 	//LISTAS
 	public static void printCarreras(List<CarreraDisplayDTO> carreras) {

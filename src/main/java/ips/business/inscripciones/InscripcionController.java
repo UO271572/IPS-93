@@ -25,8 +25,8 @@ public class InscripcionController {
 		this.view = view;
 	}
 	
-	public List<InscripcionDto> actualizarPagoConTarjeta(String dni, int idCarrera) throws BusinessException{
-		List<InscripcionDto> inscripciones = model.updateInscription(dni, idCarrera);
+	public List<InscripcionDTO> actualizarPagoConTarjeta(String dni, int idCarrera) throws BusinessException{
+		List<InscripcionDTO> inscripciones = model.updateInscription(dni, idCarrera);
 		BusinessCheck.isTrue(!inscripciones.isEmpty(),"No existe alguna asociacion entre el corredor y la carrera");
 		return inscripciones;
 	}

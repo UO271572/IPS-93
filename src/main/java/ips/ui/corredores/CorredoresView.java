@@ -14,5 +14,4 @@ public class CorredoresView {
         List<CorredorDTO> corredores = corredoresControler.getCorredoresByIdCarrera(opcionCarrera);
 		return corredores;
     }
-
 }

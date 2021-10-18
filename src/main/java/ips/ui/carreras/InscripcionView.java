@@ -139,7 +139,7 @@ public class InscripcionView extends JDialog {
 						
 						mostrarVentanaJustificante();
 						
-						if(getRdbtnTransferenciaBancaria().isSelected()) {
+						if(getRdbtnTransferenciaBancaria().isSelected()) { // [ADRI]
 							System.out.println("Se va a emitir un justificante");
 							emitirJustificante();
 						}
@@ -157,7 +157,7 @@ public class InscripcionView extends JDialog {
 		return btSiguiente;
 	}
 	
-	protected void emitirJustificante() throws BusinessException { // [ADRI] Pasar a clase business
+	protected void emitirJustificante() throws BusinessException { // [ADRI]
 		try {
 			  CorredorDTO corredor = obtenerCorredor();
 		      FileWriter myWriter = new FileWriter("justificante" + corredor.getEmail() + corredor.getIdCarrera() + ".txt");

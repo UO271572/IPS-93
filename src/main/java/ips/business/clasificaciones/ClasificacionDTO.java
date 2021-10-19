@@ -5,7 +5,7 @@ package ips.business.clasificaciones;
 
 import java.sql.Time;
 
-import org.hsqldb.types.TimeData;
+import ips.util.Printer;
 
 /**
  * @author PC
@@ -17,8 +17,8 @@ public class ClasificacionDTO {
 	private String sexo;//tabla corredores
 	private String nombre;//tabla corredores
 	private Time time;
-	private String dnicorredor;
-//	private String idcarrera;
+	private String dniCorredor;
+	private int idCarrera;
 
 
 	
@@ -34,20 +34,15 @@ public class ClasificacionDTO {
  * @param time
  * @param dnicorredor
  */
-public ClasificacionDTO(int posicion, String sexo, String nombre, Time time, String dnicorredor) {
-	super();
+public ClasificacionDTO(int posicion, String sexo, String nombre, String dnicorredor, int idCarrera) {
 	this.posicion = posicion;
 	this.sexo = sexo;
 	this.nombre = nombre;
-	this.time = time;
-	this.dnicorredor = dnicorredor;
+	//this.time = time;
+	this.dniCorredor = dnicorredor;
+	this.idCarrera = idCarrera;
 }
-	public String getDnicorredor() {
-		return dnicorredor;
-	}
-	public void setDnicorredor(String dnicorredor) {
-		this.dnicorredor = dnicorredor;
-	}
+	
 	public void setSexo(String sexo) {
 		this.sexo = sexo;
 	}
@@ -58,26 +53,42 @@ public ClasificacionDTO(int posicion, String sexo, String nombre, Time time, Str
 		this.nombre = nombre;
 	}
 	
-//	public String getIdcarrera() {
-//		return idcarrera;
-//	}
-//	public void setIdcarrera(String idcarrera) {
-//		this.idcarrera = idcarrera;
-//	}
-	public Time getTime() {
+	/*public Time getTime() {
 		return time;
 	}
 	public void setTime(Time time) {
 		this.time = time;
 	}
-	
+	*/
 	public int getPosicion() {
 		return posicion;
 	}
 	public void setPosicion(int posicion) {
 		this.posicion = posicion;
 	}
+	public String getDniCorredor() {
+		return dniCorredor;
+	}
+	public void setDniCorredor(String dniCorredor) {
+		this.dniCorredor = dniCorredor;
+	}
+	public int getIdCarrera() {
+		return idCarrera;
+	}
+	public void setIdCarrera(int idCarrera) {
+		this.idCarrera = idCarrera;
+	}
 	
-	
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return  Printer.print(this);
+	}
+	public Time getTime() {
+		return time;
+	}
+	public void setTime(Time time) {
+		this.time = time;
+	}
 	
 }

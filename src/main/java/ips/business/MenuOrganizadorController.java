@@ -2,6 +2,7 @@ package ips.business;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
@@ -63,6 +64,9 @@ public class MenuOrganizadorController {
 					e1.printStackTrace();
 				} catch (BusinessException e1) {
 					e1.printStackTrace();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}	
 			}
 		};
@@ -84,6 +88,9 @@ public class MenuOrganizadorController {
 				} catch (NumberFormatException e1) {
 					e1.printStackTrace();
 				} catch (BusinessException e1) {
+					e1.printStackTrace();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}	
 			}

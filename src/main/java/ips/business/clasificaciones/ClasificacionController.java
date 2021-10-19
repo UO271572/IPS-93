@@ -3,7 +3,7 @@
  */
 package ips.business.clasificaciones;
 
-import java.util.Collection;
+import java.sql.SQLException;
 import java.util.List;
 
 import ips.business.BusinessCheck;
@@ -23,14 +23,14 @@ public class ClasificacionController {
 	}
 	
 	
-	public List<ClasificacionDTO> mostrarResultadosPorSexo(int idcarrera) throws BusinessException{
+	public List<ClasificacionDTO> mostrarResultadosPorSexo(int idcarrera) throws BusinessException, SQLException{
 		List<ClasificacionDTO> listaDto = model.getClasificacionBySex(idcarrera);
 		BusinessCheck.isFalse(listaDto.isEmpty(),"No hay clasificacion disponible");
 		return listaDto;
 	}
 
 
-	public List<ClasificacionDTO> mostrarResultadosPorCategoria(int idcarrera) throws BusinessException {
+	public List<ClasificacionDTO> mostrarResultadosPorCategoria(int idcarrera) throws BusinessException, SQLException {
 		List<ClasificacionDTO> listaDto = model.getClasificacionByCategoria(idcarrera);
 		BusinessCheck.isFalse(listaDto.isEmpty(),"No hay clasificacion disponible");
 		return listaDto;

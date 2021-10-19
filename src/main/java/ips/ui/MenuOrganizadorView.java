@@ -17,6 +17,8 @@ public class MenuOrganizadorView extends JFrame {
 	private JList listCorredores;
 	private JButton btnBuscarCorredores;
 	private JComboBox<CarreraDisplayDTO> cbCarreras;
+	private JButton btMostrarClasificacionSexo;
+	private JButton btMostrarClasificacionCategoria;
 
 	public MenuOrganizadorView() {
 
@@ -28,6 +30,8 @@ public class MenuOrganizadorView extends JFrame {
 		getContentPane().add(getScrollPaneCorredores());
 		getContentPane().add(getBtnBuscarCorredores());
 		getContentPane().add(getCbCarreras());
+		getContentPane().add(getBtMostrarClasificacionSexo());
+		getContentPane().add(getBtMostrarClasificacionCategoria());
 	}
 
 	public JComboBox<String> getCbOpciones() {
@@ -79,5 +83,21 @@ public class MenuOrganizadorView extends JFrame {
 			cbCarreras.setBounds(399, 66, 249, 26);
 		}
 		return cbCarreras;
+	}
+	public JButton getBtMostrarClasificacionSexo() {
+		if (btMostrarClasificacionSexo == null) {
+			btMostrarClasificacionSexo = new JButton("Clasificacion por sexo");
+			btMostrarClasificacionSexo.setEnabled(false);
+			btMostrarClasificacionSexo.setBounds(596, 160, 167, 23);
+		}
+		return btMostrarClasificacionSexo;
+	}
+	public JButton getBtMostrarClasificacionCategoria() {
+		if (btMostrarClasificacionCategoria == null) {
+			btMostrarClasificacionCategoria = new JButton("Clasificacion por categoria");
+			btMostrarClasificacionCategoria.setEnabled(false);
+			btMostrarClasificacionCategoria.setBounds(596, 194, 167, 23);
+		}
+		return btMostrarClasificacionCategoria;
 	}
 }

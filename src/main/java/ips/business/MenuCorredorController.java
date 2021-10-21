@@ -28,8 +28,10 @@ public class MenuCorredorController {
 	}
 
 	private void inicializarComboBox() {
-		view.getCbCorredores().addItem("Ver competiciones abiertas");
-		view.getBtnGo().addActionListener(accionBotonGo(view.getCbCorredores().getSelectedIndex()));
+
+		view.getCbCorredores().addItem("Ver competiciones abiertas");  
+		view.getBtnGo().addActionListener(accionBotonGo(view.getCbCorredores().getSelectedIndex())); // cuando cb seleccionado activar boton inscripcion
+
 	}
 
 	// Acciones
@@ -43,7 +45,11 @@ public class MenuCorredorController {
 				case 0:
 
 					try {
-						List<CarreraDisplayDTO> listaCarreras = carreraController.getListaCarreras();
+						List<CarreraDisplayDTO> listaCarreras = carreraController.getListaCarreras(); // [ADRI] hacer un metodo getListaCarrerasPorCategoria
+						/*
+							[ADRI] Pone que las categorías son específicas para cada competición (cuando estas tengan categorías específicas, la clase
+							Competición debería implementar un método que sea obtenerCategoría)
+						 */
 						DefaultListModel dlm = new DefaultListModel();
 						dlm.addAll(listaCarreras);
 						view.getListCorredores().setModel(dlm);

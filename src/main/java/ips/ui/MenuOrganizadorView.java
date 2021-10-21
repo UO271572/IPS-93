@@ -21,6 +21,7 @@ public class MenuOrganizadorView extends JFrame {
 	private JButton btMostrarClasificacionCategoria;
 
 	public MenuOrganizadorView() {
+		setResizable(false);
 
 		setBounds(100, 100, 854, 427);
 		getContentPane().setBackground(Color.WHITE);
@@ -84,6 +85,7 @@ public class MenuOrganizadorView extends JFrame {
 		}
 		return cbCarreras;
 	}
+
 	public JButton getBtMostrarClasificacionSexo() {
 		if (btMostrarClasificacionSexo == null) {
 			btMostrarClasificacionSexo = new JButton("Clasificacion por sexo");
@@ -101,3 +103,4 @@ public class MenuOrganizadorView extends JFrame {
 		return btMostrarClasificacionCategoria;
 	}
 }
+

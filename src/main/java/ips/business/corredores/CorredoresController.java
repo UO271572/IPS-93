@@ -1,5 +1,10 @@
 package ips.business.corredores;
 
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.Period;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import ips.business.BusinessCheck;
@@ -28,5 +33,13 @@ public class CorredoresController {
 		List<CorredorDTO> corredores=model.getListaCorredoresByIdCarrera(idCarrera);
 		return corredores;
 	}
+	
+	// [ADRI]
+	public List<CorredorDTO> getCorredorByEmail(String email) throws BusinessException {
+		List<CorredorDTO> corredores = model.getCorredorByEmail(email);
+		return corredores;
+	}
+	
+	
 
 }

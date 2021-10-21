@@ -28,22 +28,9 @@ public class MenuInscripcionView extends JFrame {
 	private JScrollPane scrollPane;
 	private JButton btValidar;
 	private JList listUpdates;
+	private JLabel lbVistaResultado;
 
-//	/**
-//	 * Launch the application.
-//	 */
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					MenuInscripcionView frame = new MenuInscripcionView();
-//					frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
+
 
 	/**
 	 * Create the frame.
@@ -68,6 +55,7 @@ public class MenuInscripcionView extends JFrame {
 		contentPane.add(getTxIdentificadorCarrera());
 		contentPane.add(getScrollPane());
 		contentPane.add(getBtValidar());
+		contentPane.add(getLbVistaResultado());
 	}
 
 	private JLabel getLbNumero() {
@@ -77,7 +65,7 @@ public class MenuInscripcionView extends JFrame {
 		}
 		return lbNumero;
 	}
-	private JTextField getTxNumeroTarjeta() {
+	public JTextField getTxNumeroTarjeta() {
 		if (txNumeroTarjeta == null) {
 			txNumeroTarjeta = new JTextField();
 			txNumeroTarjeta.setBounds(151, 34, 121, 20);
@@ -92,7 +80,7 @@ public class MenuInscripcionView extends JFrame {
 		}
 		return lbFecha;
 	}
-	private JTextField getTxFecha() {
+	public JTextField getTxFecha() {
 		if (txFecha == null) {
 			txFecha = new JTextField();
 			txFecha.setColumns(10);
@@ -107,7 +95,7 @@ public class MenuInscripcionView extends JFrame {
 		}
 		return lblCvc;
 	}
-	private JTextField getTxCvc() {
+	public JTextField getTxCvc() {
 		if (txCvc == null) {
 			txCvc = new JTextField();
 			txCvc.setColumns(10);
@@ -148,7 +136,7 @@ public class MenuInscripcionView extends JFrame {
 	private JScrollPane getScrollPane() {
 		if (scrollPane == null) {
 			scrollPane = new JScrollPane();
-			scrollPane.setBounds(336, 34, 433, 228);
+			scrollPane.setBounds(336, 34, 438, 142);
 			scrollPane.setViewportView(getListUpdates());
 		}
 		return scrollPane;
@@ -165,5 +153,12 @@ public class MenuInscripcionView extends JFrame {
 			listUpdates = new JList();
 		}
 		return listUpdates;
+	}
+	private JLabel getLbVistaResultado() {
+		if (lbVistaResultado == null) {
+			lbVistaResultado = new JLabel("Actualizacion de los pagos:");
+			lbVistaResultado.setBounds(336, 11, 199, 20);
+		}
+		return lbVistaResultado;
 	}
 }

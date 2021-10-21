@@ -6,7 +6,9 @@ package ips.business;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Date;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
@@ -56,7 +58,7 @@ public class MenuInscripcionController {
 				//DefaultListModel<InscripcionDto> model = new DefaultListModel<>();
 				
 				try {
-					if(validarCampos()) {
+					if(validarTarjeta() && validarCamposCorredor()) {
 						List<InscripcionDTO> listaActualizacion = controller.actualizarPagoConTarjeta(view.getTxCorredor().getText(), 
 								Integer.parseInt(view.getTxIdentificadorCarrera().getText()));
 						
@@ -66,7 +68,7 @@ public class MenuInscripcionController {
 						//simular con jdialog la pasarela de pago
 						JOptionPane.showMessageDialog(null, "Se esta tramitando el pago... Inscripcion realizada!");
 					}
-				} catch (BusinessException e1) {
+				} catch (BusinessException | NumberFormatException e1) {
 					JOptionPane.showMessageDialog(null, "No se puedo realizar la inscripcion");
 					Printer.printBusinessException(e1);
 				}
@@ -82,16 +84,56 @@ public class MenuInscripcionController {
 		return list;
 	}
 	
+	/**
+	 * Comprueba que los datos de la tarjeta son validos
+	 * @return
+	 */
+	private boolean validarTarjeta() {
+		if(view.getTxNumeroTarjeta().getText().length() < 16) {
+			JOptionPane.showMessageDialog(null, "La longitud del numero de tarjeta debe ser 16");
+			return false;
+		}
+		Date fechaIntroducida = null;
+		try {
+			fechaIntroducida = parseToDate(view.getTxFecha().getText());
+		} catch (NumberFormatException e) {
+			JOptionPane.showMessageDialog(null, "Error al introducir los datos el formato no es el adecuado");
+			Printer.printBusinessException(new BusinessException(e));
+		}
+		if(fechaIntroducida.before(new Date())) {
+			JOptionPane.showMessageDialog(null, "La tarjeta esta caducada");
+			return false;
+		}
+		return true;
+	}
 	
-	private boolean validarCampos() {
-		if(view.getTxCorredor().getText()==null || view.getTxIdentificadorCarrera().getText()==null)  {
-			Printer.printBusinessException(new BusinessException());
-			return false;
-		}
-		 if(view.getTxCorredor().getText().isEmpty() || view.getTxIdentificadorCarrera().getText().isEmpty()) {
-			Printer.printBusinessException(new BusinessException());
-			return false;
-		}
+	/**
+	 * 
+	 * @param text
+	 * @return
+	 */
+	@SuppressWarnings("deprecation")
+	private Date parseToDate(String text) throws NumberFormatException{
+		String separador = Pattern.quote("-");
+		String [] date = text.split(separador);
+		return new Date(Integer.parseInt(date[0])-1900, Integer.parseInt(date[1])-1, Integer.parseInt(date[2]));
+	}
+
+
+	/**
+	 * Comprueba que los campos del corredor no esten vacios
+	 * @return
+	 */
+	private boolean validarCamposCorredor() {
+		
+			if(view.getTxCorredor().getText()==null || view.getTxIdentificadorCarrera().getText()==null)  {
+				Printer.printBusinessException(new BusinessException());
+				return false;
+			}
+			 if(view.getTxCorredor().getText().isEmpty() || view.getTxIdentificadorCarrera().getText().isEmpty()) {
+				Printer.printBusinessException(new BusinessException());
+				return false;
+			}
 		return true;
 	}
 	

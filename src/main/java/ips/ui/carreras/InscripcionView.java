@@ -20,11 +20,14 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import ips.business.BusinessException;
+import ips.business.MenuInscripcionController;
 import ips.business.carreras.CarreraDisplayDTO;
 import ips.business.carreras.CarrerasController;
 import ips.business.corredores.CorredorDTO;
+import ips.ui.MenuInscripcionView;
 import ips.ui.corredores.CorredoresView;
 import javax.swing.JRadioButton;
+import javax.swing.ButtonGroup;
 
 public class InscripcionView extends JDialog {
 
@@ -38,20 +41,21 @@ public class InscripcionView extends JDialog {
 	private JTextField txtEmail;
 	private JButton btSiguiente;
 	private JButton btCancelar;
-	
+
 	CarrerasController controller;
 	private JRadioButton rdbtnTransferenciaBancaria;
+	private JRadioButton rbtnPagoTarjeta;
+	private final ButtonGroup buttonGroup = new ButtonGroup();
 
 	public InscripcionView() throws BusinessException {
 		controller = new CarrerasController();
-		
+
 		setTitle("Inscripción");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setModal(true);
 		setResizable(false);
 		setBounds(100, 100, 433, 426);
 		setLocationRelativeTo(null);
-		
+
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.WHITE);
 		contentPane.setLayout(null);
@@ -64,6 +68,7 @@ public class InscripcionView extends JDialog {
 		contentPane.add(getBtSiguiente());
 		contentPane.add(getBtCancelar());
 		contentPane.add(getRdbtnTransferenciaBancaria());
+		contentPane.add(getRbtnPagoTarjeta());
 	}
 
 	private JLabel getLbInscripcion() {
@@ -75,7 +80,7 @@ public class InscripcionView extends JDialog {
 		}
 		return lbInscripcion;
 	}
-	
+
 	private JLabel getLbCarreras() throws BusinessException {
 		if (lbCarreras == null) {
 			lbCarreras = new JLabel("Carreras:");
@@ -86,9 +91,9 @@ public class InscripcionView extends JDialog {
 		}
 		return lbCarreras;
 	}
-	
+
 	private JComboBox<CarreraDisplayDTO> getCbCarreras() throws BusinessException {
-		if (cbCarreras == null) {		
+		if (cbCarreras == null) {
 			cbCarreras = new JComboBox<CarreraDisplayDTO>();
 			cbCarreras.setFont(new Font("Tahoma", Font.PLAIN, 12));
 			cbCarreras.setBackground(SystemColor.WHITE);
@@ -97,12 +102,12 @@ public class InscripcionView extends JDialog {
 		}
 		return cbCarreras;
 	}
-	
+
 	public CarreraDisplayDTO[] getCarreras() throws BusinessException {
 		CarrerasView view = new CarrerasView();
 		return view.getCompeticionesInscripcion();
 	}
-	
+
 	private JLabel getLbEmail() {
 		if (lbEmail == null) {
 			lbEmail = new JLabel("Email:");
@@ -113,7 +118,7 @@ public class InscripcionView extends JDialog {
 		}
 		return lbEmail;
 	}
-	
+
 	private JTextField getTxtEmail() {
 		if (txtEmail == null) {
 			txtEmail = new JTextField();
@@ -125,7 +130,7 @@ public class InscripcionView extends JDialog {
 		}
 		return txtEmail;
 	}
-	
+
 	private JButton getBtSiguiente() {
 		if (btSiguiente == null) {
 			btSiguiente = new JButton("Siguiente");
@@ -136,16 +141,16 @@ public class InscripcionView extends JDialog {
 			btSiguiente.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					try {
-						
-						mostrarVentanaJustificante();
-						
-						if(getRdbtnTransferenciaBancaria().isSelected()) { // [ADRI]
+
+						if (getRdbtnTransferenciaBancaria().isSelected()) { // [ADRI]
+							mostrarVentanaJustificante();
 							System.out.println("Se va a emitir un justificante");
 							emitirJustificante();
+						} else {
+							mostrarMenuInscripcion();
 						}
-						
+
 					} catch (BusinessException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 				}
@@ -156,26 +161,44 @@ public class InscripcionView extends JDialog {
 		}
 		return btSiguiente;
 	}
-	
+
+	/**
+	 * Emite el justificante
+	 * @throws BusinessException
+	 */
 	protected void emitirJustificante() throws BusinessException { // [ADRI]
 		try {
-			  CorredorDTO corredor = obtenerCorredor();
-		      FileWriter myWriter = new FileWriter("justificante" + corredor.getEmail() + corredor.getIdCarrera() + ".txt");
-		      myWriter.write("Datos de la cuenta a abonar \n"
-		      		+ "Titular: Carreras INC.\n"
-		      		+ "Número de cuenta: 123456789\n"
-		      		+ "IBAN: 123456 123456 123456 123456\n"
-		      		+ "El corredor " + corredor.getNombre() + " " + corredor.getApellidos()
-		      		+ " que se dispone a correr en la carrera " + corredor.getIdCarrera()
-		      		+ " debe abonar " + obtenerCarreraSeleccionada().getPrecio() + "€ a dicha cuenta");
-		      myWriter.close();
-		      corredor.setEstadoInscripcion("Inscrito");
-		      
-		    } catch (IOException e) {
-		      e.printStackTrace();
-		    }
+			CorredorDTO corredor = obtenerCorredor();
+			FileWriter myWriter = new FileWriter(
+					"justificante" + corredor.getEmail() + corredor.getIdCarrera() + ".txt");
+			myWriter.write("Datos de la cuenta a abonar \n" + "Titular: Carreras INC.\n"
+					+ "Número de cuenta: 123456789\n" + "IBAN: 123456 123456 123456 123456\n" + "El corredor "
+					+ corredor.getNombre() + " " + corredor.getApellidos() + " que se dispone a correr en la carrera "
+					+ corredor.getIdCarrera() + " debe abonar " + obtenerCarreraSeleccionada().getPrecio()
+					+ "€ a dicha cuenta");
+			myWriter.close();
+			corredor.setEstadoInscripcion("Inscrito");
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
+	/**
+	 * Crea la nueva ventana para poder inscribirse
+	 * 
+	 * @throws BusinessException
+	 */
+	private void mostrarMenuInscripcion() throws BusinessException {
+		MenuInscripcionController menInscripcion = new MenuInscripcionController(new MenuInscripcionView(this));
+		menInscripcion.initController();
+		menInscripcion.getMenuView().setVisible(true);
+	}
+
+	/**
+	 * 
+	 * @throws BusinessException
+	 */
 	private void mostrarVentanaJustificante() throws BusinessException {
 		CorredorDTO corredor = obtenerCorredor();
 		CarreraDisplayDTO carrera = obtenerCarreraSeleccionada();
@@ -188,28 +211,29 @@ public class InscripcionView extends JDialog {
 			jv.setVisible(true);
 		}
 	}
-	
+
 	CorredorDTO obtenerCorredor() throws BusinessException {
 		String email = getTxtEmail().getText();
 		CorredoresView view = new CorredoresView();
 		CorredorDTO corredor = view.getCorredorByEmail(email).get(0);
 		return corredor;
 	}
-	
-	CarreraDisplayDTO obtenerCarreraSeleccionada() throws BusinessException {
+
+	public CarreraDisplayDTO obtenerCarreraSeleccionada() throws BusinessException {
 		CarreraDisplayDTO carrera = (CarreraDisplayDTO) getCbCarreras().getSelectedItem();
 		return carrera;
 	}
-	
+
 	private boolean comprobaciones(CorredorDTO corredor, CarreraDisplayDTO carrera) throws BusinessException {
 		if (corredor.getIdCarrera() == carrera.getIdCarrera()) {
-			JOptionPane.showMessageDialog(null, "Debe seleccionar una carrera en la que no esté ya inscrito", "ERROR", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Debe seleccionar una carrera en la que no esté ya inscrito", "ERROR",
+					JOptionPane.ERROR_MESSAGE);
 			getCbCarreras().grabFocus();
 			return false;
 		}
 		return true;
 	}
-	
+
 	private JButton getBtCancelar() {
 		if (btCancelar == null) {
 			btCancelar = new JButton("Cancelar");
@@ -226,12 +250,25 @@ public class InscripcionView extends JDialog {
 		}
 		return btCancelar;
 	}
+
 	private JRadioButton getRdbtnTransferenciaBancaria() {
 		if (rdbtnTransferenciaBancaria == null) {
 			rdbtnTransferenciaBancaria = new JRadioButton("Transferencia bancaria");
+			rdbtnTransferenciaBancaria.setSelected(true);
+			buttonGroup.add(rdbtnTransferenciaBancaria);
 			rdbtnTransferenciaBancaria.setBackground(Color.WHITE);
-			rdbtnTransferenciaBancaria.setBounds(6, 337, 161, 22);
+			rdbtnTransferenciaBancaria.setBounds(6, 317, 161, 22);
 		}
 		return rdbtnTransferenciaBancaria;
+	}
+
+	private JRadioButton getRbtnPagoTarjeta() {
+		if (rbtnPagoTarjeta == null) {
+			rbtnPagoTarjeta = new JRadioButton("Pago con tarjeta");
+			buttonGroup.add(rbtnPagoTarjeta);
+			rbtnPagoTarjeta.setBackground(Color.WHITE);
+			rbtnPagoTarjeta.setBounds(6, 342, 161, 22);
+		}
+		return rbtnPagoTarjeta;
 	}
 }

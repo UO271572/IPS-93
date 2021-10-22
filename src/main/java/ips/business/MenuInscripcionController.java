@@ -19,7 +19,7 @@ import ips.business.inscripciones.InscripcionController;
 import ips.business.inscripciones.InscripcionDTO;
 import ips.persistence.pagos.PagoTarjetaModel;
 import ips.ui.MenuInscripcionView;
-import ips.ui.inscripciones.InscripcionView;
+import ips.ui.carreras.InscripcionView;
 import ips.util.Printer;
 
 /**
@@ -28,24 +28,18 @@ import ips.util.Printer;
  */
 public class MenuInscripcionController {
 	
-	private MenuInscripcionView view;
+	private MenuInscripcionView menuView;
 	
-	
-	/**
-	 * Constructor
-	 * @param view
-	 */
 	public MenuInscripcionController(MenuInscripcionView view) {
-		this.view = view;
+		this.menuView = view;
 	}
-	
 	
 	public void initController() {
 		iniciar();
 	}
 	
 	private void iniciar() {
-		view.getBtValidar().addActionListener(actionValidar());
+		menuView.getBtValidar().addActionListener(actionValidar());
 	}
 
 
@@ -54,17 +48,16 @@ public class MenuInscripcionController {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				InscripcionController controller = new InscripcionController(new PagoTarjetaModel(), new InscripcionView());
-				//DefaultListModel<InscripcionDto> model = new DefaultListModel<>();
+				InscripcionController controller = new InscripcionController(new PagoTarjetaModel());
 				
 				try {
 					if(validarTarjeta() && validarCamposCorredor()) {
-						List<InscripcionDTO> listaActualizacion = controller.actualizarPagoConTarjeta(view.getTxCorredor().getText(), 
-								Integer.parseInt(view.getTxIdentificadorCarrera().getText()));
+						List<InscripcionDTO> listaActualizacion = controller.actualizarPagoConTarjeta(menuView.getTxCorredor().getText(), 
+								menuView.getInscView().obtenerCarreraSeleccionada().getIdCarrera());
 						
 						//model.addAll(listaActualizacion);
 						InscripcionDTO[] inscripciones = arrayListToArray(listaActualizacion);
-						view.getListUpdates().setModel(new DefaultComboBoxModel<InscripcionDTO>(inscripciones));//añadir al componente la lista de actualizaciones;
+						menuView.getListUpdates().setModel(new DefaultComboBoxModel<InscripcionDTO>(inscripciones));//añadir al componente la lista de actualizaciones;
 						//simular con jdialog la pasarela de pago
 						JOptionPane.showMessageDialog(null, "Se esta tramitando el pago... Inscripcion realizada!");
 					}
@@ -76,6 +69,12 @@ public class MenuInscripcionController {
 		};
 	}
 	
+	
+	
+	public MenuInscripcionView getMenuView() {
+		return menuView;
+	}
+
 	private InscripcionDTO[] arrayListToArray(List<InscripcionDTO> listaInscripcion) {
 		InscripcionDTO[] list = new InscripcionDTO[listaInscripcion.size()];
 		for(int i = 0; i<listaInscripcion.size();i++) {
@@ -89,13 +88,13 @@ public class MenuInscripcionController {
 	 * @return
 	 */
 	private boolean validarTarjeta() {
-		if(view.getTxNumeroTarjeta().getText().length() < 16) {
+		if(menuView.getTxNumeroTarjeta().getText().length() < 16) {
 			JOptionPane.showMessageDialog(null, "La longitud del numero de tarjeta debe ser 16");
 			return false;
 		}
 		Date fechaIntroducida = null;
 		try {
-			fechaIntroducida = parseToDate(view.getTxFecha().getText());
+			fechaIntroducida = parseToDate(menuView.getTxFecha().getText());
 		} catch (NumberFormatException e) {
 			JOptionPane.showMessageDialog(null, "Error al introducir los datos el formato no es el adecuado");
 			Printer.printBusinessException(new BusinessException(e));
@@ -122,19 +121,26 @@ public class MenuInscripcionController {
 
 	/**
 	 * Comprueba que los campos del corredor no esten vacios
+	 * 
 	 * @return
 	 */
 	private boolean validarCamposCorredor() {
+		try {
+			String[] separador = menuView.getTxCorredor().getText().trim().split("");
+			if(separador.length != 7) {
+				Printer.printBusinessException(new BusinessException("Error al introducir el dni 6 digitos y una letra, debe estar registrado"));
+				return false;
+			}
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Error al introducir el dni 6 digitos y una letra, debe estar registrado");
+			return false;
+		}
 		
-			if(view.getTxCorredor().getText()==null || view.getTxIdentificadorCarrera().getText()==null)  {
-				Printer.printBusinessException(new BusinessException());
-				return false;
-			}
-			 if(view.getTxCorredor().getText().isEmpty() || view.getTxIdentificadorCarrera().getText().isEmpty()) {
-				Printer.printBusinessException(new BusinessException());
-				return false;
-			}
+		if (menuView.getTxCorredor().getText() == null || menuView.getTxCorredor().getText().isEmpty()) {
+			Printer.printBusinessException(new BusinessException());
+			return false;
+		}
 		return true;
 	}
-	
+
 }

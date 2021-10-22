@@ -11,8 +11,7 @@ public class CorredoresModel {
 	private final static String SQL_LISTA_CORREDORES_BY_IDCARRERA = 
 	"select * from corredores c,inscripciones i where idcarrera = ? and c.dnicorredor = i.dnicorredor order by"
 	+ " fechainscripcion, estadoinscripcion";
-	
-	private final static String SQL_CORREDOR_BY_EMAIL = "select * from corredores where email = ? order by fechainscripcion desc";
+	private final static String SQL_CORREDOR_BY_EMAIL = "select * from corredores c, inscripciones i where c.dnicorredor = i.dnicorredor and c.email = ? order by fechainscripcion desc"; 
 	
 	public List<CorredorDTO> getListaCorredoresByIdCarrera(int idCarrera) {
 		return db.executeQueryPojo(CorredorDTO.class,SQL_LISTA_CORREDORES_BY_IDCARRERA,idCarrera);

@@ -6,6 +6,9 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import ips.ui.carreras.InscripcionView;
+
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JScrollPane;
@@ -14,6 +17,9 @@ import javax.swing.JList;
 
 public class MenuInscripcionView extends JFrame {
 
+	private InscripcionView inscView;
+	
+	
 	private JPanel contentPane;
 	private JLabel lbNumero;
 	private JTextField txNumeroTarjeta;
@@ -21,21 +27,21 @@ public class MenuInscripcionView extends JFrame {
 	private JTextField txFecha;
 	private JLabel lblCvc;
 	private JTextField txCvc;
-	private JLabel lbCorredor;
+	private JLabel lbDni;
 	private JTextField txCorredor;
-	private JLabel lblIdentificadorcarrera;
-	private JTextField txIdentificadorCarrera;
 	private JScrollPane scrollPane;
 	private JButton btValidar;
 	private JList listUpdates;
 	private JLabel lbVistaResultado;
 
-
+	
 
 	/**
 	 * Create the frame.
 	 */
-	public MenuInscripcionView() {
+	public MenuInscripcionView(InscripcionView insc) {
+		this.inscView = insc;
+		
 		setTitle("Inscripcion con tarjeta");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 842, 413);
@@ -49,13 +55,17 @@ public class MenuInscripcionView extends JFrame {
 		contentPane.add(getTxFecha());
 		contentPane.add(getLblCvc());
 		contentPane.add(getTxCvc());
-		contentPane.add(getLbCorredor());
+		contentPane.add(getLbDni());
 		contentPane.add(getTxCorredor());
-		contentPane.add(getLblIdentificadorcarrera());
-		contentPane.add(getTxIdentificadorCarrera());
 		contentPane.add(getScrollPane());
 		contentPane.add(getBtValidar());
 		contentPane.add(getLbVistaResultado());
+	}
+
+	
+	
+	public InscripcionView getInscView() {
+		return inscView;
 	}
 
 	private JLabel getLbNumero() {
@@ -103,12 +113,12 @@ public class MenuInscripcionView extends JFrame {
 		}
 		return txCvc;
 	}
-	private JLabel getLbCorredor() {
-		if (lbCorredor == null) {
-			lbCorredor = new JLabel("Identificador:");
-			lbCorredor.setBounds(20, 125, 121, 20);
+	private JLabel getLbDni() {
+		if (lbDni == null) {
+			lbDni = new JLabel("Dni:");
+			lbDni.setBounds(20, 125, 121, 20);
 		}
-		return lbCorredor;
+		return lbDni;
 	}
 	public JTextField getTxCorredor() {
 		if (txCorredor == null) {
@@ -117,21 +127,6 @@ public class MenuInscripcionView extends JFrame {
 			txCorredor.setBounds(151, 125, 121, 20);
 		}
 		return txCorredor;
-	}
-	private JLabel getLblIdentificadorcarrera() {
-		if (lblIdentificadorcarrera == null) {
-			lblIdentificadorcarrera = new JLabel("IdentificadorCarrera:");
-			lblIdentificadorcarrera.setBounds(20, 156, 121, 20);
-		}
-		return lblIdentificadorcarrera;
-	}
-	public JTextField getTxIdentificadorCarrera() {
-		if (txIdentificadorCarrera == null) {
-			txIdentificadorCarrera = new JTextField();
-			txIdentificadorCarrera.setColumns(10);
-			txIdentificadorCarrera.setBounds(151, 156, 121, 20);
-		}
-		return txIdentificadorCarrera;
 	}
 	private JScrollPane getScrollPane() {
 		if (scrollPane == null) {

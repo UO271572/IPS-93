@@ -3,14 +3,12 @@
  */
 package ips.business.inscripciones;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.List;
 
 import ips.business.BusinessCheck;
 import ips.business.BusinessException;
 import ips.persistence.pagos.PagoTarjetaModel;
-import ips.ui.inscripciones.InscripcionView;
+import ips.ui.carreras.InscripcionView;
 
 /**
  * @author PC
@@ -18,11 +16,11 @@ import ips.ui.inscripciones.InscripcionView;
  */
 public class InscripcionController {
 	private PagoTarjetaModel model;
-	private InscripcionView view;
+//	private InscripcionView view;
 
-	public InscripcionController(PagoTarjetaModel model, InscripcionView view) {
+	public InscripcionController(PagoTarjetaModel model){//, InscripcionView view) {
 		this.model = model;
-		this.view = view;
+//		this.view = view;
 	}
 	
 	public List<InscripcionDTO> actualizarPagoConTarjeta(String dni, int idCarrera) throws BusinessException{

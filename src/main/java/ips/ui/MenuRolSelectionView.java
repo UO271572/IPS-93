@@ -92,20 +92,12 @@ public class MenuRolSelectionView extends JFrame{
 		if (panelBotonesInterior == null) {
 			panelBotonesInterior = new JPanel();
 			panelBotonesInterior.setBackground(Color.WHITE);
-			panelBotonesInterior.setLayout(new GridLayout(0, 3, 0, 0));
+			panelBotonesInterior.setLayout(new GridLayout(0, 2, 0, 0));
 			panelBotonesInterior.add(getBtnOrganizador());
 			panelBotonesInterior.add(getBtnCorredor());
-			panelBotonesInterior.add(getBtInscribirse());
+			//panelBotonesInterior.add(getBtInscribirse());
 		}
 		return panelBotonesInterior;
 	}
 	
-	
-	public JButton getBtInscribirse() {
-		if (btInscribirse == null) {
-			btInscribirse = new JButton("Inscribirse");
-			btInscribirse.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		}
-		return btInscribirse;
-	}
 }

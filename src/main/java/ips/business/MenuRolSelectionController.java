@@ -8,7 +8,6 @@ import ips.ui.MenuCorredorView;
 import ips.ui.MenuInscripcionView;
 import ips.ui.MenuOrganizadorView;
 import ips.ui.MenuRolSelectionView;
-import ips.ui.inscripciones.InscripcionView;
 
 public class MenuRolSelectionController {
 
@@ -22,8 +21,7 @@ public class MenuRolSelectionController {
 	public void initController() {
 		view.getBtnCorredor().addActionListener(accionBotonCorredor());
 		view.getBtnOrganizador().addActionListener(accionBotonOrganizador());
-		view.getBtInscribirse().addActionListener(actionBotonInscribirse());
-		
+		//view.getBtInscribirse().addActionListener(actionBotonInscribirse());	
 	}
 	
 	private ActionListener accionBotonCorredor() {
@@ -54,18 +52,18 @@ public class MenuRolSelectionController {
 	
 	
 	
-	private ActionListener actionBotonInscribirse() {
-		return new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				MenuInscripcionView frame = new MenuInscripcionView();
-				MenuInscripcionController controller = new MenuInscripcionController(frame);
-				controller.initController();
-				frame.setVisible(true);
-			}
-		};
-	}
+//	private ActionListener actionBotonInscribirse() {
+//		return new ActionListener() {
+//			
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				MenuInscripcionView frame = new MenuInscripcionView();
+//				MenuInscripcionController controller = new MenuInscripcionController(frame);
+//				controller.initController();
+//				frame.setVisible(true);
+//			}
+//		};
+//	}
 	
 	
 	

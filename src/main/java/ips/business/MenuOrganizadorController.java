@@ -65,7 +65,6 @@ public class MenuOrganizadorController {
 				} catch (BusinessException e1) {
 					e1.printStackTrace();
 				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}	
 			}
@@ -90,7 +89,6 @@ public class MenuOrganizadorController {
 				} catch (BusinessException e1) {
 					e1.printStackTrace();
 				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}	
 			}

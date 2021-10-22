@@ -1,5 +1,6 @@
 package ips.util;
 
+import java.sql.Time;
 import java.util.List;
 
 import ips.business.carreras.CarreraDisplayDTO;
@@ -70,17 +71,19 @@ public class Printer {
 		StringBuilder sb = new StringBuilder();
 		sb.append("Posicion: " + c.getPosicion());
 		sb.append(" ");
-		sb.append("Id carrera: " + c.getIdCarrera());
-		sb.append(" ");
-		sb.append("Nombre: "  + c.getNombre());
-		sb.append(" ");
 		sb.append("Sexo: " + c.getSexo());
 		sb.append(" ");
-		//sb.append("Time: " + c.getTime());
+//		sb.append("Id carrera: " + c.getIdCarrera());
+//		sb.append(" ");
+		sb.append("Nombre: "  + c.getNombre());
+		sb.append(" ");
 		
-		
+		if(c.getTime().equals(new Time(0, 0, 0))) {
+			sb.append("Time: ---");
+		}else {
+			sb.append("Time: "+c.getTime());
+		}
 		return sb.toString();
-		
 	}
 	
 	

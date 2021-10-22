@@ -34,11 +34,11 @@ public class ClasificacionDTO {
  * @param time
  * @param dnicorredor
  */
-public ClasificacionDTO(int posicion, String sexo, String nombre, String dnicorredor, int idCarrera) {
+public ClasificacionDTO(int posicion, String sexo, String nombre, String dnicorredor, int idCarrera,Time time) {
 	this.posicion = posicion;
 	this.sexo = sexo;
 	this.nombre = nombre;
-	//this.time = time;
+	this.time = time;
 	this.dniCorredor = dnicorredor;
 	this.idCarrera = idCarrera;
 }

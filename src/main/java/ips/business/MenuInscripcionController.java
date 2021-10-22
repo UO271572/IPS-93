@@ -1,0 +1,146 @@
+/**
+ * 
+ */
+package ips.business;
+
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Date;
+import java.util.List;
+import java.util.regex.Pattern;
+
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
+
+import ips.business.carreras.CarreraDisplayDTO;
+import ips.business.inscripciones.InscripcionController;
+import ips.business.inscripciones.InscripcionDTO;
+import ips.persistence.pagos.PagoTarjetaModel;
+import ips.ui.MenuInscripcionView;
+import ips.ui.carreras.InscripcionView;
+import ips.util.Printer;
+
+/**
+ * @author PC
+ *
+ */
+public class MenuInscripcionController {
+	
+	private MenuInscripcionView menuView;
+	
+	public MenuInscripcionController(MenuInscripcionView view) {
+		this.menuView = view;
+	}
+	
+	public void initController() {
+		iniciar();
+	}
+	
+	private void iniciar() {
+		menuView.getBtValidar().addActionListener(actionValidar());
+	}
+
+
+	private ActionListener actionValidar() {
+		return new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				InscripcionController controller = new InscripcionController(new PagoTarjetaModel());
+				
+				try {
+					if(validarTarjeta() && validarCamposCorredor()) {
+						List<InscripcionDTO> listaActualizacion = controller.actualizarPagoConTarjeta(menuView.getTxCorredor().getText(), 
+								menuView.getInscView().obtenerCarreraSeleccionada().getIdCarrera());
+						
+						//model.addAll(listaActualizacion);
+						InscripcionDTO[] inscripciones = arrayListToArray(listaActualizacion);
+						menuView.getListUpdates().setModel(new DefaultComboBoxModel<InscripcionDTO>(inscripciones));//añadir al componente la lista de actualizaciones;
+						//simular con jdialog la pasarela de pago
+						JOptionPane.showMessageDialog(null, "Se esta tramitando el pago... Inscripcion realizada!");
+					}
+				} catch (BusinessException | NumberFormatException e1) {
+					JOptionPane.showMessageDialog(null, "No se puedo realizar la inscripcion");
+					Printer.printBusinessException(e1);
+				}
+			}
+		};
+	}
+	
+	
+	
+	public MenuInscripcionView getMenuView() {
+		return menuView;
+	}
+
+	private InscripcionDTO[] arrayListToArray(List<InscripcionDTO> listaInscripcion) {
+		InscripcionDTO[] list = new InscripcionDTO[listaInscripcion.size()];
+		for(int i = 0; i<listaInscripcion.size();i++) {
+			list[i] = listaInscripcion.get(i);
+		}
+		return list;
+	}
+	
+	/**
+	 * Comprueba que los datos de la tarjeta son validos
+	 * @return
+	 */
+	private boolean validarTarjeta() {
+		if(menuView.getTxNumeroTarjeta().getText().length() < 16) {
+			JOptionPane.showMessageDialog(null, "La longitud del numero de tarjeta debe ser 16");
+			return false;
+		}
+		Date fechaIntroducida = null;
+		try {
+			fechaIntroducida = parseToDate(menuView.getTxFecha().getText());
+		} catch (NumberFormatException e) {
+			JOptionPane.showMessageDialog(null, "Error al introducir los datos el formato no es el adecuado");
+			Printer.printBusinessException(new BusinessException(e));
+		}
+		if(fechaIntroducida.before(new Date())) {
+			JOptionPane.showMessageDialog(null, "La tarjeta esta caducada");
+			return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * 
+	 * @param text
+	 * @return
+	 */
+	@SuppressWarnings("deprecation")
+	private Date parseToDate(String text) throws NumberFormatException{
+		String separador = Pattern.quote("-");
+		String [] date = text.split(separador);
+		return new Date(Integer.parseInt(date[0])-1900, Integer.parseInt(date[1])-1, Integer.parseInt(date[2]));
+	}
+
+
+	/**
+	 * Comprueba que los campos del corredor no esten vacios
+	 * 
+	 * @return
+	 */
+	private boolean validarCamposCorredor() {
+		try {
+			String[] separador = menuView.getTxCorredor().getText().trim().split("");
+			if(separador.length != 7) {
+				Printer.printBusinessException(new BusinessException("Error al introducir el dni 6 digitos y una letra, debe estar registrado"));
+				return false;
+			}
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Error al introducir el dni 6 digitos y una letra, debe estar registrado");
+			return false;
+		}
+		
+		if (menuView.getTxCorredor().getText() == null || menuView.getTxCorredor().getText().isEmpty()) {
+			Printer.printBusinessException(new BusinessException());
+			return false;
+		}
+		return true;
+	}
+
+}

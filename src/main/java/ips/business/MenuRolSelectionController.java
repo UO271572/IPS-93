@@ -3,7 +3,9 @@ package ips.business;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import ips.business.inscripciones.InscripcionController;
 import ips.ui.MenuCorredorView;
+import ips.ui.MenuInscripcionView;
 import ips.ui.MenuOrganizadorView;
 import ips.ui.MenuRolSelectionView;
 
@@ -19,7 +21,7 @@ public class MenuRolSelectionController {
 	public void initController() {
 		view.getBtnCorredor().addActionListener(accionBotonCorredor());
 		view.getBtnOrganizador().addActionListener(accionBotonOrganizador());
-		
+		//view.getBtInscribirse().addActionListener(actionBotonInscribirse());	
 	}
 	
 	private ActionListener accionBotonCorredor() {
@@ -47,6 +49,23 @@ public class MenuRolSelectionController {
 			}
 		};
 	}
+	
+	
+	
+//	private ActionListener actionBotonInscribirse() {
+//		return new ActionListener() {
+//			
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				MenuInscripcionView frame = new MenuInscripcionView();
+//				MenuInscripcionController controller = new MenuInscripcionController(frame);
+//				controller.initController();
+//				frame.setVisible(true);
+//			}
+//		};
+//	}
+	
+	
 	
 	
 }

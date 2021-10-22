@@ -72,6 +72,15 @@ public class EstadoInscripcionesView extends JFrame {
 			txtEmail.setEditable(true);
 			txtEmail.setBackground(SystemColor.WHITE);
 			txtEmail.setBounds(42, 135, 310, 42);
+			txtEmail.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					try {
+						obtenerInfoInscripciones();
+					} catch (BusinessException e1) {
+						e1.printStackTrace();
+					}
+				}
+			});
 		}
 		return txtEmail;
 	}
@@ -86,6 +95,9 @@ public class EstadoInscripcionesView extends JFrame {
 			infoInscripciones += carrerasView.getCarrerasById("" + corredor.getIdCarrera()).get(0).getNombre() + " - " + corredor.getEstadoInscripcion() + " - " + corredor.getFechaInscripcion() + "\n";
 		getTaCarreras().setText(infoInscripciones);
 	}
+	
+	
+	
 	
 	private JLabel getLbCarreras() throws BusinessException {
 		if (lbCarreras == null) {

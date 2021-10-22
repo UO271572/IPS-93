@@ -9,6 +9,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.BoxLayout;
+import java.awt.FlowLayout;
 
 public class MenuRolSelectionView extends JFrame{
 	
@@ -20,6 +22,7 @@ public class MenuRolSelectionView extends JFrame{
 	private JPanel panelSur;
 	private JPanel panelNorte;
 	private JPanel panelBotonesInterior;
+	private JButton btInscribirse;
 	
 	
 	public MenuRolSelectionView() {
@@ -89,12 +92,12 @@ public class MenuRolSelectionView extends JFrame{
 		if (panelBotonesInterior == null) {
 			panelBotonesInterior = new JPanel();
 			panelBotonesInterior.setBackground(Color.WHITE);
-			panelBotonesInterior.setLayout(new GridLayout(0, 2, 50, 0));
+			panelBotonesInterior.setLayout(new GridLayout(0, 2, 0, 0));
 			panelBotonesInterior.add(getBtnOrganizador());
 			panelBotonesInterior.add(getBtnCorredor());
+			//panelBotonesInterior.add(getBtInscribirse());
 		}
 		return panelBotonesInterior;
 	}
-	
 	
 }

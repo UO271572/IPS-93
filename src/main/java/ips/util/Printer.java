@@ -1,9 +1,12 @@
 package ips.util;
 
+import java.sql.Time;
 import java.util.List;
 
 import ips.business.carreras.CarreraDisplayDTO;
+import ips.business.clasificaciones.ClasificacionDTO;
 import ips.business.corredores.CorredorDTO;
+import ips.business.inscripciones.InscripcionDTO;
 
 public class Printer {
 
@@ -44,6 +47,47 @@ public class Printer {
 		return sb.toString();
 		
 	}
+	
+	
+	
+	public static String print(InscripcionDTO inscripcion) {
+
+		StringBuilder sb = new StringBuilder();
+		sb.append("DNI: " + inscripcion.getDnicorredor());
+		sb.append(" ");
+		sb.append("Nombre: " + inscripcion.getIdcarrera());
+		sb.append(" ");
+		sb.append("Estado inscripcion: "  + inscripcion.getEstadoinscripcion());
+		sb.append(" ");
+		sb.append("Fecha inscripcion: " + inscripcion.getFechainscripcion());
+		
+		
+		return sb.toString();
+		
+	}
+	
+	public static String print(ClasificacionDTO c) {
+
+		StringBuilder sb = new StringBuilder();
+		sb.append("Posicion: " + c.getPosicion());
+		sb.append(" ");
+		sb.append("Sexo: " + c.getSexo());
+		sb.append(" ");
+//		sb.append("Id carrera: " + c.getIdCarrera());
+//		sb.append(" ");
+		sb.append("Nombre: "  + c.getNombre());
+		sb.append(" ");
+		
+		if(c.getTime().equals(new Time(0, 0, 0))) {
+			sb.append("Time: ---");
+		}else {
+			sb.append("Time: "+c.getTime());
+		}
+		return sb.toString();
+	}
+	
+	
+	
 
 	//LISTAS
 	public static void printCarreras(List<CarreraDisplayDTO> carreras) {
@@ -59,6 +103,15 @@ public class Printer {
 		for(CorredorDTO corredor: corredores) {
 			if(corredor != null) {
 				print(corredor);
+				printSaltoLinea();
+			}
+		}
+	}
+	
+	public static void printClasificacion(List<ClasificacionDTO> clasi) {
+		for(ClasificacionDTO c: clasi) {
+			if(c != null) {
+				print(c);
 				printSaltoLinea();
 			}
 		}

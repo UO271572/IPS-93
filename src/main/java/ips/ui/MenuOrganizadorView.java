@@ -10,13 +10,16 @@ import javax.swing.JScrollPane;
 
 import ips.business.carreras.CarreraDisplayDTO;
 
-public class MenuOrganizadorView extends JFrame{
+public class MenuOrganizadorView extends JFrame {
 	private JComboBox<String> cbOpciones;
 	private JButton btnGo;
 	private JScrollPane scrollPaneCorredores;
 	private JList listCorredores;
 	private JButton btnBuscarCorredores;
 	private JComboBox<CarreraDisplayDTO> cbCarreras;
+	private JButton btMostrarClasificacionSexo;
+	private JButton btMostrarClasificacionCategoria;
+
 	public MenuOrganizadorView() {
 		setResizable(false);
 
@@ -28,7 +31,10 @@ public class MenuOrganizadorView extends JFrame{
 		getContentPane().add(getScrollPaneCorredores());
 		getContentPane().add(getBtnBuscarCorredores());
 		getContentPane().add(getCbCarreras());
+		getContentPane().add(getBtMostrarClasificacionSexo());
+		getContentPane().add(getBtMostrarClasificacionCategoria());
 	}
+
 	public JComboBox<String> getCbOpciones() {
 		if (cbOpciones == null) {
 			cbOpciones = new JComboBox<String>();
@@ -36,6 +42,7 @@ public class MenuOrganizadorView extends JFrame{
 		}
 		return cbOpciones;
 	}
+
 	public JButton getBtnGo() {
 		if (btnGo == null) {
 			btnGo = new JButton("Go");
@@ -43,6 +50,7 @@ public class MenuOrganizadorView extends JFrame{
 		}
 		return btnGo;
 	}
+
 	private JScrollPane getScrollPaneCorredores() {
 		if (scrollPaneCorredores == null) {
 			scrollPaneCorredores = new JScrollPane();
@@ -51,6 +59,7 @@ public class MenuOrganizadorView extends JFrame{
 		}
 		return scrollPaneCorredores;
 	}
+
 	public JList getListCorredores() {
 		if (listCorredores == null) {
 			listCorredores = new JList();
@@ -59,6 +68,7 @@ public class MenuOrganizadorView extends JFrame{
 		}
 		return listCorredores;
 	}
+
 	public JButton getBtnBuscarCorredores() {
 		if (btnBuscarCorredores == null) {
 			btnBuscarCorredores = new JButton("Buscar corredores");
@@ -67,12 +77,30 @@ public class MenuOrganizadorView extends JFrame{
 		}
 		return btnBuscarCorredores;
 	}
+
 	public JComboBox<CarreraDisplayDTO> getCbCarreras() {
 		if (cbCarreras == null) {
 			cbCarreras = new JComboBox<CarreraDisplayDTO>();
 			cbCarreras.setBounds(399, 66, 249, 26);
 		}
 		return cbCarreras;
+	}
+
+	public JButton getBtMostrarClasificacionSexo() {
+		if (btMostrarClasificacionSexo == null) {
+			btMostrarClasificacionSexo = new JButton("Clasificacion por sexo");
+			btMostrarClasificacionSexo.setEnabled(false);
+			btMostrarClasificacionSexo.setBounds(596, 160, 167, 23);
+		}
+		return btMostrarClasificacionSexo;
+	}
+	public JButton getBtMostrarClasificacionCategoria() {
+		if (btMostrarClasificacionCategoria == null) {
+			btMostrarClasificacionCategoria = new JButton("Clasificacion por categoria");
+			btMostrarClasificacionCategoria.setEnabled(false);
+			btMostrarClasificacionCategoria.setBounds(596, 194, 167, 23);
+		}
+		return btMostrarClasificacionCategoria;
 	}
 }
 

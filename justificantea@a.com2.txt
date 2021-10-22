@@ -2,4 +2,4 @@ Datos de la cuenta a abonar
 Titular: Carreras INC.
 Número de cuenta: 123456789
 IBAN: 123456 123456 123456 123456
-El corredor Alex null que se dispone a correr en la carrera 2 debe abonar 50.4€ a dicha cuenta
+El corredor Adrian DDD que se dispone a correr en la carrera 2 debe abonar 50.4€ a dicha cuenta

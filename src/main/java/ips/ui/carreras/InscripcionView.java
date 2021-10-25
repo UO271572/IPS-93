@@ -144,8 +144,6 @@ public class InscripcionView extends JDialog {
 
 						if (getRdbtnTransferenciaBancaria().isSelected()) { // [ADRI]
 							mostrarVentanaJustificante();
-							System.out.println("Se va a emitir un justificante");
-							emitirJustificante();
 						} else {
 							mostrarMenuInscripcion();
 						}
@@ -162,27 +160,7 @@ public class InscripcionView extends JDialog {
 		return btSiguiente;
 	}
 
-	/**
-	 * Emite el justificante
-	 * @throws BusinessException
-	 */
-	protected void emitirJustificante() throws BusinessException { // [ADRI]
-		try {
-			CorredorDTO corredor = obtenerCorredor();
-			FileWriter myWriter = new FileWriter(
-					"justificante" + corredor.getEmail() + corredor.getIdCarrera() + ".txt");
-			myWriter.write("Datos de la cuenta a abonar \n" + "Titular: Carreras INC.\n"
-					+ "Número de cuenta: 123456789\n" + "IBAN: 123456 123456 123456 123456\n" + "El corredor "
-					+ corredor.getNombre() + " " + corredor.getApellidos() + " que se dispone a correr en la carrera "
-					+ corredor.getIdCarrera() + " debe abonar " + obtenerCarreraSeleccionada().getPrecio()
-					+ "€ a dicha cuenta");
-			myWriter.close();
-			corredor.setEstadoInscripcion("Inscrito");
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+	
 
 	/**
 	 * Crea la nueva ventana para poder inscribirse

@@ -6,20 +6,20 @@ package ips.business;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
 
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.DefaultListModel;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
-import ips.business.carreras.CarreraDisplayDTO;
 import ips.business.inscripciones.InscripcionController;
 import ips.business.inscripciones.InscripcionDTO;
 import ips.persistence.pagos.PagoTarjetaModel;
 import ips.ui.MenuInscripcionView;
-import ips.ui.carreras.InscripcionView;
 import ips.util.Printer;
 
 /**
@@ -28,18 +28,34 @@ import ips.util.Printer;
  */
 public class MenuInscripcionController {
 	
-	private MenuInscripcionView menuView;
+	private MenuInscripcionView view;
 	
 	public MenuInscripcionController(MenuInscripcionView view) {
-		this.menuView = view;
+		this.view = view;
+		initController();
 	}
 	
 	public void initController() {
-		iniciar();
+		view.addWindowListener(notCloseDirectly());
+		view.getBtValidar().addActionListener(actionValidar());
 	}
 	
-	private void iniciar() {
-		menuView.getBtValidar().addActionListener(actionValidar());
+	public WindowAdapter notCloseDirectly() {
+		return new WindowAdapter()
+		{
+		    public void windowClosing(WindowEvent e)
+		    {
+		    	view.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+		    	/*int result = JOptionPane.showConfirmDialog(
+	            view,
+	            "¿Está seguro de que quiere cerrar la aplicación?",
+	            "Exit Application",
+	            JOptionPane.YES_NO_OPTION);
+	 */
+	        //if (result == JOptionPane.YES_OPTION)
+	            view.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		    }
+		};
 	}
 
 
@@ -52,12 +68,12 @@ public class MenuInscripcionController {
 				
 				try {
 					if(validarTarjeta() && validarCamposCorredor()) {
-						List<InscripcionDTO> listaActualizacion = controller.actualizarPagoConTarjeta(menuView.getTxCorredor().getText(), 
-								menuView.getInscView().obtenerCarreraSeleccionada().getIdCarrera());
+						List<InscripcionDTO> listaActualizacion = controller.actualizarPagoConTarjeta(view.getTxCorredor().getText(), 
+								view.getInscView().obtenerCarreraSeleccionada().getIdCarrera());
 						
 						//model.addAll(listaActualizacion);
 						InscripcionDTO[] inscripciones = arrayListToArray(listaActualizacion);
-						menuView.getListUpdates().setModel(new DefaultComboBoxModel<InscripcionDTO>(inscripciones));//añadir al componente la lista de actualizaciones;
+						view.getListUpdates().setModel(new DefaultComboBoxModel<InscripcionDTO>(inscripciones));//añadir al componente la lista de actualizaciones;
 						//simular con jdialog la pasarela de pago
 						JOptionPane.showMessageDialog(null, "Se esta tramitando el pago... Inscripcion realizada!");
 					}
@@ -72,7 +88,7 @@ public class MenuInscripcionController {
 	
 	
 	public MenuInscripcionView getMenuView() {
-		return menuView;
+		return view;
 	}
 
 	private InscripcionDTO[] arrayListToArray(List<InscripcionDTO> listaInscripcion) {
@@ -88,13 +104,13 @@ public class MenuInscripcionController {
 	 * @return
 	 */
 	private boolean validarTarjeta() {
-		if(menuView.getTxNumeroTarjeta().getText().length() < 16) {
+		if(view.getTxNumeroTarjeta().getText().length() < 16) {
 			JOptionPane.showMessageDialog(null, "La longitud del numero de tarjeta debe ser 16");
 			return false;
 		}
 		Date fechaIntroducida = null;
 		try {
-			fechaIntroducida = parseToDate(menuView.getTxFecha().getText());
+			fechaIntroducida = parseToDate(view.getTxFecha().getText());
 		} catch (NumberFormatException e) {
 			JOptionPane.showMessageDialog(null, "Error al introducir los datos el formato no es el adecuado");
 			Printer.printBusinessException(new BusinessException(e));
@@ -126,7 +142,7 @@ public class MenuInscripcionController {
 	 */
 	private boolean validarCamposCorredor() {
 		try {
-			String[] separador = menuView.getTxCorredor().getText().trim().split("");
+			String[] separador = view.getTxCorredor().getText().trim().split("");
 			if(separador.length != 7) {
 				Printer.printBusinessException(new BusinessException("Error al introducir el dni 6 digitos y una letra, debe estar registrado"));
 				return false;
@@ -136,7 +152,7 @@ public class MenuInscripcionController {
 			return false;
 		}
 		
-		if (menuView.getTxCorredor().getText() == null || menuView.getTxCorredor().getText().isEmpty()) {
+		if (view.getTxCorredor().getText() == null || view.getTxCorredor().getText().isEmpty()) {
 			Printer.printBusinessException(new BusinessException());
 			return false;
 		}

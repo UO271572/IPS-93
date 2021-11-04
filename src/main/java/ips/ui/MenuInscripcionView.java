@@ -1,21 +1,20 @@
 package ips.ui;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
+import java.awt.Color;
 
+import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import ips.ui.carreras.InscripcionView;
 
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.JScrollPane;
-import javax.swing.JButton;
-import javax.swing.JList;
-
-public class MenuInscripcionView extends JFrame {
+public class MenuInscripcionView extends JDialog {
 
 	private InscripcionView inscView;
 	
@@ -41,11 +40,12 @@ public class MenuInscripcionView extends JFrame {
 	 */
 	public MenuInscripcionView(InscripcionView insc) {
 		this.inscView = insc;
-		
-		setTitle("Inscripcion con tarjeta");
+		setTitle("Corredor: Inscripcion con tarjeta");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 842, 413);
+		setBounds(100, 100, 842, 309);
+		setLocationRelativeTo(null);
 		contentPane = new JPanel();
+		contentPane.setBackground(Color.WHITE);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -60,6 +60,7 @@ public class MenuInscripcionView extends JFrame {
 		contentPane.add(getScrollPane());
 		contentPane.add(getBtValidar());
 		contentPane.add(getLbVistaResultado());
+		this.setModal(true);
 	}
 
 	

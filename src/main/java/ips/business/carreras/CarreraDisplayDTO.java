@@ -14,6 +14,7 @@ public class CarreraDisplayDTO {
 	private double distancia;
 	private String tipo;
 	private int plazasDisponibles;
+	private String lugar;
 	
 	public Date getFechaCompeticion() {
 		return fechaCompeticion;
@@ -106,6 +107,14 @@ public class CarreraDisplayDTO {
 	}
 	
 	
+	public String getLugar() {
+		return lugar;
+	}
+
+	public void setLugar(String lugar) {
+		this.lugar = lugar;
+	}
+
 	public String toString() {
 		
 		return Printer.print(this);

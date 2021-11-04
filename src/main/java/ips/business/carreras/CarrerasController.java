@@ -27,6 +27,12 @@ public class CarrerasController {
 		BusinessCheck.isTrue(!carreras.isEmpty(),"No hay carreras disponibles");
 		return carreras;
 	}
+	
+	public List<CarreraDisplayDTO> getListaCarrerasFiltradas() throws BusinessException {
+		List<CarreraDisplayDTO> carreras=model.getListaCarrerasFiltradas();
+		BusinessCheck.isTrue(!carreras.isEmpty(),"No hay carreras disponibles");
+		return carreras;
+	}
 
 	public CarreraDisplayDTO findByIdCarrera(int idCarrera) throws BusinessException {
 		List<CarreraDisplayDTO> carrera = model.getCarreraByIdCarrera(idCarrera);
@@ -55,9 +61,18 @@ public class CarrerasController {
 	}
 	
 	public CarreraDisplayDTO[] getCompeticionesInscripcion() throws BusinessException {
-		CarrerasController carrerasController = new CarrerasController(new CarrerasModel(),new CarrerasView());
-        return carrerasController.getCarrerasInscripcion().toArray(new CarreraDisplayDTO[carrerasController.getCarrerasInscripcion().size()]);
+		//CarrerasController carrerasController = new CarrerasController(new CarrerasModel(),new CarrerasView());
+        return this.getCarrerasInscripcion().toArray(new CarreraDisplayDTO[this.getCarrerasInscripcion().size()]);
 	}
+	
+	public void insertarCarrera(CarreraDisplayDTO carrera) {
+		model.insertarCarrera(carrera);
+	}
+
+	public int getMaxIdCarrera() {
+		return model.getMaxIdCarrera();
+	}
+
 	
 	
 }

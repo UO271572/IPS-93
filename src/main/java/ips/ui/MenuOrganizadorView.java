@@ -4,13 +4,13 @@ import java.awt.Color;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
+import javax.swing.JDialog;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
 import ips.business.carreras.CarreraDisplayDTO;
 
-public class MenuOrganizadorView extends JFrame {
+public class MenuOrganizadorView extends JDialog {
 	private JComboBox<String> cbOpciones;
 	private JButton btnGo;
 	private JScrollPane scrollPaneCorredores;
@@ -19,11 +19,13 @@ public class MenuOrganizadorView extends JFrame {
 	private JComboBox<CarreraDisplayDTO> cbCarreras;
 	private JButton btMostrarClasificacionSexo;
 	private JButton btMostrarClasificacionCategoria;
+	private JButton btnCrearCarrera;
 
 	public MenuOrganizadorView() {
+		setTitle("Organizador");
 		setResizable(false);
-
 		setBounds(100, 100, 854, 427);
+		setLocationRelativeTo(null);
 		getContentPane().setBackground(Color.WHITE);
 		getContentPane().setLayout(null);
 		getContentPane().add(getCbOpciones());
@@ -33,6 +35,8 @@ public class MenuOrganizadorView extends JFrame {
 		getContentPane().add(getCbCarreras());
 		getContentPane().add(getBtMostrarClasificacionSexo());
 		getContentPane().add(getBtMostrarClasificacionCategoria());
+		getContentPane().add(getBtnCrearCarrera());
+		this.setModal(true);
 	}
 
 	public JComboBox<String> getCbOpciones() {
@@ -101,6 +105,13 @@ public class MenuOrganizadorView extends JFrame {
 			btMostrarClasificacionCategoria.setBounds(596, 194, 167, 23);
 		}
 		return btMostrarClasificacionCategoria;
+	}
+	public JButton getBtnCrearCarrera() {
+		if (btnCrearCarrera == null) {
+			btnCrearCarrera = new JButton("Crear carrera");
+			btnCrearCarrera.setBounds(641, 264, 109, 21);
+		}
+		return btnCrearCarrera;
 	}
 }
 

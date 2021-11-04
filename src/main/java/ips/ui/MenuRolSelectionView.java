@@ -6,13 +6,11 @@ import java.awt.Font;
 import java.awt.GridLayout;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.BoxLayout;
-import java.awt.FlowLayout;
 
-public class MenuRolSelectionView extends JFrame{
+public class MenuRolSelectionView extends JDialog{
 	
 	private JPanel panelTexto;
 	private JPanel panelBotones;
@@ -26,11 +24,14 @@ public class MenuRolSelectionView extends JFrame{
 	
 	
 	public MenuRolSelectionView() {
+		setTitle("Eleccion de rol");
 		setBounds(100, 100, 582, 427);
+		setLocationRelativeTo(null);
 		getContentPane().setBackground(Color.WHITE);
 		getContentPane().setLayout(new GridLayout(2, 0, 0, 0));
 		getContentPane().add(getPanelTexto());
 		getContentPane().add(getPanelBotones());
+		this.setModal(true);
 	}
 	
 	
@@ -38,6 +39,7 @@ public class MenuRolSelectionView extends JFrame{
 		if (panelTexto == null) {
 			panelTexto = new JPanel();
 			panelTexto.setBackground(Color.WHITE);
+			panelTexto.setLayout(null);
 			panelTexto.add(getLabel());
 		}
 		return panelTexto;
@@ -56,6 +58,7 @@ public class MenuRolSelectionView extends JFrame{
 	private JLabel getLabel() {
 		if (label == null) {
 			label = new JLabel("Elige tu rol");
+			label.setBounds(233, 5, 96, 25);
 			label.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		}
 		return label;
@@ -99,5 +102,4 @@ public class MenuRolSelectionView extends JFrame{
 		}
 		return panelBotonesInterior;
 	}
-	
 }

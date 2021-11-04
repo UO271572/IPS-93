@@ -1,74 +1,49 @@
 package ips.ui;
 
-import java.util.InputMismatchException;
-import java.util.List;
-import java.util.Scanner;
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import javax.swing.JFrame;
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 import ips.business.BusinessException;
-import ips.business.carreras.CarreraDisplayDTO;
-import ips.ui.carreras.CarrerasView;
 import ips.ui.carreras.EstadoInscripcionesView;
 import ips.ui.carreras.InscripcionView;
-import ips.util.Printer;
-import javax.swing.JComboBox;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import javax.swing.JScrollPane;
-import javax.swing.JList;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
-public class MenuCorredorView extends JFrame{
-	private JComboBox cbCorredores;
-	private JScrollPane scrollPane;
-	private JList listCorredores;
-	private JButton btnGo;
+public class MenuCorredorView extends JDialog{
 	private JButton btnVerInscripciones;
 	private JButton btnInscribirse;
+	private JTable table;
+	private JScrollPane scrollPane_1;
+	private DefaultTableModel model;
+	private JRadioButton rdbtnAbiertas;
+	private JRadioButton rdbtnVerTodas;
+	private final ButtonGroup buttonGroup = new ButtonGroup();
 	
 	public MenuCorredorView() {
+		setTitle("Corredor");
 		setResizable(false);
-
-		setBounds(100, 100, 854, 427);
+		model = new DefaultTableModel();
+		setBounds(100, 100, 892, 427);
+		setLocationRelativeTo(null);
 		getContentPane().setBackground(Color.WHITE);
 		getContentPane().setLayout(null);
-		getContentPane().add(getCbCorredores());
-		getContentPane().add(getScrollPane());
-		getContentPane().add(getBtnGo());
 		getContentPane().add(getBtnVerInscripciones());
 		getContentPane().add(getBtnInscribirse());
+		getContentPane().add(getScrollPane_1());
+		getContentPane().add(getRdbtnAbiertas());
+		getContentPane().add(getRdbtnVerTodas());
+		this.setModal(true);
 	}
 	
-	public JComboBox getCbCorredores() {
-		if (cbCorredores == null) {
-			cbCorredores = new JComboBox();
-			cbCorredores.setBounds(57, 41, 316, 30);
-		}
-		return cbCorredores;
-	}
-	private JScrollPane getScrollPane() {
-		if (scrollPane == null) {
-			scrollPane = new JScrollPane();
-			scrollPane.setBounds(57, 115, 357, 146);
-			scrollPane.setViewportView(getListCorredores());
-		}
-		return scrollPane;
-	}
-	public JList getListCorredores() {
-		if (listCorredores == null) {
-			listCorredores = new JList();
-		}
-		return listCorredores;
-	}
-	public JButton getBtnGo() {
-		if (btnGo == null) {
-			btnGo = new JButton("Go");
-			btnGo.setBounds(171, 81, 85, 21);
-		}
-		return btnGo;
+	public DefaultTableModel getTableModel() {
+		return model;
 	}
 	
 	// [ADRI]
@@ -87,7 +62,7 @@ public class MenuCorredorView extends JFrame{
                     estado.setVisible(true);
 				}
 			});
-			btnVerInscripciones.setBounds(572, 342, 134, 38);
+			btnVerInscripciones.setBounds(629, 342, 134, 38);
 		}
 		return btnVerInscripciones;
 	}
@@ -107,8 +82,48 @@ public class MenuCorredorView extends JFrame{
 				}
 			});
 			btnInscribirse.setEnabled(true);
-			btnInscribirse.setBounds(725, 342, 105, 38);
+			btnInscribirse.setBounds(773, 342, 105, 38);
 		}
 		return btnInscribirse;
+	}
+	public JTable getTable() {
+		if (table == null) {
+			table = new JTable(model);
+			model.addColumn("ID Carrera");
+			model.addColumn("Nombre");
+			model.addColumn("Fecha");
+			model.addColumn("Tipo");
+			model.addColumn("Lugar");
+			model.addColumn("Distancia");
+			model.addColumn("Plazas disponibles");
+			table.setDefaultEditor(Object.class, null);
+			
+		}
+		return table;
+	}
+	public JScrollPane getScrollPane_1() {
+		if (scrollPane_1 == null) {
+			scrollPane_1 = new JScrollPane();
+			scrollPane_1.setBounds(10, 36, 639, 307);
+			scrollPane_1.setViewportView(getTable());
+		}
+		return scrollPane_1;
+	}
+	public JRadioButton getRdbtnAbiertas() {
+		if (rdbtnAbiertas == null) {
+			rdbtnAbiertas = new JRadioButton("Abiertas");
+			buttonGroup.add(rdbtnAbiertas);
+			rdbtnAbiertas.setBounds(655, 107, 105, 21);
+		}
+		return rdbtnAbiertas;
+	}
+	public JRadioButton getRdbtnVerTodas() {
+		if (rdbtnVerTodas == null) {
+			rdbtnVerTodas = new JRadioButton("Ver todas");
+			buttonGroup.add(rdbtnVerTodas);
+			rdbtnVerTodas.setBounds(655, 70, 105, 21);
+			rdbtnVerTodas.setSelected(true);
+		}
+		return rdbtnVerTodas;
 	}
 }

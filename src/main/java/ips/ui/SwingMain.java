@@ -2,6 +2,10 @@ package ips.ui;
 
 import java.awt.EventQueue;
 
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.UIManager;
+
 import ips.business.MenuRolSelectionController;
 
 /**
@@ -21,6 +25,12 @@ public class SwingMain {
 		EventQueue.invokeLater(new Runnable() { //NOSONAR codigo autogenerado
 			public void run() {
 				try {
+					
+					JFrame.setDefaultLookAndFeelDecorated(true);
+					JDialog.setDefaultLookAndFeelDecorated(true);
+					
+					UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+					
 					MenuRolSelectionView view = new MenuRolSelectionView();
 					MenuRolSelectionController controller = new MenuRolSelectionController(view);
 					controller.initController();

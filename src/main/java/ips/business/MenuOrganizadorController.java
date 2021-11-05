@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.security.DrbgParameters.Reseed;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -21,9 +22,11 @@ import ips.business.clasificaciones.ClasificacionController;
 import ips.business.clasificaciones.ClasificacionDTO;
 import ips.business.corredores.CorredorDTO;
 import ips.business.corredores.CorredoresController;
+import ips.business.inscripciones.InscripcionController;
 import ips.persistence.carreras.CarrerasModel;
 import ips.persistence.clasificaciones.ClasificacionModel;
 import ips.persistence.corredores.CorredoresModel;
+import ips.persistence.pagos.PagoTransferenciaBancariaModel;
 import ips.ui.MenuCrearCarreraView;
 import ips.ui.MenuOrganizadorView;
 import ips.ui.carreras.CarrerasView;
@@ -45,6 +48,7 @@ public class MenuOrganizadorController {
 		view.addWindowListener(notCloseDirectly());
 		inicializarComboBox();
 		//view.getBtnOrganizador().addActionListener(accionBotonOrganizador());
+		view.getBtnProcesarPagos().addActionListener(accionProcesaPagosCarrera());
 		view.getBtnGenerarClasificacion().addActionListener(accionBotonClasificaSinFiltro());
 		view.getBtMostrarClasificacionSinFiltro().addActionListener(accionBotonClasificaSinFiltro());
 		cargarCarreras();
@@ -184,9 +188,6 @@ public class MenuOrganizadorController {
 		
 	}
 	
-	
-	
-	
 	private ActionListener accionBotonBuscarCorredores(Object index) {
 		return new ActionListener() {
 			
@@ -206,59 +207,23 @@ public class MenuOrganizadorController {
 		};
 	}
 	
-//	private ActionListener accionBotonGo(int index) {
-//		return new ActionListener() {
-//			
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				
-//				switch(index) {
-//					case 0:
-//						CarrerasController carreraController = new CarrerasController(new CarrerasModel(),new CarrerasView());
-//					try {
-//						List<CarreraDisplayDTO> listaCarreras = carreraController.getListaCarreras();
-////						DefaultListModel dlm = new DefaultListModel();
-////						dlm.addAll(listaCarreras);
-//						CarreraDisplayDTO[] carreras = arrayListToArray(listaCarreras);
-//						view.getCbCarreras().setModel(new DefaultComboBoxModel<CarreraDisplayDTO>(carreras));
-//						view.getBtnBuscarCorredores().setEnabled(true);
-//						view.getListCorredores().setEnabled(true);
-//						view.getBtMostrarClasificacionSexo().setEnabled(true);
-//						view.getBtMostrarClasificacionCategoria().setEnabled(true);
-//					} catch (BusinessException e1) {
-//						Printer.printBusinessException(e1);
-//						break;
-//					}
-//					
-//					case 1:
-////						ClasificacionController clasController = new ClasificacionController(new ClasificacionModel());
-////						List<ClasificacionDTO> listaClas = clasController.mostrarResultadosPorSexo(index);
-////						//ClasificacionDTO[] clasificaciones = arrayClassificacionListToArray(clasController);
-////						view.getCbCarreras().setModel(new DefaultComboBoxModel<ClasificacionDTO>(clasificaciones));
-////						
-//						break;
-//					case 2:
-//						
-//						break;
-//				}
-//			}
-//
-//			private ClasificacionDTO[] arrayClassificacionListToArray(List<ClasificacionDTO> listaCarreras) {
-//				ClasificacionDTO[] list = new ClasificacionDTO[listaCarreras.size()];
-//				for(int i = 0; i<listaCarreras.size();i++) {
-//					list[i] = listaCarreras.get(i);
-//				}
-//				return list;
-//			}
-//			private CarreraDisplayDTO[] arrayListToArray(List<CarreraDisplayDTO> listaCarreras) {
-//				CarreraDisplayDTO[] list = new CarreraDisplayDTO[listaCarreras.size()];
-//				for(int i = 0; i<listaCarreras.size();i++) {
-//					list[i] = listaCarreras.get(i);
-//				}
-//				return list;
-//			}
-//		};
-//	}
+	private ActionListener accionProcesaPagosCarrera() {
+		return new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				InscripcionController inscripcionController = new InscripcionController(new PagoTransferenciaBancariaModel());
+				int[] res = inscripcionController.comprobarPagosDeCarrera(((CarreraDisplayDTO)(view.getListCarreras().getSelectedValue())).getIdCarrera());
+				
+				// queda enseñar el dialogo con el resultado
+				String resultado = "Inscripciones procesadas: " + (res[0] + res[1]) + "\n" +
+									"Válidas : " + res[0] + "\n" +
+									"No válidas: "+ res[1];
+				
+				JOptionPane.showMessageDialog(view, resultado);
+			}
+		};
+	}
 	
 	private ActionListener cambiarAVentanaCrearCarrera() {
 		return new ActionListener() {

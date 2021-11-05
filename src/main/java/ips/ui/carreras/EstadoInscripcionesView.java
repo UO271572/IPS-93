@@ -11,7 +11,7 @@ import ips.business.carreras.CarreraDisplayDTO;
 import ips.business.corredores.CorredorDTO;
 import ips.ui.corredores.CorredoresView;
 
-public class EstadoInscripcionesView extends JFrame {
+public class EstadoInscripcionesView extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 
@@ -25,6 +25,7 @@ public class EstadoInscripcionesView extends JFrame {
 	private JButton btFinalizar;
 
 	public EstadoInscripcionesView() throws BusinessException {
+		setModal(true);
 		setTitle("Estado inscripciones");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setResizable(false);

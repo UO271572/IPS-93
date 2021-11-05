@@ -153,7 +153,7 @@ public class MenuOrganizadorView extends JDialog {
 		}
 		return btnCargarDatos;
 	}
-	private JButton getBtnProcesarPagos() {
+	public JButton getBtnProcesarPagos() {
 		if (btnProcesarPagos == null) {
 			btnProcesarPagos = new JButton("Procesar pagos");
 		}

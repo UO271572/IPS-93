@@ -2,23 +2,23 @@ package ips.ui;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import org.jdatepicker.JDatePicker;
 
 import com.toedter.calendar.JDateChooser;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class MenuCrearCarreraView extends JDialog{
 	private JTextField txNombre;
@@ -44,6 +44,7 @@ public class MenuCrearCarreraView extends JDialog{
 	private DefaultTableModel modelPlazos;
 	private JButton btnAnadir;
 	private JButton btnBorrar;
+	private JButton btnModificar;
 	public MenuCrearCarreraView() {
 		setTitle("Organizador: Creacion de carrera");
 		setBounds(100, 100, 892, 427);
@@ -70,6 +71,7 @@ public class MenuCrearCarreraView extends JDialog{
 		getContentPane().add(getScrollPanePlazos());
 		getContentPane().add(getBtnAnadir());
 		getContentPane().add(getBtnBorrar());
+		getContentPane().add(getBtnModificar());
 		this.setModal(true);
 	}
 	public JTextField getTxNombre() {
@@ -226,10 +228,6 @@ public class MenuCrearCarreraView extends JDialog{
 	public JButton getBtnAnadir() {
 		if (btnAnadir == null) {
 			btnAnadir = new JButton("Añadir");
-			btnAnadir.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-				}
-			});
 			btnAnadir.setBounds(397, 186, 85, 21);
 		}
 		return btnAnadir;
@@ -240,5 +238,12 @@ public class MenuCrearCarreraView extends JDialog{
 			btnBorrar.setBounds(397, 268, 85, 21);
 		}
 		return btnBorrar;
+	}
+	public JButton getBtnModificar() {
+		if (btnModificar == null) {
+			btnModificar = new JButton("Modificar");
+			btnModificar.setBounds(397, 228, 85, 21);
+		}
+		return btnModificar;
 	}
 }

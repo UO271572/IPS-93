@@ -10,10 +10,15 @@ import javax.swing.JLabel;
 import javax.swing.JRadioButton;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
 import org.jdatepicker.JDatePicker;
 
 import com.toedter.calendar.JDateChooser;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class MenuCrearCarreraView extends JDialog{
 	private JTextField txNombre;
@@ -31,13 +36,19 @@ public class MenuCrearCarreraView extends JDialog{
 	private JDatePicker datePicker;
 	private JButton btnGuardar;
 	private final ButtonGroup buttonGroup = new ButtonGroup();
-	private JDateChooser dateChooser;
+	private JDateChooser fechaCompeticion;
 	private JButton btnCancelar;
 	private JLabel lblFechaDeCompeticion;
+	private JScrollPane scrollPanePlazos;
+	private JTable tablePlazos;
+	private DefaultTableModel modelPlazos;
+	private JButton btnAnadir;
+	private JButton btnBorrar;
 	public MenuCrearCarreraView() {
 		setTitle("Organizador: Creacion de carrera");
 		setBounds(100, 100, 892, 427);
 		setLocationRelativeTo(null);
+		modelPlazos = new DefaultTableModel();
 		getContentPane().setBackground(Color.WHITE);
 		getContentPane().setLayout(null);
 		getContentPane().add(getTxNombre());
@@ -53,9 +64,12 @@ public class MenuCrearCarreraView extends JDialog{
 		getContentPane().add(getLblPlazasTotales());
 		getContentPane().add(getSpPlazas());
 		getContentPane().add(getBtnGuardar());
-		getContentPane().add(getDateChooser());
+		getContentPane().add(getFechaCompeticion());
 		getContentPane().add(getBtnCancelar());
 		getContentPane().add(getLblFechaDeCompeticion());
+		getContentPane().add(getScrollPanePlazos());
+		getContentPane().add(getBtnAnadir());
+		getContentPane().add(getBtnBorrar());
 		this.setModal(true);
 	}
 	public JTextField getTxNombre() {
@@ -157,16 +171,20 @@ public class MenuCrearCarreraView extends JDialog{
 	public JButton getBtnGuardar() {
 		if (btnGuardar == null) {
 			btnGuardar = new JButton("Guardar");
+			btnGuardar.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+				}
+			});
 			btnGuardar.setBounds(560, 305, 85, 21);
 		}
 		return btnGuardar;
 	}
-	public JDateChooser getDateChooser() {
-		if (dateChooser == null) {
-			dateChooser = new JDateChooser();
-			dateChooser.setBounds(642, 120, 101, 19);
+	public JDateChooser getFechaCompeticion() {
+		if (fechaCompeticion == null) {
+			fechaCompeticion = new JDateChooser();
+			fechaCompeticion.setBounds(642, 120, 101, 19);
 		}
-		return dateChooser;
+		return fechaCompeticion;
 	}
 	public JButton getBtnCancelar() {
 		if (btnCancelar == null) {
@@ -182,5 +200,45 @@ public class MenuCrearCarreraView extends JDialog{
 			lblFechaDeCompeticion.setBounds(492, 120, 148, 13);
 		}
 		return lblFechaDeCompeticion;
+	}
+	public JScrollPane getScrollPanePlazos() {
+		if (scrollPanePlazos == null) {
+			scrollPanePlazos = new JScrollPane();
+			scrollPanePlazos.setBounds(492, 186, 258, 103);
+			scrollPanePlazos.setViewportView(getTablePlazos());
+		}
+		return scrollPanePlazos;
+	}
+	public JTable getTablePlazos() {
+		if (tablePlazos == null) {
+			tablePlazos = new JTable(modelPlazos);
+			modelPlazos.addColumn("Fecha inicio");
+			modelPlazos.addColumn("Fecha fin");
+			modelPlazos.addColumn("Cuota");
+			tablePlazos.setDefaultEditor(Object.class, null);
+			
+		}
+		return tablePlazos;
+	}
+	public DefaultTableModel getTablePlazosModel() {
+		return modelPlazos;
+	}
+	public JButton getBtnAnadir() {
+		if (btnAnadir == null) {
+			btnAnadir = new JButton("Añadir");
+			btnAnadir.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+				}
+			});
+			btnAnadir.setBounds(397, 186, 85, 21);
+		}
+		return btnAnadir;
+	}
+	public JButton getBtnBorrar() {
+		if (btnBorrar == null) {
+			btnBorrar = new JButton("Borrar");
+			btnBorrar.setBounds(397, 268, 85, 21);
+		}
+		return btnBorrar;
 	}
 }

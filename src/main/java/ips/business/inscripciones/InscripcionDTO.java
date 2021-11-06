@@ -14,8 +14,24 @@ public class InscripcionDTO {
 	private int idcarrera;
 	private String estadoinscripcion;
 	private String fechainscripcion;
+	private int dorsal;
+	private String incidencia;
 	
 	
+	
+	
+	public int getDorsal() {
+		return dorsal;
+	}
+	public void setDorsal(int dorsal) {
+		this.dorsal = dorsal;
+	}
+	public String getIncidencia() {
+		return incidencia;
+	}
+	public void setIncidencia(String incidencia) {
+		this.incidencia = incidencia;
+	}
 	public String getDnicorredor() {
 		return dnicorredor;
 	}

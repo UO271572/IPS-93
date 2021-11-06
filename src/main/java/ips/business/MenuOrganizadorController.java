@@ -24,10 +24,12 @@ import ips.business.corredores.CorredoresController;
 import ips.persistence.carreras.CarrerasModel;
 import ips.persistence.clasificaciones.ClasificacionModel;
 import ips.persistence.corredores.CorredoresModel;
+import ips.persistence.dorsales.DorsalesModel;
 import ips.ui.MenuCrearCarreraView;
 import ips.ui.MenuOrganizadorView;
 import ips.ui.carreras.CarrerasView;
 import ips.ui.corredores.CorredoresView;
+import ips.ui.inscripciones.DorsalesView;
 import ips.util.Printer;
 
 public class MenuOrganizadorController {
@@ -99,6 +101,24 @@ public class MenuOrganizadorController {
 		view.getBtMostrarClasificacionCategoria().addActionListener(accionBotonClasificaPorCategoria());
 		view.getBtMostrarClasificacionSexo().addActionListener(accionBotonClasificaPorSexo());
 		view.getBtnCrearCarrera().addActionListener(cambiarAVentanaCrearCarrera());
+		view.getBtnAsignarDorsales().addActionListener(accionAsignarDorsales());
+	}
+
+	/**
+	 * Asigna a los corredores de cierta carrera que este en estado cerrado, los dorsales a los inscritos en ella
+	 * @return
+	 */
+	private ActionListener accionAsignarDorsales() {
+		return new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				DorsalesView dv = new DorsalesView(view);
+//				DorsalesModel dm = new DorsalesModel(dv);
+				añadir codigo
+				dv.setVisible(true);
+			}
+		};
 	}
 
 

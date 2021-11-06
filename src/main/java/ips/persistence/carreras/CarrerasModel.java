@@ -33,6 +33,12 @@ public class CarrerasModel {
 			+ "VALUES (?,?,?,?,?,?,?)";
 	
 	public static final String SQL_FIND_MAX_IDCARRERA = "select max(idcarrera) from carreras";
+	public static final String SQL_FIND_PLAZAS = "select plazasdisponibles from carreras where idcarrera = ?";
+	
+	
+	public int getPlazasDisponibles(int idcarrera) {
+		return db.executeQueryPojo(Integer.class, SQL_FIND_PLAZAS, idcarrera).get(0);
+	}
 	
 	public List<CarreraDisplayDTO> getListaCarreras() {
 		//List<CarreraDisplayDTO> listCarreras = new ArrayList<CarreraDisplayDTO>();

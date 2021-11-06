@@ -159,7 +159,7 @@ public class MenuOrganizadorView extends JDialog {
 		}
 		return btnProcesarPagos;
 	}
-	private JButton getBtnAsignarDorsales() {
+	public JButton getBtnAsignarDorsales() {
 		if (btnAsignarDorsales == null) {
 			btnAsignarDorsales = new JButton("Asignar dorsales");
 		}

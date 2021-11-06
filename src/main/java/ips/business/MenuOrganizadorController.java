@@ -113,10 +113,8 @@ public class MenuOrganizadorController {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				DorsalesView dv = new DorsalesView(view);
-//				DorsalesModel dm = new DorsalesModel(dv);
-				añadir codigo
-				dv.setVisible(true);
+				//Al crear el constructor ya se realizan los 2 metodos de asignar dorsales y mostrarlos
+				MenuDorsalesController mdc = new MenuDorsalesController(new DorsalesView(view),view);
 			}
 		};
 	}

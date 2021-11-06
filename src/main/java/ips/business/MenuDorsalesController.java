@@ -10,13 +10,18 @@ import ips.business.carreras.CarreraDisplayDTO;
 import ips.business.dorsales.DorsalesController;
 import ips.business.inscripciones.InscripcionDTO;
 import ips.persistence.dorsales.DorsalesModel;
+import ips.ui.MenuOrganizadorView;
 import ips.ui.inscripciones.DorsalesView;
 
 public class MenuDorsalesController {
 	private DorsalesView dorsalView;
 	private DorsalesController dorsalController;
 	
-	public MenuDorsalesController(DorsalesView dv) {
+	//
+	private MenuOrganizadorView menOrgView;
+	
+	public MenuDorsalesController(DorsalesView dv,MenuOrganizadorView menOrgView) {
+		this.menOrgView = menOrgView;
 		this.dorsalView = dv;
 		this.dorsalController = new DorsalesController(new DorsalesModel());
 		iniciarController();
@@ -42,7 +47,7 @@ public class MenuDorsalesController {
 	
 	private void asignarDorsalesACorredores() {
 		try {
-			dorsalController.asignarDorsales(((CarreraDisplayDTO)dorsalView.getMenOrgView().getListCorredores().getSelectedValue()).getIdCarrera());
+			dorsalController.asignarDorsales(((CarreraDisplayDTO)menOrgView.getListCarreras().getSelectedValue()).getIdCarrera());
 		} catch (BusinessException e) {
 			e.printStackTrace();
 		}

@@ -29,17 +29,39 @@ public class CarrerasModel {
 	
 	public static final String SQL_CARRERA_BY_ID = "SELECT * FROM CARRERAS WHERE IDCARRERA=?";
 	
-	public static final String SQL_INSERT_CARRERA = "INSERT INTO carreras (idcarrera,nombre,fechacompeticion,tipo,distancia,plazasdisponibles,lugar) "
-			+ "VALUES (?,?,?,?,?,?,?)";
+	public static final String SQL_INSERT_CARRERA = "INSERT INTO carreras (idcarrera,nombre,fechacompeticion,tipo,distancia,plazasdisponibles,plazasreservadas,lugar) "
+			+ "VALUES (?,?,?,?,?,?,?,?)";
 	
 	public static final String SQL_FIND_MAX_IDCARRERA = "select max(idcarrera) from carreras";
 	public static final String SQL_FIND_PLAZAS = "select plazasdisponibles from carreras where idcarrera = ?";
+	public static final String SQL_FIND_PLAZASRESERVADAS = "select plazasreservadas from carreras where idcarrera = ?";
 	
-	
-	public int getPlazasDisponibles(int idcarrera) {
-		return db.executeQueryPojo(Integer.class, SQL_FIND_PLAZAS, idcarrera).get(0);
+	public int getPlazasDisponibles(int idcarrera) {DA ERROR AQUI
+		Connection c = null;
+		PreparedStatement pst = null;
+		int plazas = 0;
+		try {
+			c = Jdbc.createThreadConnection();
+			
+			pst = c.prepareStatement(SQL_FIND_PLAZAS);		
+			pst.setInt(1, idcarrera);
+							
+			ResultSet rs = pst.executeQuery();
+			plazas = rs.getInt("plazasdisponibles");
+			rs.close();
+//			pst.close();
+			c.close();
+		} catch (SQLException e) {
+			throw new UnexpectedException(e);}
+		finally {
+			Jdbc.close(pst);
+		}
+		return plazas;
+//		return db.executeQueryPojo(Integer.class, SQL_FIND_PLAZAS, idcarrera).get(0);
 	}
-	
+	public int getPlazasReservadas(int idCarrera) {
+		return db.executeQueryPojo(Integer.class, SQL_FIND_PLAZASRESERVADAS, idCarrera).get(0);
+	}
 	public List<CarreraDisplayDTO> getListaCarreras() {
 		//List<CarreraDisplayDTO> listCarreras = new ArrayList<CarreraDisplayDTO>();
 		//Date fecha = java.sql.Date.valueOf(LocalDate.now());
@@ -88,8 +110,8 @@ public class CarrerasModel {
 			pst.setString(4,carrera.getTipo());
 			pst.setDouble(5, carrera.getDistancia());
 			pst.setInt(6, carrera.getPlazasDisponibles());
-			pst.setString(7,carrera.getLugar());
-			
+			pst.setInt(7,carrera.getPlazasReservadas());
+			pst.setString(8,carrera.getLugar());
 							
 			pst.executeUpdate();
 			c.close();
@@ -125,5 +147,7 @@ public class CarrerasModel {
 			
 		}
 	}
+
+	
 
 }

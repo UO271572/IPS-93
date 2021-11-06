@@ -63,7 +63,8 @@ public class MenuCrearCarreraController {
 				JOptionPane.showMessageDialog(null, "Se ha creado la carrera con los siguientes datos:\n"
 						+ "\n\t-Id: "+carrera.getIdCarrera() + "\n\t-Nombre: " + carrera.getNombre() +
 						"\n\t-Lugar: " + carrera.getLugar() + "\n\t-Tipo: "+carrera.getTipo()+"\n\t-Distancia: "+carrera.getDistancia()+
-						"km\n\t-Plazas totales: " + carrera.getPlazasDisponibles() +"\n\t-Fecha de competicion: " + carrera.getFechaCompeticion());
+						"km\n\t-Plazas totales: " + carrera.getPlazasDisponibles() +"\n\t-Fecha de competicion: " + carrera.getFechaCompeticion()
+						+"\n\t-Plazas reservadas: " + carrera.getPlazasReservadas());
 				view.dispose();
 				}
 				else {
@@ -79,7 +80,8 @@ public class MenuCrearCarreraController {
 		Date fechaActual = java.sql.Date.valueOf(LocalDate.now());
 		if(view.getTxNombre().getText().isBlank() || view.getTxLugar().getText().isBlank() || 
 				(int)(view.getSpDistancia().getValue()) <=0 || (int)(view.getSpPlazas().getValue()) <=0 ||
-				view.getDateChooser().getDate() == null || !view.getDateChooser().getDate().after(fechaActual))
+				view.getDateChooser().getDate() == null || !view.getDateChooser().getDate().after(fechaActual)
+				|| ((int)view.getSpPlazas().getValue() - (int)view.getSpPlazasReservadas().getValue() < 0))
 		return false;
 			return true;
 	}
@@ -92,6 +94,7 @@ public class MenuCrearCarreraController {
 		carrera.setIdCarrera(cc.getMaxIdCarrera()+1);
 		carrera.setNombre(view.getTxNombre().getText());
 		carrera.setPlazasDisponibles((int) view.getSpPlazas().getValue());
+		carrera.setPlazasReservadas((int)view.getSpPlazasReservadas().getValue());
 		carrera.setLugar(view.getTxLugar().getText());
 		if(view.getRdbtnMontana().isSelected()) {
 		carrera.setTipo(view.getRdbtnMontana().getText());

@@ -2,6 +2,8 @@ package ips.persistence.dorsales;
 
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import ips.business.BusinessException;
 import ips.business.corredores.CorredorDTO;
 import ips.business.inscripciones.InscripcionDTO;
@@ -21,7 +23,7 @@ public class DorsalesModel {
 //	public final String SQL_INSERT ="update inscripciones set dorsal = ? where dnicorredor = ? and idcarrera = ?";
 	public final String SQL_ASIGNAR_DORSAL = "UPDATE INSCRIPCIONES SET dorsal = ? where dnicorredor = ? and idcarrera = ? and estadoinscripcion = 'INSCRITO'";
 	public final String SQL_SIGUIENTE_DORSAL = "select dorsal from inscripciones where idcarrera = ? order by dorsal";
-
+	public static final String SQL_FIND_MAX_DORSAL = "select max(dorsal) from inscripciones";
 	/**
 	 * Devuelve la lista de inscripciones de una carrera ordenados por el numero de
 	 * dorsal
@@ -47,8 +49,12 @@ public class DorsalesModel {
 		CarrerasModel carrera = new CarrerasModel();
 		int plazas = carrera.getPlazasDisponibles(idCarrera);
 		
+		//Obtener las plazas reservadas
+		int reservadas = carrera.getPlazasReservadas(idCarrera);
+		
 		//comprobar que el numero de corredores no excede las plazas
-		if(corredores.size() >= plazas) {COMPROBAR LAS PLAZAS RESERVADAS
+		if(corredores.size() > (plazas-reservadas) ) {
+			JOptionPane.showMessageDialog(null, "El numero de corredores inscritos supera al de las plazas que dispone la carrera");
 			throw new BusinessException("El numero de corredores inscritos supera al de las plazas que dispone la carrera");
 		}
 		
@@ -56,23 +62,30 @@ public class DorsalesModel {
 		//recorrer los corredores y asignarles el dorsal
 		for(CorredorDTO c : corredores) {
 			String dni = c.getDniCorredor();
-			int dorsal = encuentraDorsal(idCarrera);
+			int dorsal = encuentraDorsal(idCarrera,plazas,reservadas);
 			db.executeUpdate(SQL_ASIGNAR_DORSAL, dorsal,dni,idCarrera);
 		}
 		
 	}
 
-	private int encuentraDorsal(int idcarrera) {ACTIALIZAR SEGUN LAS PLAZAS RESERVADAS
-		int tamaño = db.executeQueryPojo(Integer.class, SQL_SIGUIENTE_DORSAL, idcarrera).size();
-		List<Integer> resultset = db.executeQueryPojo(Integer.class, SQL_SIGUIENTE_DORSAL, idcarrera);
-		for (int i = 0; i < tamaño; i++) {
-			int dorsalPrevio = resultset.get(i);
-			int dorsalPosterior = resultset.get(i + 1);
-			if(dorsalPosterior - dorsalPrevio > 1) {
-				return dorsalPrevio + 1;
-			}
+	private int encuentraDorsal(int idcarrera,int plazas ,int reservadas) {
+//		List<Integer> resultset = db.executeQueryPojo(Integer.class, SQL_SIGUIENTE_DORSAL, idcarrera);
+//		int tamaño = resultset.size();
+//		
+//		for (int i = 0; i < tamaño; i++) {
+//			int dorsalPrevio = resultset.get(i);
+//			int dorsalPosterior = resultset.get(i + 1);
+//			if(dorsalPosterior - dorsalPrevio > 1) {
+//				return dorsalPrevio + 1;
+//			}
+//		}
+//		return -1;
+		int dorsal = db.executeQueryPojo(Integer.class, SQL_FIND_MAX_DORSAL, idcarrera).get(0);
+		if(dorsal == 0 || dorsal <=reservadas) {
+			dorsal = reservadas + 1;
+			return dorsal;
 		}
-		return -1;
+		return dorsal;
 	}
 
 }

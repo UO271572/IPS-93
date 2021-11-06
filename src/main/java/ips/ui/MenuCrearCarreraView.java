@@ -34,6 +34,8 @@ public class MenuCrearCarreraView extends JDialog{
 	private JDateChooser dateChooser;
 	private JButton btnCancelar;
 	private JLabel lblFechaDeCompeticion;
+	private JLabel lbPlazasReservadas;
+	private JSpinner spPlazasReservadas;
 	public MenuCrearCarreraView() {
 		setTitle("Organizador: Creacion de carrera");
 		setBounds(100, 100, 892, 427);
@@ -56,6 +58,8 @@ public class MenuCrearCarreraView extends JDialog{
 		getContentPane().add(getDateChooser());
 		getContentPane().add(getBtnCancelar());
 		getContentPane().add(getLblFechaDeCompeticion());
+		getContentPane().add(getLbPlazasReservadas());
+		getContentPane().add(getSpPlazasReservadas());
 		this.setModal(true);
 	}
 	public JTextField getTxNombre() {
@@ -182,5 +186,20 @@ public class MenuCrearCarreraView extends JDialog{
 			lblFechaDeCompeticion.setBounds(492, 120, 148, 13);
 		}
 		return lblFechaDeCompeticion;
+	}
+	private JLabel getLbPlazasReservadas() {
+		if (lbPlazasReservadas == null) {
+			lbPlazasReservadas = new JLabel("Plazas reservadas:");
+			lbPlazasReservadas.setFont(new Font("Tahoma", Font.PLAIN, 14));
+			lbPlazasReservadas.setBounds(264, 154, 118, 19);
+		}
+		return lbPlazasReservadas;
+	}
+	public JSpinner getSpPlazasReservadas() {
+		if (spPlazasReservadas == null) {
+			spPlazasReservadas = new JSpinner();
+			spPlazasReservadas.setBounds(379, 155, 79, 19);
+		}
+		return spPlazasReservadas;
 	}
 }

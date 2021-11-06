@@ -41,7 +41,7 @@ public class DorsalesView extends JDialog {
 			buttonPane.add(getBtOk());
 		}
 		
-		
+		this.setVisible(true);
 		this.setModal(true);
 	}
 	

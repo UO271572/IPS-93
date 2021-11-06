@@ -1,19 +1,16 @@
 package ips.business;
 
-import java.awt.Component;
+import java.awt.Component; 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.security.DrbgParameters.Reseed;
 import java.sql.SQLException;
 import java.util.List;
 
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import ips.business.carreras.CarreraDisplayDTO;
@@ -40,7 +37,7 @@ public class MenuOrganizadorController {
 	public MenuOrganizadorController(MenuOrganizadorView view) {
 		this.view = view;
 		
-		initController();
+		//initController();
 	}
 
 
@@ -88,7 +85,7 @@ public class MenuOrganizadorController {
 		            JOptionPane.YES_NO_OPTION);
 		 */
 		        //if (result == JOptionPane.YES_OPTION)
-		            view.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		        view.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		    }
 		};
 	}
@@ -101,12 +98,14 @@ public class MenuOrganizadorController {
 		// view.getBtnGo().addActionListener(accionBotonGo(view.getCbOpciones().getSelectedIndex()));
 		view.getBtnBuscarCorredores().addActionListener(accionBotonBuscarCorredores(view.getListCarreras().getSelectedIndex()));
 		view.getBtMostrarClasificacionCategoria().addActionListener(accionBotonClasificaPorCategoria());
+		
+		// clasificaPorSexoAccion
 		view.getBtMostrarClasificacionSexo().addActionListener(accionBotonClasificaPorSexo());
 		view.getBtnCrearCarrera().addActionListener(cambiarAVentanaCrearCarrera());
 	}
 
-
-	//Acciones
+	// Acciones
+	
 	private ActionListener accionBotonClasificaPorSexo() {
 		return new ActionListener() {
 			
@@ -234,12 +233,13 @@ public class MenuOrganizadorController {
 				MenuCrearCarreraController controllerCrearCarrera = new MenuCrearCarreraController(crearCarrera);
 				//MenuCorredorController controller = new MenuCorredorController(frame);
 				//controller.initController();
+				controllerCrearCarrera.initController();
 				crearCarrera.setVisible(true);
 			}
 		};
 	}
 	
-	}
+}
 	
 	
 

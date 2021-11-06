@@ -15,6 +15,13 @@ import org.jdatepicker.JDatePicker;
 
 import com.toedter.calendar.JDateChooser;
 
+import ips.business.categorias.CategoriaDTO;
+
+import javax.swing.JPanel;
+import javax.swing.border.TitledBorder;
+import javax.swing.JScrollPane;
+import javax.swing.JList;
+
 public class MenuCrearCarreraView extends JDialog{
 	private JTextField txNombre;
 	private JLabel lblNombre;
@@ -34,9 +41,17 @@ public class MenuCrearCarreraView extends JDialog{
 	private JDateChooser dateChooser;
 	private JButton btnCancelar;
 	private JLabel lblFechaDeCompeticion;
+	private JPanel pnCrearCategorias;
+	private JButton btnAñadir;
+	private JButton btnModificar;
+	private JButton btnEliminar;
+	private JScrollPane scrollPane;
+	private JScrollPane panel_Categorias;
+	private JList lista_Categorias;
 	public MenuCrearCarreraView() {
+		setResizable(false);
 		setTitle("Organizador: Creacion de carrera");
-		setBounds(100, 100, 892, 427);
+		setBounds(100, 100, 892, 581);
 		setLocationRelativeTo(null);
 		getContentPane().setBackground(Color.WHITE);
 		getContentPane().setLayout(null);
@@ -56,6 +71,7 @@ public class MenuCrearCarreraView extends JDialog{
 		getContentPane().add(getDateChooser());
 		getContentPane().add(getBtnCancelar());
 		getContentPane().add(getLblFechaDeCompeticion());
+		getContentPane().add(getPnCrearCategorias());
 		this.setModal(true);
 	}
 	public JTextField getTxNombre() {
@@ -157,7 +173,7 @@ public class MenuCrearCarreraView extends JDialog{
 	public JButton getBtnGuardar() {
 		if (btnGuardar == null) {
 			btnGuardar = new JButton("Guardar");
-			btnGuardar.setBounds(560, 305, 85, 21);
+			btnGuardar.setBounds(688, 513, 85, 21);
 		}
 		return btnGuardar;
 	}
@@ -171,7 +187,7 @@ public class MenuCrearCarreraView extends JDialog{
 	public JButton getBtnCancelar() {
 		if (btnCancelar == null) {
 			btnCancelar = new JButton("Cancelar");
-			btnCancelar.setBounds(658, 305, 85, 21);
+			btnCancelar.setBounds(783, 513, 85, 21);
 		}
 		return btnCancelar;
 	}
@@ -182,5 +198,67 @@ public class MenuCrearCarreraView extends JDialog{
 			lblFechaDeCompeticion.setBounds(492, 120, 148, 13);
 		}
 		return lblFechaDeCompeticion;
+	}
+	private JPanel getPnCrearCategorias() {
+		if (pnCrearCategorias == null) {
+			pnCrearCategorias = new JPanel();
+			pnCrearCategorias.setBackground(Color.WHITE);
+			pnCrearCategorias.setBorder(new TitledBorder(null, "Categorias", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+			pnCrearCategorias.setBounds(13, 178, 422, 169);
+			pnCrearCategorias.setLayout(null);
+			pnCrearCategorias.add(getScrollPane());
+			pnCrearCategorias.add(getBtnAñadir());
+			pnCrearCategorias.add(getBtnModificar());
+			pnCrearCategorias.add(getBtnEliminar());
+			pnCrearCategorias.add(getPanel_Categorias());
+		}
+		return pnCrearCategorias;
+	}
+	public JButton getBtnAñadir() {
+		if (btnAñadir == null) {
+			btnAñadir = new JButton("Añadir");
+			btnAñadir.setBounds(332, 23, 80, 40);
+			
+		}
+		return btnAñadir;
+	}
+	public JButton getBtnModificar() {
+		if (btnModificar == null) {
+			btnModificar = new JButton("Modificar");
+			btnModificar.setBounds(332, 70, 80, 40);
+			
+			// esto abre un jdialog con las mismas opciones que el de arriba pero autocompletado con lo que ya hay
+		}
+		return btnModificar;
+	}
+	public JButton getBtnEliminar() {
+		if (btnEliminar == null) {
+			btnEliminar = new JButton("Eliminar");
+			btnEliminar.setBounds(332, 116, 80, 40);
+		}
+		return btnEliminar;
+	}
+	private JScrollPane getScrollPane() {
+		if (scrollPane == null) {
+			scrollPane = new JScrollPane();
+			scrollPane.setBounds(0, 0, 2, 2);
+		}
+		return scrollPane;
+	}
+	private JScrollPane getPanel_Categorias() {
+		if (panel_Categorias == null) {
+			panel_Categorias = new JScrollPane();
+			panel_Categorias.setBounds(10, 23, 311, 133);
+			panel_Categorias.setViewportView(getLista_Categorias());
+			
+			// aqui tendria que hacer un select all de la tabla categorias y rellenarla
+		}
+		return panel_Categorias;
+	}
+	public JList getLista_Categorias() {
+		if (lista_Categorias == null) {
+			lista_Categorias = new JList<CategoriaDTO>();
+		}
+		return lista_Categorias;
 	}
 }

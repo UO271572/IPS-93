@@ -6,32 +6,66 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import javax.swing.text.html.HTMLDocument.HTMLReader.ParagraphAction;
 
 import ips.business.carreras.CarreraDisplayDTO;
 import ips.business.carreras.CarrerasController;
+import ips.business.categorias.CategoriaDTO;
+import ips.business.categorias.EditarCategoriaController;
 import ips.persistence.carreras.CarrerasModel;
 import ips.ui.MenuCrearCarreraView;
 import ips.ui.carreras.CarrerasView;
+import ips.ui.categorias.EditarCategoriaView;
 
 public class MenuCrearCarreraController {
 	private MenuCrearCarreraView view;
 	private CarrerasController cc;
+	
+	private AñadirCategoriaAction añadirCategoria = new AñadirCategoriaAction();
+	private EliminarCategoriaAction eliminarCategoria = new EliminarCategoriaAction();
+	private ModificarCategoriaAction modificarCategoria = new ModificarCategoriaAction();
 
 	public MenuCrearCarreraController(MenuCrearCarreraView view) {
 		this.view = view;
-		cc = new CarrerasController(new CarrerasModel(),new CarrerasView());
-		initController();
 	}
 
 	public void initController() {
 			view.addWindowListener(notCloseDirectly());
 			view.getBtnGuardar().addActionListener(crearCarrera());
 			view.getBtnCancelar().addActionListener(cancelar());
+			
+			view.getBtnAñadir().addActionListener(añadirCategoria);
+			view.getBtnEliminar().addActionListener(eliminarCategoria);
+			view.getBtnModificar().addActionListener(modificarCategoria);
+			
+			DefaultListModel modelo = new DefaultListModel();
+			
+			modelo.addAll(generarCategoriasPorDefecto());
+			
+			view.getLista_Categorias().setModel(modelo);
 	}
 	
+	private List<CategoriaDTO> generarCategoriasPorDefecto() {
+		
+		List<CategoriaDTO> res = new ArrayList<CategoriaDTO>();
+		CategoriaDTO cat1 = new CategoriaDTO("Absoluto - De 18 a 24", 18, 24, "Absoluto");
+		CategoriaDTO cat2 = new CategoriaDTO("Masculino - De 18 a 24", 18, 24, "Masculino");
+		CategoriaDTO cat3 = new CategoriaDTO("Femenino - De 18 a 24", 18, 24, "Femenino");
+		
+		res.add(cat1);
+		res.add(cat2);
+		res.add(cat3);
+		
+		return res;
+	}
+
 	public WindowAdapter notCloseDirectly() {
 		return new WindowAdapter()
 		{
@@ -45,11 +79,52 @@ public class MenuCrearCarreraController {
 	            JOptionPane.YES_NO_OPTION);
 	 */
 	        //if (result == JOptionPane.YES_OPTION)
-	            view.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+	           view.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		    }
 		};
 	}
 
+	class AñadirCategoriaAction implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			EditarCategoriaView editarCategoria = new EditarCategoriaView(view.getLista_Categorias());
+			EditarCategoriaController editarCategoriaController = new EditarCategoriaController(editarCategoria);
+			
+			//editarCategoriaController.initController();
+			editarCategoria.setVisible(true);
+		}
+		
+	}
+	
+	class ModificarCategoriaAction implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			EditarCategoriaView editarCategoria = new EditarCategoriaView(view.getLista_Categorias());
+			
+			CategoriaDTO categoria = (CategoriaDTO) view.getLista_Categorias().getSelectedValue();//new CategoriaDTO(()view.getLista_Categorias().getSelectedValue(), 0, 0, null)
+			
+			int indice = view.getLista_Categorias().getSelectedIndex();
+			
+			new EditarCategoriaController(editarCategoria, categoria, indice);
+			
+			editarCategoria.setVisible(true);
+		}
+		
+	}
+	
+	class EliminarCategoriaAction implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			DefaultListModel modelo = (DefaultListModel) view.getLista_Categorias().getModel();
+			modelo.remove(modelo.getSize()-1);
+			view.getLista_Categorias().setModel(modelo);
+		}
+		
+	}
+	
 	// AUXILIARES
 	private ActionListener crearCarrera() {
 			return new ActionListener() {
@@ -57,9 +132,16 @@ public class MenuCrearCarreraController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
+				if(checkCategoriasValidas()) {
+					
+				}else {
+					JOptionPane.showMessageDialog(view, "Las categorías no son válidas. Por favor, revíselas. No puede haber huecos en los rangos");
+				}
+				
 				if (checkCamposCrearCarrera()) {
 				CarreraDisplayDTO carrera = getCamposCarrera();
 				cc.insertarCarrera(carrera);
+				
 				JOptionPane.showMessageDialog(null, "Se ha creado la carrera con los siguientes datos:\n"
 						+ "\n\t-Id: "+carrera.getIdCarrera() + "\n\t-Nombre: " + carrera.getNombre() +
 						"\n\t-Lugar: " + carrera.getLugar() + "\n\t-Tipo: "+carrera.getTipo()+"\n\t-Distancia: "+carrera.getDistancia()+
@@ -84,6 +166,24 @@ public class MenuCrearCarreraController {
 			return true;
 	}
 	
+	private boolean checkCategoriasValidas() {
+		boolean res = true;
+		
+		// POR HACER
+		
+		// pillar todas las categorias
+		
+		// todas las de masculino
+		
+		// todas las de femenino
+		
+		// todas las absolutas
+		
+		// para cada lista comprobar rangos (si el fin de la anterior es el inicio de la siguiente)
+		
+		return res;
+	}
+
 	private CarreraDisplayDTO getCamposCarrera() {
 		CarreraDisplayDTO carrera = new CarreraDisplayDTO();
 		carrera.setDistancia((int)(view.getSpDistancia().getValue()));

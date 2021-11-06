@@ -29,7 +29,7 @@ public class CarrerasModel {
 	
 	public static final String SQL_CARRERA_BY_ID = "SELECT * FROM CARRERAS WHERE IDCARRERA=?";
 	
-	public static final String SQL_INSERT_CARRERA = "INSERT INTO carreras (idcarrera,nombre,fechacompeticion,tipo,distancia,plazasdisponibles,lugar) "
+	public static final String SQL_INSERT_CARRERA = "INSERT INTO carreras (idcarrera,nombre,fechacompeticion,tipo,distancia,plazasdisponibles,ciudad) "
 			+ "VALUES (?,?,?,?,?,?,?)";
 	
 	public static final String SQL_FIND_MAX_IDCARRERA = "select max(idcarrera) from carreras";

@@ -48,13 +48,21 @@ public class EditarCategoriaController {
 				JOptionPane.showMessageDialog(view, "La edad de inicio debe ser menor o igual que la de fin. Por favor, cámbiela.");
 				
 			} else {
-				CategoriaDTO cat = new CategoriaDTO(nombre, edadInicio, edadFinal, (String) view.getCb_sexo().getModel().getSelectedItem());
+			
+				if(!comprobarCategoriaValida(new CategoriaDTO(nombre, edadInicio, edadFinal, (String) view.getCb_sexo().getModel().getSelectedItem(), CategoriaDTO.NO_CARRERA))) {
+					JOptionPane.showMessageDialog(view, "Las categorías no son válidas. Por favor, revíselas. No puede haber huecos en los rangos");
+				} else {
 				
-				DefaultListModel modelo = (DefaultListModel) view.getListaCategorias().getModel();
-				modelo.addElement(cat);
-				view.getListaCategorias().setModel(modelo);
-				view.dispose();
+					CategoriaDTO cat = new CategoriaDTO(nombre, edadInicio, edadFinal, (String) view.getCb_sexo().getModel().getSelectedItem(), CategoriaDTO.NO_CARRERA);
+					
+					DefaultListModel modelo = (DefaultListModel) view.getListaCategorias().getModel();
+					modelo.addElement(cat);
+					view.getListaCategorias().setModel(modelo);
+					view.dispose();
+				
+				}
 			}
+			
 			
 			
 		}
@@ -74,19 +82,74 @@ public class EditarCategoriaController {
 			if(edadInicio > edadFinal) {
 				
 				JOptionPane.showMessageDialog(view, "La edad de inicio debe ser menor o igual que la de fin. Por favor, cámbiela.");
-				
 			} else {
-				CategoriaDTO cat = new CategoriaDTO(nombre, edadInicio, edadFinal, (String) view.getCb_sexo().getModel().getSelectedItem());
+			
+				if(!comprobarCategoriaValida(new CategoriaDTO(nombre, edadInicio, edadFinal, (String) view.getCb_sexo().getModel().getSelectedItem(), CategoriaDTO.NO_CARRERA))) {
+					JOptionPane.showMessageDialog(view, "Las categorías no son válidas. Por favor, revíselas. No puede haber huecos en los rangos");
+				} else {
+					
+						CategoriaDTO cat = new CategoriaDTO(nombre, edadInicio, edadFinal, (String) view.getCb_sexo().getModel().getSelectedItem(), CategoriaDTO.NO_CARRERA);
+						
+						DefaultListModel modelo = (DefaultListModel) view.getListaCategorias().getModel();
+						modelo.setElementAt(cat, indice);
+						view.getListaCategorias().setModel(modelo);
+						view.dispose();
+					}
+				}
 				
-				DefaultListModel modelo = (DefaultListModel) view.getListaCategorias().getModel();
-				modelo.setElementAt(cat, indice);
-				view.getListaCategorias().setModel(modelo);
-				view.dispose();
 			}
 			
 			
 		}
+	
+	private boolean comprobarCategoriaValida(CategoriaDTO categoria) {
 		
+		int minAbsoluto = Integer.MAX_VALUE;
+		
+		DefaultListModel<CategoriaDTO> modelo = (DefaultListModel<CategoriaDTO>) view.getListaCategorias().getModel();
+		
+		if(modelo.size() == 0) {
+			return true;
+		}
+		
+		int numberoCategoriasSexo = 0;
+		
+		for(int i = 0; i < modelo.getSize(); i++) {
+			if(modelo.get(i).getSexo().equals((String) view.getCb_sexo().getModel().getSelectedItem())){
+				numberoCategoriasSexo++;
+			}
+		}
+		
+		if(numberoCategoriasSexo == 0) {
+			return true;
+		}
+		
+		for(int i = 0; i < modelo.getSize(); i++) {  
+			if(modelo.get(i).getSexo().equals((String) view.getCb_sexo().getModel().getSelectedItem())) {
+				if(modelo.get(i).getEdadInicio() < minAbsoluto) {
+					minAbsoluto = modelo.get(i).getEdadInicio();
+				}
+			}
+		}
+		
+		int maxAbsoluto = -1;
+		
+		for(int i = 0; i < modelo.getSize(); i++) {  
+			if(modelo.get(i).getSexo().equals((String) view.getCb_sexo().getModel().getSelectedItem())) {
+				if(modelo.get(i).getEdadFin() > maxAbsoluto) {
+					maxAbsoluto = modelo.get(i).getEdadFin();
+				}
+			}
+		}
+		
+		boolean res = false;
+		
+		if(categoria.getEdadFin() == (minAbsoluto - 1)) { // añado un rango por debajo
+			return true;
+		} else if(categoria.getEdadInicio() == (maxAbsoluto + 1)) {
+			return true;
+		}
+		return res;
 	}
 	
 }

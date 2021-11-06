@@ -18,6 +18,7 @@ import javax.swing.text.html.HTMLDocument.HTMLReader.ParagraphAction;
 import ips.business.carreras.CarreraDisplayDTO;
 import ips.business.carreras.CarrerasController;
 import ips.business.categorias.CategoriaDTO;
+import ips.business.categorias.CategoriaModel;
 import ips.business.categorias.EditarCategoriaController;
 import ips.persistence.carreras.CarrerasModel;
 import ips.ui.MenuCrearCarreraView;
@@ -26,11 +27,13 @@ import ips.ui.categorias.EditarCategoriaView;
 
 public class MenuCrearCarreraController {
 	private MenuCrearCarreraView view;
-	private CarrerasController cc;
+	private CarrerasController cc = new CarrerasController();
 	
 	private AñadirCategoriaAction añadirCategoria = new AñadirCategoriaAction();
 	private EliminarCategoriaAction eliminarCategoria = new EliminarCategoriaAction();
 	private ModificarCategoriaAction modificarCategoria = new ModificarCategoriaAction();
+	
+	private int minEdadAbsoluta, maxEdadAbsoluta, minEdadMasculina, maxEdadMasculina, minEdadFemenina, maxEdadFemenina;
 
 	public MenuCrearCarreraController(MenuCrearCarreraView view) {
 		this.view = view;
@@ -55,13 +58,22 @@ public class MenuCrearCarreraController {
 	private List<CategoriaDTO> generarCategoriasPorDefecto() {
 		
 		List<CategoriaDTO> res = new ArrayList<CategoriaDTO>();
-		CategoriaDTO cat1 = new CategoriaDTO("Absoluto - De 18 a 24", 18, 24, "Absoluto");
-		CategoriaDTO cat2 = new CategoriaDTO("Masculino - De 18 a 24", 18, 24, "Masculino");
-		CategoriaDTO cat3 = new CategoriaDTO("Femenino - De 18 a 24", 18, 24, "Femenino");
+		CategoriaDTO cat1 = new CategoriaDTO("Absoluto - De 18 a 24", 18, 24, "Absoluto", CategoriaDTO.NO_CARRERA);
+		CategoriaDTO cat2 = new CategoriaDTO("Masculino - De 18 a 24", 18, 24, "Masculino", CategoriaDTO.NO_CARRERA);
+		CategoriaDTO cat3 = new CategoriaDTO("Femenino - De 18 a 24", 18, 24, "Femenino", CategoriaDTO.NO_CARRERA);
 		
 		res.add(cat1);
 		res.add(cat2);
 		res.add(cat3);
+		
+		minEdadAbsoluta = 18;
+		maxEdadAbsoluta = 24;
+		
+		minEdadMasculina = 18;
+		maxEdadMasculina = 24;
+		
+		minEdadFemenina = 18;
+		maxEdadFemenina = 24;
 		
 		return res;
 	}
@@ -119,7 +131,7 @@ public class MenuCrearCarreraController {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			DefaultListModel modelo = (DefaultListModel) view.getLista_Categorias().getModel();
-			modelo.remove(modelo.getSize()-1);
+			modelo.remove(view.getLista_Categorias().getSelectedIndex());
 			view.getLista_Categorias().setModel(modelo);
 		}
 		
@@ -132,15 +144,20 @@ public class MenuCrearCarreraController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				if(checkCategoriasValidas()) {
-					
-				}else {
-					JOptionPane.showMessageDialog(view, "Las categorías no son válidas. Por favor, revíselas. No puede haber huecos en los rangos");
-				}
+				CategoriaModel categoriaModel = new CategoriaModel();
 				
 				if (checkCamposCrearCarrera()) {
 				CarreraDisplayDTO carrera = getCamposCarrera();
 				cc.insertarCarrera(carrera);
+				
+				//
+				DefaultListModel<CategoriaDTO> modelo = (DefaultListModel<CategoriaDTO>) view.getLista_Categorias().getModel();
+				
+				for(int i = 0; i < modelo.getSize(); i++) {  
+					modelo.get(i).setIdCarrera(carrera.getIdCarrera());
+					categoriaModel.insertarCategorias(modelo.get(i));
+				}
+				//
 				
 				JOptionPane.showMessageDialog(null, "Se ha creado la carrera con los siguientes datos:\n"
 						+ "\n\t-Id: "+carrera.getIdCarrera() + "\n\t-Nombre: " + carrera.getNombre() +
@@ -164,24 +181,6 @@ public class MenuCrearCarreraController {
 				view.getDateChooser().getDate() == null || !view.getDateChooser().getDate().after(fechaActual))
 		return false;
 			return true;
-	}
-	
-	private boolean checkCategoriasValidas() {
-		boolean res = true;
-		
-		// POR HACER
-		
-		// pillar todas las categorias
-		
-		// todas las de masculino
-		
-		// todas las de femenino
-		
-		// todas las absolutas
-		
-		// para cada lista comprobar rangos (si el fin de la anterior es el inicio de la siguiente)
-		
-		return res;
 	}
 
 	private CarreraDisplayDTO getCamposCarrera() {

@@ -2,6 +2,7 @@ package ips.business.categorias;
 
 public class CategoriaDTO {
 
+	public static final int NO_CARRERA = -1;
 	private String nombre;
 	private int edadInicio;
 	private int edadFin;
@@ -9,12 +10,13 @@ public class CategoriaDTO {
 	private String sexo; // Absoluto, masculino, femenino
 	
 	
-	public CategoriaDTO(String nombre, int edadInicio, int edadFin, String sexo) {
+	public CategoriaDTO(String nombre, int edadInicio, int edadFin, String sexo, int idCarrera) {
 		super();
 		this.nombre = nombre;
 		this.edadInicio = edadInicio;
 		this.edadFin = edadFin;
 		this.setSexo(sexo);
+		this.idCarrera = idCarrera;
 	}
 
 	@Override

@@ -108,7 +108,7 @@ public class CorredorDTO {
 		Calendar calendar1 = new GregorianCalendar();
 		calendar1.setTime(edadDate);
 		
-		int edad = Period.between(LocalDate.of(calendar1.get(Calendar.YEAR),calendar1.get(Calendar.MONTH),calendar1.get(Calendar.DAY_OF_MONTH)),
+		int edad = Period.between(LocalDate.of(calendar1.get(Calendar.YEAR),calendar1.get(Calendar.MONTH)+1,calendar1.get(Calendar.DAY_OF_MONTH)),
 				LocalDate.now()).getYears();
 		
 		if(edad>40) {

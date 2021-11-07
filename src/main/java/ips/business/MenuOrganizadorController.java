@@ -74,7 +74,7 @@ public class MenuOrganizadorController {
     }
 
     private void generarClasificaciones() throws BusinessException {
-	File fichero = new File("doc/tiempos.txt");
+	File fichero = new File("doc/tiempos_1.txt"); // cambie .split(_) [1]
 	BufferedReader br;
 	List<Integer> dorsales = new ArrayList<Integer>();
 	List<ResultadoDTO> resultados = new ArrayList<ResultadoDTO>();

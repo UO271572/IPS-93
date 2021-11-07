@@ -18,7 +18,9 @@ import ips.util.Jdbc;
 import ips.util.UnexpectedException;
 
 public class DorsalesModel {
+	
 	private Database db = new Database();
+	
 	public final String SQL_FIND_ALL_BY_DORSAL = "select * from inscripciones where idcarrera = ? and estadoinscripcion = 'INSCRITO' order by dorsal";
 	public final String SQL_FIND_CORREDORES_ORDER_BY_FECHA = "select c.dnicorredor, c.nombre "
 			+ "from corredores c, inscripciones i "
@@ -59,7 +61,7 @@ public class DorsalesModel {
 		int reservadas = carrera.getPlazasReservadas(idCarrera);
 		
 		//comprobar que el numero de corredores no excede las plazas
-		if(corredores.size() > (plazas-reservadas) ) {
+		if(corredores.size() > (plazas-reservadas)) {
 			JOptionPane.showMessageDialog(null, "El numero de corredores inscritos supera al de las plazas que dispone la carrera");
 			throw new BusinessException("El numero de corredores inscritos supera al de las plazas que dispone la carrera");
 		}
@@ -69,24 +71,16 @@ public class DorsalesModel {
 		for(CorredorDTO c : corredores) {
 			String dni = c.getDniCorredor();
 			int dorsal = encuentraDorsal(idCarrera,plazas,reservadas);
+			if(dorsal > plazas) {
+				JOptionPane.showMessageDialog(null, "Se alcanzo el numero maximo de dorsales para esta carrera");
+				throw new BusinessException("Se alcanzo el numero maximo de dorsales para esta carrera");
+			}
 			db.executeUpdate(SQL_ASIGNAR_DORSAL, dorsal,dni,idCarrera);
 		}
 		
 	}
 
-	private int encuentraDorsal(int idcarrera,int plazas ,int reservadas) {
-//		List<Integer> resultset = db.executeQueryPojo(Integer.class, SQL_SIGUIENTE_DORSAL, idcarrera);
-//		int tamaño = resultset.size();
-//		
-//		for (int i = 0; i < tamaño; i++) {
-//			int dorsalPrevio = resultset.get(i);
-//			int dorsalPosterior = resultset.get(i + 1);
-//			if(dorsalPosterior - dorsalPrevio > 1) {
-//				return dorsalPrevio + 1;
-//			}
-//		}
-//		return -1;
-		
+	private int encuentraDorsal(int idcarrera,int plazas ,int reservadas) {		
 		Connection c = null;
 		PreparedStatement pst = null;
 		int dorsal = 0;
@@ -108,8 +102,7 @@ public class DorsalesModel {
 			Jdbc.close(pst);
 		}
 		
-		
-		
+		dorsal++;
 //		int dorsal = db.executeQueryPojo(Integer.class, SQL_FIND_MAX_DORSAL, idcarrera).get(0);
 		if(dorsal == 0 || dorsal <=reservadas) {
 			dorsal = reservadas + 1;

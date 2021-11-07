@@ -29,12 +29,6 @@ public class MenuDorsalesController {
 	
 	
 	
-	
-	//NO HAY ACTIONS LISTENER NI MAS BOTONES PARA REALIZAR ACCIONES POR AHORA
-	
-	
-	
-	
 	/**
 	 * Iniciamos el controlador
 	 */
@@ -44,7 +38,6 @@ public class MenuDorsalesController {
 		asignarDorsalesACorredores(dto);
 		mostrarDorsales(dto);
 	}
-
 	
 	private void asignarDorsalesACorredores(CarreraDisplayDTO dto) {
 		try {

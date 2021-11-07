@@ -114,8 +114,10 @@ public class MenuOrganizadorController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				//Al crear el constructor ya se realizan los 2 metodos de asignar dorsales y mostrarlos
-				MenuDorsalesController mdc = new MenuDorsalesController(new DorsalesView(view),view);
+				DorsalesView dorsalview = new DorsalesView();
+				MenuDorsalesController mdc = new MenuDorsalesController(dorsalview,view);
 				//((CarreraDisplayDTO)dorsalView.getMenOrgView().getListCorredores().getSelectedValue()).getIdCarrera()
+				dorsalview.setVisible(true);
 			}
 		};
 	}

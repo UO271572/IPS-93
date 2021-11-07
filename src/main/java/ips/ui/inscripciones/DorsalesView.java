@@ -13,7 +13,7 @@ import ips.ui.MenuOrganizadorView;
 
 public class DorsalesView extends JDialog {
 
-	private MenuOrganizadorView menOrgView;
+//	private MenuOrganizadorView menOrgView;
 	private final JPanel contentPanel = new JPanel();
 	private JPanel panel;
 	private JScrollPane scrollPane;
@@ -25,8 +25,8 @@ public class DorsalesView extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public DorsalesView(MenuOrganizadorView menOrgView) {
-		this.menOrgView = menOrgView;
+	public DorsalesView() {
+//		this.menOrgView = menOrgView;
 		setTitle("Asignacion de dorsales");
 		setBounds(100, 100, 614, 433);
 		getContentPane().setLayout(new BorderLayout());
@@ -41,15 +41,15 @@ public class DorsalesView extends JDialog {
 			buttonPane.add(getBtOk());
 		}
 		
-		this.setVisible(true);
-		this.setModal(true);
+//		this.setVisible(true);
+//		this.setModal(true);
 	}
 	
 	
 	
-	public MenuOrganizadorView getMenOrgView() {
-		return menOrgView;
-	}
+//	public MenuOrganizadorView getMenOrgView() {
+//		return menOrgView;
+//	}
 
 	private JPanel getPanel() {
 		if (panel == null) {

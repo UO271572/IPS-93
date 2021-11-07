@@ -68,7 +68,7 @@ public class MenuRolSelectionController {
 			public void actionPerformed(ActionEvent e) {
 				MenuOrganizadorView frame = new MenuOrganizadorView();
 				MenuOrganizadorController controller = new MenuOrganizadorController(frame);
-				controller.initController();
+				//controller.initController();
 				frame.setVisible(true);
 			}
 		};

@@ -14,6 +14,7 @@ public class CarreraDisplayDTO {
 	private double distancia;
 	private String tipo;
 	private int plazasDisponibles;
+	private int plazasReservadas;
 	private String lugar;
 	
 	public Date getFechaCompeticion() {
@@ -107,6 +108,16 @@ public class CarreraDisplayDTO {
 	}
 	
 	
+	
+	
+	public int getPlazasReservadas() {
+		return plazasReservadas;
+	}
+
+	public void setPlazasReservadas(int plazasReservadas) {
+		this.plazasReservadas = plazasReservadas;
+	}
+
 	public String getLugar() {
 		return lugar;
 	}

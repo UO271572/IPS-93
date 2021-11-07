@@ -25,14 +25,19 @@ public class CarrerasModel {
 												      // fechafin>=? and
 												      // fechaInicio<=?";
 
-    public static final String SQL_CARRERAS_INSCRIPCION = "SELECT * FROM CARRERAS where fechacompeticion>=? and plazasDisponibles>0";
+    public static final String SQL_CARRERAS_INSCRIPCION = "SELECT * FROM CARRERAS where fechafin>=? and fechaInicio<=? and plazasDisponibles>0";
 
     public static final String SQL_CARRERA_BY_ID = "SELECT * FROM CARRERAS WHERE IDCARRERA=?";
 
-    public static final String SQL_INSERT_CARRERA = "INSERT INTO carreras (idcarrera,nombre,fechacompeticion,tipo,distancia,plazasdisponibles,lugar) "
-	    + "VALUES (?,?,?,?,?,?,?)";
+    public static final String SQL_INSERT_CARRERA = "INSERT INTO carreras (idcarrera,nombre,fechacompeticion,tipo,distancia,plazasdisponibles,plazasreservadas,lugar) "
+	    + "VALUES (?,?,?,?,?,?,?,?)"; // Mirar con base nueva
 
     public static final String SQL_FIND_MAX_IDCARRERA = "select max(idcarrera) from carreras";
+
+    public static final String SQL_FIND_PLAZAS = "select plazasdisponibles from carreras where idcarrera = ?";
+    public static final String SQL_FIND_PLAZASRESERVADAS = "select plazasreservadas from carreras where idcarrera = ?";
+
+    public static final String SQL_FIND_PRECIO_IDCARRERA = "select precio from carreras where idcarrera = ?";
 
     public List<CarreraDisplayDTO> getListaCarreras() {
 	// List<CarreraDisplayDTO> listCarreras = new ArrayList<CarreraDisplayDTO>();
@@ -72,7 +77,6 @@ public class CarrerasModel {
 
 	try {
 	    c = Jdbc.createThreadConnection();
-
 	    pst = c.prepareStatement(SQL_INSERT_CARRERA);
 	    pst.setInt(1, carrera.getIdCarrera());
 	    pst.setString(2, carrera.getNombre());
@@ -80,7 +84,8 @@ public class CarrerasModel {
 	    pst.setString(4, carrera.getTipo());
 	    pst.setDouble(5, carrera.getDistancia());
 	    pst.setInt(6, carrera.getPlazasDisponibles());
-	    pst.setString(7, carrera.getLugar());
+	    pst.setInt(7, carrera.getPlazasReservadas());
+	    pst.setString(8, carrera.getLugar());
 
 	    pst.executeUpdate();
 	    c.close();
@@ -92,6 +97,56 @@ public class CarrerasModel {
 
 	}
 
+    }
+
+    public int getPlazasDisponibles(int idcarrera) {
+	Connection c = null;
+	PreparedStatement pst = null;
+	int plazas = 0;
+	try {
+	    c = Jdbc.createThreadConnection();
+
+	    pst = c.prepareStatement(SQL_FIND_PLAZAS);
+	    pst.setInt(1, idcarrera);
+
+	    ResultSet rs = pst.executeQuery();
+	    while (rs.next()) {
+		plazas = rs.getInt(1);
+	    }
+	    rs.close();
+	    c.close();
+	} catch (SQLException e) {
+	    throw new UnexpectedException(e);
+	} finally {
+	    Jdbc.close(pst);
+	}
+	return plazas;
+//		return db.executeQueryPojo(Integer.class, SQL_FIND_PLAZAS, idcarrera).get(0);
+    }
+
+    public int getPlazasReservadas(int idCarrera) {
+	Connection c = null;
+	PreparedStatement pst = null;
+	int plazas = 0;
+	try {
+	    c = Jdbc.createThreadConnection();
+
+	    pst = c.prepareStatement(SQL_FIND_PLAZASRESERVADAS);
+	    pst.setInt(1, idCarrera);
+
+	    ResultSet rs = pst.executeQuery();
+	    while (rs.next()) {
+		plazas = rs.getInt(1);
+	    }
+	    rs.close();
+	    c.close();
+	} catch (SQLException e) {
+	    throw new UnexpectedException(e);
+	} finally {
+	    Jdbc.close(pst);
+	}
+	return plazas;
+//		return db.executeQueryPojo(Integer.class, SQL_FIND_PLAZASRESERVADAS, idCarrera).get(0);
     }
 
     public int getMaxIdCarrera() {
@@ -114,6 +169,37 @@ public class CarrerasModel {
 	    Jdbc.close(pst);
 
 	}
+    }
+
+    public double getPrecioCarrera(int idCarrera) {
+	Connection c = null;
+	PreparedStatement pst = null;
+
+	double resultado;
+
+	try {
+	    c = Jdbc.createThreadConnection();
+	    pst = c.prepareStatement(SQL_FIND_PRECIO_IDCARRERA);
+	    pst.setInt(1, idCarrera);
+
+	    ResultSet rs = pst.executeQuery();
+
+	    if (rs.next() == false) {
+		System.out.print("fallo");
+	    }
+
+	    resultado = rs.getDouble(1);
+
+	    c.close();
+
+	} catch (SQLException e) {
+	    throw new UnexpectedException(e);
+	} finally {
+	    Jdbc.close(pst);
+
+	}
+
+	return resultado;
     }
 
 }

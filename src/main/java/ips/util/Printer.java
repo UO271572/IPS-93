@@ -60,7 +60,10 @@ public class Printer {
 		sb.append("Estado inscripcion: "  + inscripcion.getEstadoinscripcion());
 		sb.append(" ");
 		sb.append("Fecha inscripcion: " + inscripcion.getFechainscripcion());
-		
+		sb.append(" ");
+		sb.append("Dorsal: " + inscripcion.getDorsal());
+		sb.append(" ");
+		sb.append("Incidendia: " + inscripcion.getIncidencia());
 		
 		return sb.toString();
 		

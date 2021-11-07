@@ -21,7 +21,7 @@ import ips.util.Jdbc;
  */
 public class ClasificacionModel {
 	//cl.posicion, c.sexo, c.nombre , cl.time
-	private Database db = new Database();
+//	private Database db = new Database();
 	public static final String SQL_CLASIFICACION_SEXO ="SELECT cl.posicion, c.sexo, c.nombre,c.dnicorredor,cl.idcarrera,cl.time from resultados cl,corredores c where(idcarrera = ? and c.dnicorredor = cl.dnicorredor) order by c.sexo,cl.time";
 	
 	public static final String SQL_CLASIFICACION_CATEGORIA ="SELECT cl.posicion, c.sexo, c.nombre,c.dnicorredor,cl.idcarrera,cl.time from resultados cl,corredores c where(idcarrera = ? and c.dnicorredor = cl.dnicorredor) order by c.categoria,cl.time";

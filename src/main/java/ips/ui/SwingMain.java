@@ -23,7 +23,6 @@ public class SwingMain {
 				try {
 					JFrame.setDefaultLookAndFeelDecorated(true);
 					JDialog.setDefaultLookAndFeelDecorated(true);
-					
 					UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 					
 					MenuRolSelectionView view = new MenuRolSelectionView();

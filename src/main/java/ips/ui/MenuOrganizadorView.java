@@ -153,13 +153,13 @@ public class MenuOrganizadorView extends JDialog {
 		}
 		return btnCargarDatos;
 	}
-	private JButton getBtnProcesarPagos() {
+	public JButton getBtnProcesarPagos() {
 		if (btnProcesarPagos == null) {
 			btnProcesarPagos = new JButton("Procesar pagos");
 		}
 		return btnProcesarPagos;
 	}
-	private JButton getBtnAsignarDorsales() {
+	public JButton getBtnAsignarDorsales() {
 		if (btnAsignarDorsales == null) {
 			btnAsignarDorsales = new JButton("Asignar dorsales");
 		}

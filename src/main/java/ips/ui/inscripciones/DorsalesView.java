@@ -26,6 +26,7 @@ public class DorsalesView extends JDialog {
 	 * Create the dialog.
 	 */
 	public DorsalesView() {
+		setModal(true);
 //		this.menOrgView = menOrgView;
 		setTitle("Asignacion de dorsales");
 		setBounds(100, 100, 614, 433);

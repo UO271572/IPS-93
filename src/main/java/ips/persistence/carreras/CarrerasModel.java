@@ -30,11 +30,13 @@ public class CarrerasModel {
 	public static final String SQL_CARRERA_BY_ID = "SELECT * FROM CARRERAS WHERE IDCARRERA=?";
 	
 	public static final String SQL_INSERT_CARRERA = "INSERT INTO carreras (idcarrera,nombre,fechacompeticion,tipo,distancia,plazasdisponibles,plazasreservadas,lugar) "
-			+ "VALUES (?,?,?,?,?,?,?,?)";
+			+ "VALUES (?,?,?,?,?,?,?,?)"; // Mirar con base nueva
 	
 	public static final String SQL_FIND_MAX_IDCARRERA = "select max(idcarrera) from carreras";
 	public static final String SQL_FIND_PLAZAS = "select plazasdisponibles from carreras where idcarrera = ?";
 	public static final String SQL_FIND_PLAZASRESERVADAS = "select plazasreservadas from carreras where idcarrera = ?";
+	
+	public static final String SQL_FIND_PRECIO_IDCARRERA = "select precio from carreras where idcarrera = ?";
 	
 	public int getPlazasDisponibles(int idcarrera) {
 		Connection c = null;
@@ -170,6 +172,35 @@ public class CarrerasModel {
 		}
 	}
 
-	
+	public double getPrecioCarrera(int idCarrera) {
+		Connection c = null;
+		PreparedStatement pst = null;
+
+		double resultado;
+		
+		try {
+			c = Jdbc.createThreadConnection();
+			pst = c.prepareStatement(SQL_FIND_PRECIO_IDCARRERA);
+			pst.setInt(1, idCarrera);
+			
+			ResultSet rs = pst.executeQuery();
+			
+			if(rs.next() == false) {
+				System.out.print("fallo");
+			}
+			
+			resultado = rs.getDouble(1);
+			
+			c.close();
+			
+		} catch (SQLException e) {
+			throw new UnexpectedException(e);}
+		finally {
+			Jdbc.close(pst);
+			
+		}
+		
+		return resultado;
+	}
 
 }

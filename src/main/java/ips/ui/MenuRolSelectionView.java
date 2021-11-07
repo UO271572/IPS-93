@@ -13,6 +13,8 @@ import javax.swing.JPanel;
 
 public class MenuRolSelectionView extends JDialog{
 	
+	private static final long serialVersionUID = 1L;
+
 	private JPanel panelTexto;
 	private JPanel panelBotones;
 	private JLabel label;
@@ -21,8 +23,6 @@ public class MenuRolSelectionView extends JDialog{
 	private JPanel panelSur;
 	private JPanel panelNorte;
 	private JPanel panelBotonesInterior;
-	private JButton btInscribirse;
-	
 	
 	public MenuRolSelectionView() {
 		setTitle("Eleccion de rol");
@@ -33,8 +33,7 @@ public class MenuRolSelectionView extends JDialog{
 		getContentPane().add(getPanelTexto());
 		getContentPane().add(getPanelBotones());
 		this.setModal(true);
-	}
-	
+	}	
 	
 	private JPanel getPanelTexto() {
 		if (panelTexto == null) {
@@ -45,6 +44,16 @@ public class MenuRolSelectionView extends JDialog{
 		}
 		return panelTexto;
 	}
+	
+	private JLabel getLabel() {
+		if (label == null) {
+			label = new JLabel("Elige tu rol");
+			label.setBounds(233, 5, 96, 25);
+			label.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		}
+		return label;
+	}
+	
 	private JPanel getPanelBotones() {
 		if (panelBotones == null) {
 			panelBotones = new JPanel();
@@ -56,28 +65,7 @@ public class MenuRolSelectionView extends JDialog{
 		}
 		return panelBotones;
 	}
-	private JLabel getLabel() {
-		if (label == null) {
-			label = new JLabel("Elige tu rol");
-			label.setBounds(233, 5, 96, 25);
-			label.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		}
-		return label;
-	}
-	public JButton getBtnOrganizador() {
-		if (btnOrganizador == null) {
-			btnOrganizador = new JButton("Organizador");
-			btnOrganizador.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		}
-		return btnOrganizador;
-	}
-	public JButton getBtnCorredor() {
-		if (btnCorredor == null) {
-			btnCorredor = new JButton("Corredor");
-			btnCorredor.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		}
-		return btnCorredor;
-	}
+	
 	private JPanel getPanelSur() {
 		if (panelSur == null) {
 			panelSur = new JPanel();
@@ -85,6 +73,7 @@ public class MenuRolSelectionView extends JDialog{
 		}
 		return panelSur;
 	}
+	
 	private JPanel getPanel_1_1() {
 		if (panelNorte == null) {
 			panelNorte = new JPanel();
@@ -92,6 +81,7 @@ public class MenuRolSelectionView extends JDialog{
 		}
 		return panelNorte;
 	}
+	
 	private JPanel getPanelBotonesInterior() {
 		if (panelBotonesInterior == null) {
 			panelBotonesInterior = new JPanel();
@@ -99,8 +89,24 @@ public class MenuRolSelectionView extends JDialog{
 			panelBotonesInterior.setLayout(new GridLayout(0, 2, 0, 0));
 			panelBotonesInterior.add(getBtnOrganizador());
 			panelBotonesInterior.add(getBtnCorredor());
-			//panelBotonesInterior.add(getBtInscribirse());
 		}
 		return panelBotonesInterior;
 	}
+	
+	public JButton getBtnOrganizador() {
+		if (btnOrganizador == null) {
+			btnOrganizador = new JButton("Organizador");
+			btnOrganizador.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		}
+		return btnOrganizador;
+	}
+	
+	public JButton getBtnCorredor() {
+		if (btnCorredor == null) {
+			btnCorredor = new JButton("Corredor");
+			btnCorredor.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		}
+		return btnCorredor;
+	}
+	
 }

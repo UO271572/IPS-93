@@ -42,7 +42,7 @@ public class MenuInscripcionView extends JDialog {
 		this.inscView = insc;
 		setTitle("Corredor: Inscripcion con tarjeta");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 842, 309);
+		setBounds(100, 100, 809, 293);
 		setLocationRelativeTo(null);
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.WHITE);

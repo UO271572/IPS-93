@@ -7,27 +7,40 @@ import java.awt.event.WindowEvent;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import javax.swing.text.html.HTMLDocument.HTMLReader.ParagraphAction;
 
 import ips.business.carreras.CarreraDisplayDTO;
 import ips.business.carreras.CarrerasController;
 import ips.business.plazos.PlazoDTO;
 import ips.business.plazos.PlazosController;
 import ips.business.plazos.VentanaCrearPlazoController;
+import ips.business.categorias.CategoriaDTO;
+import ips.business.categorias.CategoriaModel;
+import ips.business.categorias.EditarCategoriaController;
 import ips.persistence.carreras.CarrerasModel;
 import ips.ui.MenuCrearCarreraView;
 import ips.ui.VentanaCrearPlazoView;
 import ips.ui.carreras.CarrerasView;
+import ips.ui.categorias.EditarCategoriaView;
 
 public class MenuCrearCarreraController {
 
 	public final static int MAX_NUM_PLAZOS = 5;
 
 	private MenuCrearCarreraView view;
-	private CarrerasController cc;
+	private CarrerasController cc = new CarrerasController();
+	
+	private AñadirCategoriaAction añadirCategoria = new AñadirCategoriaAction();
+	private EliminarCategoriaAction eliminarCategoria = new EliminarCategoriaAction();
+	private ModificarCategoriaAction modificarCategoria = new ModificarCategoriaAction();
+	
+	private int minEdadAbsoluta, maxEdadAbsoluta, minEdadMasculina, maxEdadMasculina, minEdadFemenina, maxEdadFemenina;
 	private VentanaCrearPlazoController crearPlazosController;
 	private List<PlazoDTO> plazos = new ArrayList<PlazoDTO>();
 	private PlazosController plazoController;
@@ -36,7 +49,7 @@ public class MenuCrearCarreraController {
 
 	public MenuCrearCarreraController(MenuCrearCarreraView view) {
 		this.view = view;
-		cc = new CarrerasController(new CarrerasModel(), new CarrerasView());
+		//cc = new CarrerasController(new CarrerasModel(), new CarrerasView());
 		initController();
 	}
 
@@ -49,8 +62,17 @@ public class MenuCrearCarreraController {
 		view.getBtnCancelar().addActionListener(cancelar());
 		view.getBtnAnadir().addActionListener(añadirPlazo());
 		view.getBtnBorrar().addActionListener(borrarPlazo());
-		view.getBtnModificar().addActionListener(modificarPlazo());
 		plazoController = new PlazosController();
+		
+		view.getBtnAñadir().addActionListener(añadirCategoria);
+		view.getBtnEliminar().addActionListener(eliminarCategoria);
+		view.getBtnModificar().addActionListener(modificarCategoria);
+		
+		DefaultListModel modelo = new DefaultListModel();
+		
+		modelo.addAll(generarCategoriasPorDefecto());
+		
+		view.getLista_Categorias().setModel(modelo);
 
 	}
 
@@ -76,7 +98,71 @@ public class MenuCrearCarreraController {
 			}
 		};
 	}
+	
+private List<CategoriaDTO> generarCategoriasPorDefecto() {
+		
+		List<CategoriaDTO> res = new ArrayList<CategoriaDTO>();
+		CategoriaDTO cat1 = new CategoriaDTO("Absoluto - De 18 a 24", 18, 24, "Absoluto", CategoriaDTO.NO_CARRERA);
+		CategoriaDTO cat2 = new CategoriaDTO("Masculino - De 18 a 24", 18, 24, "Masculino", CategoriaDTO.NO_CARRERA);
+		CategoriaDTO cat3 = new CategoriaDTO("Femenino - De 18 a 24", 18, 24, "Femenino", CategoriaDTO.NO_CARRERA);
+		
+		res.add(cat1);
+		res.add(cat2);
+		res.add(cat3);
+		
+		minEdadAbsoluta = 18;
+		maxEdadAbsoluta = 24;
+		
+		minEdadMasculina = 18;
+		maxEdadMasculina = 24;
+		
+		minEdadFemenina = 18;
+		maxEdadFemenina = 24;
+		
+		return res;
+	}
 
+	class AñadirCategoriaAction implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			EditarCategoriaView editarCategoria = new EditarCategoriaView(view.getLista_Categorias());
+			EditarCategoriaController editarCategoriaController = new EditarCategoriaController(editarCategoria);
+			
+			//editarCategoriaController.initController();
+			editarCategoria.setVisible(true);
+		}
+		
+	}
+	
+	class ModificarCategoriaAction implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			EditarCategoriaView editarCategoria = new EditarCategoriaView(view.getLista_Categorias());
+			
+			CategoriaDTO categoria = (CategoriaDTO) view.getLista_Categorias().getSelectedValue();//new CategoriaDTO(()view.getLista_Categorias().getSelectedValue(), 0, 0, null)
+			
+			int indice = view.getLista_Categorias().getSelectedIndex();
+			
+			new EditarCategoriaController(editarCategoria, categoria, indice);
+			
+			editarCategoria.setVisible(true);
+		}
+		
+	}
+	
+	class EliminarCategoriaAction implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			DefaultListModel modelo = (DefaultListModel) view.getLista_Categorias().getModel();
+			modelo.remove(view.getLista_Categorias().getSelectedIndex());
+			view.getLista_Categorias().setModel(modelo);
+		}
+		
+	}
+	
 	// AUXILIARES
 	private ActionListener crearCarrera() {
 		return new ActionListener() {
@@ -84,9 +170,20 @@ public class MenuCrearCarreraController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
+				CategoriaModel categoriaModel = new CategoriaModel();
+
 				if (checkCamposCrearCarrera()) {
 					CarreraDisplayDTO carrera = getCamposCarrera();
 					cc.insertarCarrera(carrera);
+					
+					//
+					DefaultListModel<CategoriaDTO> modelo = (DefaultListModel<CategoriaDTO>) view.getLista_Categorias().getModel();
+					
+					for(int i = 0; i < modelo.getSize(); i++) {  
+						modelo.get(i).setIdCarrera(carrera.getIdCarrera());
+						categoriaModel.insertarCategorias(modelo.get(i));
+					}
+					//
 
 					plazoController.insertPlazos(plazos);
 					JOptionPane.showMessageDialog(null,

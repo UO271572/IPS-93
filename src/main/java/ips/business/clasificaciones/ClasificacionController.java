@@ -4,6 +4,7 @@
 package ips.business.clasificaciones;
 
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.List;
 
 import ips.business.BusinessCheck;
@@ -32,6 +33,13 @@ public class ClasificacionController {
 
 	public List<ClasificacionDTO> mostrarResultadosPorCategoria(int idcarrera) throws BusinessException, SQLException {
 		List<ClasificacionDTO> listaDto = model.getClasificacionByCategoria(idcarrera);
+		BusinessCheck.isFalse(listaDto.isEmpty(),"No hay clasificacion disponible");
+		return listaDto;
+	}
+
+	// Para el boton de clasificacion sin filtros
+	public List<ClasificacionDTO> mostrarResultados(int idCarrera) throws BusinessException, SQLException {
+		List<ClasificacionDTO> listaDto = model.getClasificacion(idCarrera); // sin filtros
 		BusinessCheck.isFalse(listaDto.isEmpty(),"No hay clasificacion disponible");
 		return listaDto;
 	}

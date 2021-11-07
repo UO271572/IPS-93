@@ -20,6 +20,14 @@ import org.jdatepicker.JDatePicker;
 
 import com.toedter.calendar.JDateChooser;
 
+import ips.business.categorias.CategoriaDTO;
+
+import javax.swing.JPanel;
+import javax.swing.border.TitledBorder;
+import javax.swing.JScrollPane;
+import javax.swing.JList;
+import javax.swing.border.EtchedBorder;
+
 public class MenuCrearCarreraView extends JDialog{
 	private JTextField txNombre;
 	private JLabel lblNombre;
@@ -44,10 +52,18 @@ public class MenuCrearCarreraView extends JDialog{
 	private DefaultTableModel modelPlazos;
 	private JButton btnAnadir;
 	private JButton btnBorrar;
+	private JPanel pnCrearCategorias;
+	private JButton btnAñadir;
 	private JButton btnModificar;
+	private JButton btnEliminar;
+	private JScrollPane scrollPane;
+	private JScrollPane panel_Categorias;
+	private JList lista_Categorias;
+	private JPanel pnCrearCategorias_1;
 	public MenuCrearCarreraView() {
+		setResizable(false);
 		setTitle("Organizador: Creacion de carrera");
-		setBounds(100, 100, 892, 427);
+		setBounds(100, 100, 892, 581);
 		setLocationRelativeTo(null);
 		modelPlazos = new DefaultTableModel();
 		getContentPane().setBackground(Color.WHITE);
@@ -68,10 +84,9 @@ public class MenuCrearCarreraView extends JDialog{
 		getContentPane().add(getFechaCompeticion());
 		getContentPane().add(getBtnCancelar());
 		getContentPane().add(getLblFechaDeCompeticion());
-		getContentPane().add(getScrollPanePlazos());
-		getContentPane().add(getBtnAnadir());
-		getContentPane().add(getBtnBorrar());
-		getContentPane().add(getBtnModificar());
+		//getContentPane().add(getBtnModificar());
+		getContentPane().add(getPnCrearCategorias());
+		getContentPane().add(getPnCrearCategorias_1());
 		this.setModal(true);
 	}
 	public JTextField getTxNombre() {
@@ -177,7 +192,7 @@ public class MenuCrearCarreraView extends JDialog{
 				public void actionPerformed(ActionEvent e) {
 				}
 			});
-			btnGuardar.setBounds(560, 305, 85, 21);
+			btnGuardar.setBounds(682, 513, 85, 21);
 		}
 		return btnGuardar;
 	}
@@ -191,7 +206,7 @@ public class MenuCrearCarreraView extends JDialog{
 	public JButton getBtnCancelar() {
 		if (btnCancelar == null) {
 			btnCancelar = new JButton("Cancelar");
-			btnCancelar.setBounds(658, 305, 85, 21);
+			btnCancelar.setBounds(783, 513, 85, 21);
 		}
 		return btnCancelar;
 	}
@@ -203,10 +218,35 @@ public class MenuCrearCarreraView extends JDialog{
 		}
 		return lblFechaDeCompeticion;
 	}
+	private JPanel getPnCrearCategorias() {
+		if (pnCrearCategorias == null) {
+			pnCrearCategorias = new JPanel();
+			pnCrearCategorias.setBackground(Color.WHITE);
+			pnCrearCategorias.setBorder(new TitledBorder(null, "Categorias", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+			pnCrearCategorias.setBounds(13, 178, 422, 169);
+			pnCrearCategorias.setLayout(null);
+			pnCrearCategorias.add(getScrollPane());
+			pnCrearCategorias.add(getBtnAñadir());
+			pnCrearCategorias.add(getBtnModificar());
+			pnCrearCategorias.add(getBtnEliminar());
+			pnCrearCategorias.add(getPanel_Categorias());
+		}
+		return pnCrearCategorias;
+	}
+	
+	public JButton getBtnAñadir() {
+		if (btnAñadir == null) {
+			btnAñadir = new JButton("Añadir");
+			btnAñadir.setBounds(332, 23, 80, 40);
+			
+		}
+		return btnAñadir;
+	}
+	
 	public JScrollPane getScrollPanePlazos() {
 		if (scrollPanePlazos == null) {
 			scrollPanePlazos = new JScrollPane();
-			scrollPanePlazos.setBounds(492, 186, 258, 103);
+			scrollPanePlazos.setBounds(10, 23, 279, 136);
 			scrollPanePlazos.setViewportView(getTablePlazos());
 		}
 		return scrollPanePlazos;
@@ -228,22 +268,69 @@ public class MenuCrearCarreraView extends JDialog{
 	public JButton getBtnAnadir() {
 		if (btnAnadir == null) {
 			btnAnadir = new JButton("Añadir");
-			btnAnadir.setBounds(397, 186, 85, 21);
+			btnAnadir.setBounds(299, 21, 85, 21);
 		}
 		return btnAnadir;
 	}
 	public JButton getBtnBorrar() {
 		if (btnBorrar == null) {
-			btnBorrar = new JButton("Borrar");
-			btnBorrar.setBounds(397, 268, 85, 21);
+			btnBorrar = new JButton("Eliminar");
+			btnBorrar.setBounds(299, 52, 85, 21);
 		}
 		return btnBorrar;
 	}
 	public JButton getBtnModificar() {
 		if (btnModificar == null) {
 			btnModificar = new JButton("Modificar");
-			btnModificar.setBounds(397, 228, 85, 21);
+			btnModificar.setBounds(332, 70, 80, 40);
+			
+			// esto abre un jdialog con las mismas opciones que el de arriba pero autocompletado con lo que ya hay
 		}
 		return btnModificar;
+	}
+	
+	public JButton getBtnEliminar() {
+		if (btnEliminar == null) {
+			btnEliminar = new JButton("Eliminar");
+			btnEliminar.setBounds(332, 116, 80, 40);
+		}
+		return btnEliminar;
+	}
+	
+	private JScrollPane getScrollPane() {
+		if (scrollPane == null) {
+			scrollPane = new JScrollPane();
+			scrollPane.setBounds(0, 0, 2, 2);
+		}
+		return scrollPane;
+	}
+	private JScrollPane getPanel_Categorias() {
+		if (panel_Categorias == null) {
+			panel_Categorias = new JScrollPane();
+			panel_Categorias.setBounds(10, 23, 311, 133);
+			panel_Categorias.setViewportView(getLista_Categorias());
+			
+			// aqui tendria que hacer un select all de la tabla categorias y rellenarla
+		}
+		return panel_Categorias;
+	}
+	public JList getLista_Categorias() {
+		if (lista_Categorias == null) {
+			lista_Categorias = new JList<CategoriaDTO>();
+		}
+		return lista_Categorias;
+	}
+	private JPanel getPnCrearCategorias_1() {
+		if (pnCrearCategorias_1 == null) {
+			pnCrearCategorias_1 = new JPanel();
+			pnCrearCategorias_1.setLayout(null);
+			pnCrearCategorias_1.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Plazos", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+			pnCrearCategorias_1.setBackground(Color.WHITE);
+			pnCrearCategorias_1.setBounds(446, 178, 422, 169);
+			pnCrearCategorias_1.add(getScrollPanePlazos());
+			pnCrearCategorias_1.add(getBtnAnadir());
+			pnCrearCategorias_1.add(getBtnBorrar());
+		}
+		return pnCrearCategorias_1;
 	}
 }

@@ -1,5 +1,6 @@
 package ips.business;
 
+import java.awt.Component; 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -7,10 +8,9 @@ import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 import java.util.List;
 
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
+import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import ips.business.carreras.CarreraDisplayDTO;
@@ -19,9 +19,11 @@ import ips.business.clasificaciones.ClasificacionController;
 import ips.business.clasificaciones.ClasificacionDTO;
 import ips.business.corredores.CorredorDTO;
 import ips.business.corredores.CorredoresController;
+import ips.business.inscripciones.InscripcionController;
 import ips.persistence.carreras.CarrerasModel;
 import ips.persistence.clasificaciones.ClasificacionModel;
 import ips.persistence.corredores.CorredoresModel;
+import ips.persistence.pagos.PagoTransferenciaBancariaModel;
 import ips.ui.MenuCrearCarreraView;
 import ips.ui.MenuOrganizadorView;
 import ips.ui.carreras.CarrerasView;
@@ -34,6 +36,8 @@ public class MenuOrganizadorController {
 	
 	public MenuOrganizadorController(MenuOrganizadorView view) {
 		this.view = view;
+		
+		//initController();
 	}
 
 
@@ -41,7 +45,31 @@ public class MenuOrganizadorController {
 		view.addWindowListener(notCloseDirectly());
 		inicializarComboBox();
 		//view.getBtnOrganizador().addActionListener(accionBotonOrganizador());
+		view.getBtnProcesarPagos().addActionListener(accionProcesaPagosCarrera());
+		view.getBtnGenerarClasificacion().addActionListener(accionBotonClasificaSinFiltro());
+		view.getBtMostrarClasificacionSinFiltro().addActionListener(accionBotonClasificaSinFiltro());
+		cargarCarreras();
 		
+	}
+
+
+	private void cargarCarreras() {
+		CarrerasController carreraController = new CarrerasController(new CarrerasModel(),new CarrerasView());
+		List<CarreraDisplayDTO> listaCarreras = null;
+		try {
+			listaCarreras = carreraController.getListaCarreras();
+		} catch (BusinessException e) {
+			
+			e.printStackTrace();
+		}
+		
+		DefaultListModel modelo = new DefaultListModel();
+		
+		for(CarreraDisplayDTO carrera: listaCarreras) {
+			modelo.addElement(carrera);
+		}
+		
+		view.getListCarreras().setModel(modelo);
 	}
 	
 	public WindowAdapter notCloseDirectly() {
@@ -57,25 +85,27 @@ public class MenuOrganizadorController {
 		            JOptionPane.YES_NO_OPTION);
 		 */
 		        //if (result == JOptionPane.YES_OPTION)
-		            view.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		        view.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		    }
 		};
 	}
 	
 
 	private void inicializarComboBox() {
-		view.getCbOpciones().addItem("Ver estado de la competicion"); 
+//		view.getCbOpciones().addItem("Ver estado de la competicion"); 
 //		view.getCbOpciones().addItem("Ver estado de la clasificacion por sexo");  
 //		view.getCbOpciones().addItem("Ver estado de la clasificacion por categoria");  
-		view.getBtnGo().addActionListener(accionBotonGo(view.getCbOpciones().getSelectedIndex()));
-		view.getBtnBuscarCorredores().addActionListener(accionBotonBuscarCorredores(view.getCbCarreras().getSelectedIndex()));
+		// view.getBtnGo().addActionListener(accionBotonGo(view.getCbOpciones().getSelectedIndex()));
+		view.getBtnBuscarCorredores().addActionListener(accionBotonBuscarCorredores(view.getListCarreras().getSelectedIndex()));
 		view.getBtMostrarClasificacionCategoria().addActionListener(accionBotonClasificaPorCategoria());
+		
+		// clasificaPorSexoAccion
 		view.getBtMostrarClasificacionSexo().addActionListener(accionBotonClasificaPorSexo());
 		view.getBtnCrearCarrera().addActionListener(cambiarAVentanaCrearCarrera());
 	}
 
-
-	//Acciones
+	// Acciones
+	
 	private ActionListener accionBotonClasificaPorSexo() {
 		return new ActionListener() {
 			
@@ -84,7 +114,8 @@ public class MenuOrganizadorController {
 				ClasificacionController controller = new ClasificacionController(new ClasificacionModel());
 				DefaultListModel<ClasificacionDTO> dlm = new DefaultListModel<ClasificacionDTO>();
 				try {
-					dlm.addAll(controller.mostrarResultadosPorSexo(((CarreraDisplayDTO)view.getCbCarreras().getSelectedItem()).getIdCarrera()));
+					//dlm.addAll(controller.mostrarResultadosPorSexo(((CarreraDisplayDTO)view.getCbCarreras().getSelectedItem()).getIdCarrera())); ADRI
+					dlm.addAll(controller.mostrarResultadosPorSexo(((CarreraDisplayDTO)view.getListCarreras().getSelectedValue()).getIdCarrera()));
 					view.getListCorredores().setModel(dlm);
 				} catch (NumberFormatException e1) {
 					e1.printStackTrace();
@@ -108,8 +139,10 @@ public class MenuOrganizadorController {
 				DefaultListModel<ClasificacionDTO> dlm = new DefaultListModel<ClasificacionDTO>();
 				try {
 					//int index = view.getCbCarreras().getSelectedItem()
-					dlm.addAll(controller.mostrarResultadosPorCategoria(((CarreraDisplayDTO)view.getCbCarreras().getSelectedItem()).getIdCarrera()));
+					// dlm.addAll(controller.mostrarResultadosPorCategoria(((CarreraDisplayDTO)view.getCbCarreras().getSelectedItem()).getIdCarrera()));
+					dlm.addAll(controller.mostrarResultadosPorCategoria(((CarreraDisplayDTO)view.getListCarreras().getSelectedValue()).getIdCarrera()));
 					view.getListCorredores().setModel(dlm);
+					
 				} catch (NumberFormatException e1) {
 					e1.printStackTrace();
 				} catch (BusinessException e1) {
@@ -122,8 +155,37 @@ public class MenuOrganizadorController {
 		
 	}
 	
-	
-	
+	private ActionListener accionBotonClasificaSinFiltro() {
+		return new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ClasificacionController controller = new ClasificacionController(new ClasificacionModel());
+				DefaultListModel<ClasificacionDTO> dlm = new DefaultListModel<ClasificacionDTO>();
+				try {
+					//int index = view.getCbCarreras().getSelectedItem()
+					// dlm.addAll(controller.mostrarResultadosPorCategoria(((CarreraDisplayDTO)view.getCbCarreras().getSelectedItem()).getIdCarrera()));
+					dlm.addAll(controller.mostrarResultados(((CarreraDisplayDTO)view.getListCarreras().getSelectedValue()).getIdCarrera()));
+					view.getListCorredores().setModel(dlm);
+					
+
+					for(Component c: view.getPn_FiltrosClasificacion().getComponents()) {
+						
+						JButton boton = (JButton) c;
+						
+						boton.setEnabled(true);
+					}
+				} catch (NumberFormatException e1) {
+					e1.printStackTrace();
+				} catch (BusinessException e1) {
+					e1.printStackTrace();
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}	
+			}
+		};
+		
+	}
 	
 	private ActionListener accionBotonBuscarCorredores(Object index) {
 		return new ActionListener() {
@@ -134,7 +196,8 @@ public class MenuOrganizadorController {
 						new CorredoresView());
 				try {
 					DefaultListModel<CorredorDTO> dlm = new DefaultListModel<CorredorDTO>();
-					dlm.addAll(carreraController.getCorredoresByIdCarrera(((CarreraDisplayDTO)(view.getCbCarreras().getSelectedItem())).getIdCarrera()));
+					//dlm.addAll(carreraController.getCorredoresByIdCarrera(((CarreraDisplayDTO)(view.getCbCarreras().getSelectedItem())).getIdCarrera()));
+					dlm.addAll(carreraController.getCorredoresByIdCarrera(((CarreraDisplayDTO)(view.getListCarreras().getSelectedValue())).getIdCarrera()));
 					view.getListCorredores().setModel(dlm);
 				} catch (BusinessException e1) {
 					Printer.printBusinessException(e1);
@@ -143,56 +206,20 @@ public class MenuOrganizadorController {
 		};
 	}
 	
-	private ActionListener accionBotonGo(int index) {
+	private ActionListener accionProcesaPagosCarrera() {
 		return new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				InscripcionController inscripcionController = new InscripcionController(new PagoTransferenciaBancariaModel());
+				int[] res = inscripcionController.comprobarPagosDeCarrera(((CarreraDisplayDTO)(view.getListCarreras().getSelectedValue())).getIdCarrera());
 				
-				switch(index) {
-					case 0:
-						CarrerasController carreraController = new CarrerasController(new CarrerasModel(),new CarrerasView());
-					try {
-						List<CarreraDisplayDTO> listaCarreras = carreraController.getListaCarreras();
-//						DefaultListModel dlm = new DefaultListModel();
-//						dlm.addAll(listaCarreras);
-						CarreraDisplayDTO[] carreras = arrayListToArray(listaCarreras);
-						view.getCbCarreras().setModel(new DefaultComboBoxModel<CarreraDisplayDTO>(carreras));
-						view.getBtnBuscarCorredores().setEnabled(true);
-						view.getListCorredores().setEnabled(true);
-						view.getBtMostrarClasificacionSexo().setEnabled(true);
-						view.getBtMostrarClasificacionCategoria().setEnabled(true);
-					} catch (BusinessException e1) {
-						Printer.printBusinessException(e1);
-						break;
-					}
-					
-					case 1:
-//						ClasificacionController clasController = new ClasificacionController(new ClasificacionModel());
-//						List<ClasificacionDTO> listaClas = clasController.mostrarResultadosPorSexo(index);
-//						//ClasificacionDTO[] clasificaciones = arrayClassificacionListToArray(clasController);
-//						view.getCbCarreras().setModel(new DefaultComboBoxModel<ClasificacionDTO>(clasificaciones));
-//						
-						break;
-					case 2:
-						
-						break;
-				}
-			}
-
-			private ClasificacionDTO[] arrayClassificacionListToArray(List<ClasificacionDTO> listaCarreras) {
-				ClasificacionDTO[] list = new ClasificacionDTO[listaCarreras.size()];
-				for(int i = 0; i<listaCarreras.size();i++) {
-					list[i] = listaCarreras.get(i);
-				}
-				return list;
-			}
-			private CarreraDisplayDTO[] arrayListToArray(List<CarreraDisplayDTO> listaCarreras) {
-				CarreraDisplayDTO[] list = new CarreraDisplayDTO[listaCarreras.size()];
-				for(int i = 0; i<listaCarreras.size();i++) {
-					list[i] = listaCarreras.get(i);
-				}
-				return list;
+				// queda enseñar el dialogo con el resultado
+				String resultado = "Inscripciones procesadas: " + (res[0] + res[1]) + "\n" +
+									"Válidas : " + res[0] + "\n" +
+									"No válidas: "+ res[1];
+				
+				JOptionPane.showMessageDialog(view, resultado);
 			}
 		};
 	}
@@ -203,15 +230,16 @@ public class MenuOrganizadorController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				MenuCrearCarreraView crearCarrera = new MenuCrearCarreraView();
-				MenuCrearCarreraController controllerCrearCarrera = new MenuCrearCarreraController(crearCarrera);
+				new MenuCrearCarreraController(crearCarrera); // MenuCrearCarreraController controllerCrearCarrera = 
 				//MenuCorredorController controller = new MenuCorredorController(frame);
 				//controller.initController();
+				//controllerCrearCarrera.initController();
 				crearCarrera.setVisible(true);
 			}
 		};
 	}
 	
-	}
+}
 	
 	
 

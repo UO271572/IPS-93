@@ -1,5 +1,9 @@
 package ips.persistence.dorsales;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -10,6 +14,8 @@ import ips.business.inscripciones.InscripcionDTO;
 import ips.persistence.carreras.CarrerasModel;
 import ips.persistence.corredores.CorredoresModel;
 import ips.util.Database;
+import ips.util.Jdbc;
+import ips.util.UnexpectedException;
 
 public class DorsalesModel {
 	private Database db = new Database();
@@ -23,7 +29,7 @@ public class DorsalesModel {
 //	public final String SQL_INSERT ="update inscripciones set dorsal = ? where dnicorredor = ? and idcarrera = ?";
 	public final String SQL_ASIGNAR_DORSAL = "UPDATE INSCRIPCIONES SET dorsal = ? where dnicorredor = ? and idcarrera = ? and estadoinscripcion = 'INSCRITO'";
 	public final String SQL_SIGUIENTE_DORSAL = "select dorsal from inscripciones where idcarrera = ? order by dorsal";
-	public static final String SQL_FIND_MAX_DORSAL = "select max(dorsal) from inscripciones";
+	public static final String SQL_FIND_MAX_DORSAL = "select max(dorsal) from inscripciones where idcarrera = ?";
 	/**
 	 * Devuelve la lista de inscripciones de una carrera ordenados por el numero de
 	 * dorsal
@@ -80,7 +86,31 @@ public class DorsalesModel {
 //			}
 //		}
 //		return -1;
-		int dorsal = db.executeQueryPojo(Integer.class, SQL_FIND_MAX_DORSAL, idcarrera).get(0);
+		
+		Connection c = null;
+		PreparedStatement pst = null;
+		int dorsal = 0;
+		try {
+			c = Jdbc.createThreadConnection();
+			
+			pst = c.prepareStatement(SQL_FIND_MAX_DORSAL);		
+			pst.setInt(1, idcarrera);
+							
+			ResultSet rs = pst.executeQuery();
+			while(rs.next()) {
+				dorsal = rs.getInt(1);
+			}
+			rs.close();
+			c.close();
+		} catch (SQLException e) {
+			throw new UnexpectedException(e);}
+		finally {
+			Jdbc.close(pst);
+		}
+		
+		
+		
+//		int dorsal = db.executeQueryPojo(Integer.class, SQL_FIND_MAX_DORSAL, idcarrera).get(0);
 		if(dorsal == 0 || dorsal <=reservadas) {
 			dorsal = reservadas + 1;
 			return dorsal;

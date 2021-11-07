@@ -40,21 +40,22 @@ public class MenuDorsalesController {
 	 */
 	private void iniciarController() {
 		dorsalView.getBtOk().addActionListener(accionCerrarVentana());
-		asignarDorsalesACorredores();
-		mostrarDorsales();
+		CarreraDisplayDTO dto= ((CarreraDisplayDTO)menOrgView.getListCarreras().getSelectedValue());
+		asignarDorsalesACorredores(dto);
+		mostrarDorsales(dto);
 	}
 
 	
-	private void asignarDorsalesACorredores() {
+	private void asignarDorsalesACorredores(CarreraDisplayDTO dto) {
 		try {
-			dorsalController.asignarDorsales(((CarreraDisplayDTO)menOrgView.getListCarreras().getSelectedValue()).getIdCarrera());
+			dorsalController.asignarDorsales(dto.getIdCarrera());
 		} catch (BusinessException e) {
 			e.printStackTrace();
 		}
 	}
 
-	private void mostrarDorsales() {
-		List<InscripcionDTO> listaActualizacion = dorsalController.getInscripciones(((CarreraDisplayDTO)dorsalView.getMenOrgView().getListCorredores().getSelectedValue()).getIdCarrera());
+	private void mostrarDorsales(CarreraDisplayDTO dto) {
+		List<InscripcionDTO> listaActualizacion = dorsalController.getInscripciones(dto.getIdCarrera());
 		InscripcionDTO[] inscripciones = arrayListToArray(listaActualizacion);
 		dorsalView.getListInscripcionDorsal().setModel(new DefaultComboBoxModel<InscripcionDTO>(inscripciones));
 	}

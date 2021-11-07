@@ -36,7 +36,7 @@ public class CarrerasModel {
 	public static final String SQL_FIND_PLAZAS = "select plazasdisponibles from carreras where idcarrera = ?";
 	public static final String SQL_FIND_PLAZASRESERVADAS = "select plazasreservadas from carreras where idcarrera = ?";
 	
-	public int getPlazasDisponibles(int idcarrera) {DA ERROR AQUI
+	public int getPlazasDisponibles(int idcarrera) {
 		Connection c = null;
 		PreparedStatement pst = null;
 		int plazas = 0;
@@ -47,9 +47,10 @@ public class CarrerasModel {
 			pst.setInt(1, idcarrera);
 							
 			ResultSet rs = pst.executeQuery();
-			plazas = rs.getInt("plazasdisponibles");
+			while(rs.next()) {
+				plazas = rs.getInt(1);
+			}
 			rs.close();
-//			pst.close();
 			c.close();
 		} catch (SQLException e) {
 			throw new UnexpectedException(e);}
@@ -60,7 +61,28 @@ public class CarrerasModel {
 //		return db.executeQueryPojo(Integer.class, SQL_FIND_PLAZAS, idcarrera).get(0);
 	}
 	public int getPlazasReservadas(int idCarrera) {
-		return db.executeQueryPojo(Integer.class, SQL_FIND_PLAZASRESERVADAS, idCarrera).get(0);
+		Connection c = null;
+		PreparedStatement pst = null;
+		int plazas = 0;
+		try {
+			c = Jdbc.createThreadConnection();
+			
+			pst = c.prepareStatement(SQL_FIND_PLAZASRESERVADAS);		
+			pst.setInt(1, idCarrera);
+							
+			ResultSet rs = pst.executeQuery();
+			while(rs.next()) {
+				plazas = rs.getInt(1);
+			}
+			rs.close();
+			c.close();
+		} catch (SQLException e) {
+			throw new UnexpectedException(e);}
+		finally {
+			Jdbc.close(pst);
+		}
+		return plazas;
+//		return db.executeQueryPojo(Integer.class, SQL_FIND_PLAZASRESERVADAS, idCarrera).get(0);
 	}
 	public List<CarreraDisplayDTO> getListaCarreras() {
 		//List<CarreraDisplayDTO> listCarreras = new ArrayList<CarreraDisplayDTO>();

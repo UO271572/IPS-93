@@ -35,6 +35,9 @@ public class MenuDorsalesController {
 	dorsalView.getBtOk().addActionListener(accionCerrarVentana());
 	CarreraDisplayDTO dto = ((CarreraDisplayDTO) menOrgView.getListCarreras().getSelectedValue());
 	// comprobamos que las carreras esten en estado cerrado
+	if (dto != null) {
+	    JOptionPane.showMessageDialog(null, "Debes seleccionar una carrera");
+	}
 	if (isCarreraCerrada(dto)) {
 	    asignarDorsalesACorredores(dto);
 	    mostrarDorsales(dto);

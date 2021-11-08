@@ -249,17 +249,21 @@ public class MenuOrganizadorController {
 		ClasificacionController controller = new ClasificacionController(new ClasificacionModel());
 		DefaultListModel<ClasificacionDTO> dlm = new DefaultListModel<ClasificacionDTO>();
 		try {
-		    // int index = view.getCbCarreras().getSelectedItem()
-		    // dlm.addAll(controller.mostrarResultadosPorCategoria(((CarreraDisplayDTO)view.getCbCarreras().getSelectedItem()).getIdCarrera()));
-		    dlm.addAll(controller.mostrarResultados(
-			    ((CarreraDisplayDTO) view.getListCarreras().getSelectedValue()).getIdCarrera()));
-		    view.getListCorredores().setModel(dlm);
+		    if (view.getListCarreras().getSelectedValue() != null) {
+			// int index = view.getCbCarreras().getSelectedItem()
+			// dlm.addAll(controller.mostrarResultadosPorCategoria(((CarreraDisplayDTO)view.getCbCarreras().getSelectedItem()).getIdCarrera()));
+			dlm.addAll(controller.mostrarResultados(
+				((CarreraDisplayDTO) view.getListCarreras().getSelectedValue()).getIdCarrera()));
+			view.getListCorredores().setModel(dlm);
 
-		    for (Component c : view.getPn_FiltrosClasificacion().getComponents()) {
+			for (Component c : view.getPn_FiltrosClasificacion().getComponents()) {
 
-			JButton boton = (JButton) c;
+			    JButton boton = (JButton) c;
 
-			boton.setEnabled(true);
+			    boton.setEnabled(true);
+			}
+		    } else {
+			JOptionPane.showMessageDialog(null, "Debes seleccionar una carrera");
 		    }
 		} catch (NumberFormatException e1) {
 		    e1.printStackTrace();
@@ -281,11 +285,15 @@ public class MenuOrganizadorController {
 		CorredoresController carreraController = new CorredoresController(new CorredoresModel(),
 			new CorredoresView());
 		try {
-		    DefaultListModel<CorredorDTO> dlm = new DefaultListModel<CorredorDTO>();
-		    // dlm.addAll(carreraController.getCorredoresByIdCarrera(((CarreraDisplayDTO)(view.getCbCarreras().getSelectedItem())).getIdCarrera()));
-		    dlm.addAll(carreraController.getCorredoresByIdCarrera(
-			    ((CarreraDisplayDTO) (view.getListCarreras().getSelectedValue())).getIdCarrera()));
-		    view.getListCorredores().setModel(dlm);
+		    if (view.getListCarreras().getSelectedValue() != null) {
+			DefaultListModel<CorredorDTO> dlm = new DefaultListModel<CorredorDTO>();
+			// dlm.addAll(carreraController.getCorredoresByIdCarrera(((CarreraDisplayDTO)(view.getCbCarreras().getSelectedItem())).getIdCarrera()));
+			dlm.addAll(carreraController.getCorredoresByIdCarrera(
+				((CarreraDisplayDTO) (view.getListCarreras().getSelectedValue())).getIdCarrera()));
+			view.getListCorredores().setModel(dlm);
+		    } else {
+			JOptionPane.showMessageDialog(null, "Debes seleccionar una carrera");
+		    }
 		} catch (BusinessException e1) {
 		    Printer.printBusinessException(e1);
 		}

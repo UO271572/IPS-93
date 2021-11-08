@@ -93,7 +93,8 @@ public class InscripcionController {
 		    // idCarrera + "Devolver " + campos[2] + " euros");
 		    modelBanco.anotarIncidencia(inscripcion.get(0).getDnicorredor(), idCarrera,
 			    "Pagó menos, devolver " + campos[2] + " euros");
-		    modelBanco.updateInscriptionAnular(inscripcion.get(0).getDnicorredor(), idCarrera);
+		    // modelBanco.updateInscriptionAnular(inscripcion.get(0).getDnicorredor(),
+		    // idCarrera);
 		    resultado[1] = resultado[1] + 1;
 		    linea = reader.readLine();
 		    continue;

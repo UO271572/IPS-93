@@ -98,8 +98,8 @@ public class MenuCrearCarreraController {
     private List<CategoriaDTO> generarCategoriasPorDefecto() {
 
 	List<CategoriaDTO> res = new ArrayList<CategoriaDTO>();
-	CategoriaDTO cat1 = new CategoriaDTO("Masculino - De 18 a 24", 18, 24, "Masculino", CategoriaDTO.NO_CARRERA);
-	CategoriaDTO cat2 = new CategoriaDTO("Femenino - De 18 a 24", 18, 24, "Femenino", CategoriaDTO.NO_CARRERA);
+	CategoriaDTO cat1 = new CategoriaDTO("Juvenil M", 18, 34, "Masculino", CategoriaDTO.NO_CARRERA);
+	CategoriaDTO cat2 = new CategoriaDTO("Juvenil F", 18, 34, "Femenino", CategoriaDTO.NO_CARRERA);
 
 	res.add(cat1);
 	res.add(cat2);
@@ -219,7 +219,7 @@ public class MenuCrearCarreraController {
 		    //
 
 		    plazoController.insertPlazos(plazos);
-		 // double scale = Math.pow(10, -2);
+		    // double scale = Math.pow(10, -2);
 		    JOptionPane.showMessageDialog(null,
 			    "Se ha creado la carrera con los siguientes datos:\n" + "\n\t-Id: " + carrera.getIdCarrera()
 				    + "\n\t-Nombre: " + carrera.getNombre() + "\n\t-Lugar: " + carrera.getLugar()

@@ -219,7 +219,7 @@ public class MenuCrearCarreraController {
 		    //
 
 		    plazoController.insertPlazos(plazos);
-
+		 // double scale = Math.pow(10, -2);
 		    JOptionPane.showMessageDialog(null,
 			    "Se ha creado la carrera con los siguientes datos:\n" + "\n\t-Id: " + carrera.getIdCarrera()
 				    + "\n\t-Nombre: " + carrera.getNombre() + "\n\t-Lugar: " + carrera.getLugar()
@@ -240,7 +240,7 @@ public class MenuCrearCarreraController {
     private boolean checkCamposCrearCarrera() {
 	Date fechaActual = java.sql.Date.valueOf(LocalDate.now());
 	if (view.getTxNombre().getText().isBlank() || view.getTxLugar().getText().isBlank()
-		|| (int) (view.getSpDistancia().getValue()) <= 0 || (int) (view.getSpPlazas().getValue()) <= 0
+		|| (double) (view.getSpDistancia().getValue()) <= 0 || (int) (view.getSpPlazas().getValue()) <= 0
 		|| view.getFechaCompeticion().getDate() == null
 		|| !view.getFechaCompeticion().getDate().after(fechaActual)
 		|| ((int) view.getSpPlazas().getValue() - (int) view.getSpPlazasReservadas().getValue() < 0)
@@ -258,7 +258,7 @@ public class MenuCrearCarreraController {
 
     private CarreraDisplayDTO getCamposCarrera() {
 	CarreraDisplayDTO carrera = new CarreraDisplayDTO();
-	carrera.setDistancia((int) (view.getSpDistancia().getValue()));
+	carrera.setDistancia((double) (view.getSpDistancia().getValue()));
 	java.sql.Date date = new java.sql.Date(view.getFechaCompeticion().getDate().getTime());
 	carrera.setFechaCompeticion(date);
 	carrera.setIdCarrera(idCarrera);

@@ -168,26 +168,6 @@ public class MenuOrganizadorController {
 	view.getBtnAsignarDorsales().addActionListener(accionAsignarDorsales());
     }
 
-<<<<<<< HEAD
-	/**
-	 * Asigna a los corredores de cierta carrera que este en estado cerrado, los dorsales a los inscritos en ella
-	 * @return
-	 */
-	private ActionListener accionAsignarDorsales() {
-		return new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				//Al crear el constructor ya se realizan los 2 metodos de asignar dorsales y mostrarlos
-				DorsalesView dorsalview = new DorsalesView();
-				MenuDorsalesController mdc = new MenuDorsalesController(dorsalview,view);
-				
-				dorsalview.setVisible(true);
-			}
-		};
-	}
-	
-=======
     /**
      * Asigna a los corredores de cierta carrera que este en estado cerrado, los
      * dorsales a los inscritos en ella
@@ -203,13 +183,12 @@ public class MenuOrganizadorController {
 		// mostrarlos
 		DorsalesView dorsalview = new DorsalesView();
 		MenuDorsalesController mdc = new MenuDorsalesController(dorsalview, view);
-		// ((CarreraDisplayDTO)dorsalView.getMenOrgView().getListCorredores().getSelectedValue()).getIdCarrera()
+
 		dorsalview.setVisible(true);
 	    }
 	};
     }
 
->>>>>>> branch 'master' of https://github.com/UO271572/IPS-93.git
     // Acciones
     private ActionListener accionBotonClasificaPorSexo() {
 	return new ActionListener() {

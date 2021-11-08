@@ -119,7 +119,7 @@ public class MenuCorredorView extends JDialog {
 
     public JRadioButton getRdbtnVerTodas() {
 	if (rdbtnVerTodas == null) {
-	    rdbtnVerTodas = new JRadioButton("Ver todas");
+	    rdbtnVerTodas = new JRadioButton("Abiertas");
 	    buttonGroup.add(rdbtnVerTodas);
 	    rdbtnVerTodas.setBounds(727, 72, 105, 21);
 	    rdbtnVerTodas.setSelected(true);
@@ -129,7 +129,7 @@ public class MenuCorredorView extends JDialog {
 
     public JRadioButton getRdbtnAbiertas() {
 	if (rdbtnAbiertas == null) {
-	    rdbtnAbiertas = new JRadioButton("Abiertas");
+	    rdbtnAbiertas = new JRadioButton("No competidas");
 	    buttonGroup.add(rdbtnAbiertas);
 	    rdbtnAbiertas.setBounds(727, 109, 105, 21);
 	}

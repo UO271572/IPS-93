@@ -119,7 +119,7 @@ public class MenuOrganizadorController {
 				//Al crear el constructor ya se realizan los 2 metodos de asignar dorsales y mostrarlos
 				DorsalesView dorsalview = new DorsalesView();
 				MenuDorsalesController mdc = new MenuDorsalesController(dorsalview,view);
-				//((CarreraDisplayDTO)dorsalView.getMenOrgView().getListCorredores().getSelectedValue()).getIdCarrera()
+				
 				dorsalview.setVisible(true);
 			}
 		};

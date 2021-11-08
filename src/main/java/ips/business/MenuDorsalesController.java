@@ -2,9 +2,11 @@ package ips.business;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Time;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 
 import ips.business.carreras.CarreraDisplayDTO;
 import ips.business.dorsales.DorsalesController;
@@ -35,10 +37,26 @@ public class MenuDorsalesController {
 	private void iniciarController() {
 		dorsalView.getBtOk().addActionListener(accionCerrarVentana());
 		CarreraDisplayDTO dto= ((CarreraDisplayDTO)menOrgView.getListCarreras().getSelectedValue());
-		asignarDorsalesACorredores(dto);
-		mostrarDorsales(dto);
+		//comprobamos que las carreras esten en estado cerrado
+		if(isCarreraCerrada(dto)) {
+			asignarDorsalesACorredores(dto);
+			mostrarDorsales(dto);
+		}else {
+			JOptionPane.showMessageDialog(null, "La carrera esta en estado ABIERTO\nNo se puede asignar los dorsales");
+		}
 	}
 	
+	/**
+	 * Cmprueba que la carrera esta en estado cerrado
+	 * @param dto
+	 * @return
+	 */
+	private boolean isCarreraCerrada(CarreraDisplayDTO dto) {
+		return (dto.getEstadoCarrera() == null || dto.getEstadoCarrera().equals("ABIERTO")) ? false : true;
+	}
+
+
+
 	private void asignarDorsalesACorredores(CarreraDisplayDTO dto) {
 		try {
 			dorsalController.asignarDorsales(dto.getIdCarrera());
@@ -49,10 +67,35 @@ public class MenuDorsalesController {
 
 	private void mostrarDorsales(CarreraDisplayDTO dto) {
 		List<InscripcionDTO> listaActualizacion = dorsalController.getInscripciones(dto.getIdCarrera());
-		InscripcionDTO[] inscripciones = arrayListToArray(listaActualizacion);
-		dorsalView.getListInscripcionDorsal().setModel(new DefaultComboBoxModel<InscripcionDTO>(inscripciones));
+		vaciarTabla();
+		añadirListaDorsalesTabla(listaActualizacion);
+//		InscripcionDTO[] inscripciones = arrayListToArray(listaActualizacion);
+//		dorsalView.getListInscripcionDorsal().setModel(new DefaultComboBoxModel<InscripcionDTO>(inscripciones));
 	}
 
+
+
+
+	private void vaciarTabla() {
+		dorsalView.getModel().setRowCount(0);
+	}
+
+
+
+	private void añadirListaDorsalesTabla(List<InscripcionDTO> listaActualizacion) {
+		for(int i = 0 ; i< listaActualizacion.size();i++) {
+			String dnicorredor = listaActualizacion.get(i).getDnicorredor();
+			int idcarrera = listaActualizacion.get(i).getIdcarrera();
+			String estadoinscripcion = listaActualizacion.get(i).getEstadoinscripcion();
+			String fechainscripcion = listaActualizacion.get(i).getFechainscripcion();
+			int dorsal = listaActualizacion.get(i).getDorsal();
+			String incidencia = listaActualizacion.get(i).getIncidencia();
+			Time tiempoInicio=listaActualizacion.get(i).getTiempoInicio();
+			Time tiempoFin = listaActualizacion.get(i).getTiempoFin();
+			Object[] data = {dnicorredor,idcarrera,estadoinscripcion,fechainscripcion,dorsal,incidencia,tiempoInicio,tiempoFin};
+			dorsalView.getModel().insertRow(0, data);
+		}
+	}
 
 
 

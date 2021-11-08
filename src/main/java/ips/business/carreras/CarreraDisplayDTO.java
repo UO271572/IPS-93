@@ -16,7 +16,16 @@ public class CarreraDisplayDTO {
 	private int plazasDisponibles;
 	private int plazasReservadas;
 	private String lugar;
+	private String estadoCarrera;
 	
+	public String getEstadoCarrera() {
+		return estadoCarrera;
+	}
+
+	public void setEstadoCarrera(String estadoCarrera) {
+		this.estadoCarrera = estadoCarrera;
+	}
+
 	public Date getFechaCompeticion() {
 		return fechaCompeticion;
 	}

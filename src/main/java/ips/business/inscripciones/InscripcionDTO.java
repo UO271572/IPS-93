@@ -3,6 +3,8 @@
  */
 package ips.business.inscripciones;
 
+import java.sql.Time;
+
 import ips.util.Printer;
 
 /**
@@ -16,10 +18,24 @@ public class InscripcionDTO {
 	private String fechainscripcion;
 	private int dorsal;
 	private String incidencia;
+	private Time tiempoInicio;
+	private Time tiempoFin;
 	
 	
 	
 	
+	public Time getTiempoInicio() {
+		return tiempoInicio;
+	}
+	public void setTiempoInicio(Time tiempoInicio) {
+		this.tiempoInicio = tiempoInicio;
+	}
+	public Time getTiempoFin() {
+		return tiempoFin;
+	}
+	public void setTiempoFin(Time tiempoFin) {
+		this.tiempoFin = tiempoFin;
+	}
 	public int getDorsal() {
 		return dorsal;
 	}
@@ -60,23 +76,6 @@ public class InscripcionDTO {
 	public String toString() {
 		return Printer.print(this);
 	}
-	
-	
-//	/**
-//	 * @param idCarrera
-//	 * @param fechaInscripcion
-//	 * @param estadoInscripcion
-//	 * @param dniCorredor
-//	 */
-//	public InscripcionDto(String dniCorredor,int idCarrera, String estadoInscripcion,String fechaInscripcion) {
-//		super();
-//		this.idcarrera = idCarrera;
-//		this.fechainscripcion = fechaInscripcion;
-//		this.estadoinscripcion = estadoInscripcion;
-//		this.dnicorredor = dniCorredor;
-//	}
-	
-	
 	
 	
 	

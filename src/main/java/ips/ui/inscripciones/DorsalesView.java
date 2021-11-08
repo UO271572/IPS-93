@@ -3,22 +3,26 @@ package ips.ui.inscripciones;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 
+import javax.swing.DefaultBoundedRangeModel;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.JScrollPane;
 import javax.swing.JList;
 import ips.ui.MenuOrganizadorView;
+import javax.swing.JTable;
 
 public class DorsalesView extends JDialog {
 
-//	private MenuOrganizadorView menOrgView;
 	private final JPanel contentPanel = new JPanel();
 	private JPanel panel;
 	private JScrollPane scrollPane;
 	private JButton btOk;
-	private JList listInscripcionDorsal;
+	private JTable listInscripcionesDorsal;
+	private DefaultTableModel model;
 
 	
 	
@@ -27,6 +31,7 @@ public class DorsalesView extends JDialog {
 	 */
 	public DorsalesView() {
 		setModal(true);
+		model = new DefaultTableModel();
 //		this.menOrgView = menOrgView;
 		setTitle("Asignacion de dorsales");
 		setBounds(100, 100, 614, 433);
@@ -52,6 +57,12 @@ public class DorsalesView extends JDialog {
 //		return menOrgView;
 //	}
 
+	public DefaultTableModel getModel() {
+		return model;
+	}
+
+
+
 	private JPanel getPanel() {
 		if (panel == null) {
 			panel = new JPanel();
@@ -64,6 +75,7 @@ public class DorsalesView extends JDialog {
 	private JScrollPane getScrollPane() {
 		if (scrollPane == null) {
 			scrollPane = new JScrollPane();
+//			scrollPane.setViewportView(getTable());
 			scrollPane.setViewportView(getListInscripcionDorsal());
 		}
 		return scrollPane;
@@ -74,10 +86,19 @@ public class DorsalesView extends JDialog {
 		}
 		return btOk;
 	}
-	public JList getListInscripcionDorsal() {
-		if (listInscripcionDorsal == null) {
-			listInscripcionDorsal = new JList();
+	public JTable getListInscripcionDorsal() {
+		if (listInscripcionesDorsal == null) {
+			listInscripcionesDorsal = new JTable(model);
+			model.addColumn("DNI");
+			model.addColumn("IdCarrera");
+			model.addColumn("Estado insc.");
+			model.addColumn("Fecha insc.");
+			model.addColumn("Dorsal");
+			model.addColumn("Incidencia");
+			model.addColumn("T-Inicio");
+			model.addColumn("T-Fin");
+			listInscripcionesDorsal.setDefaultEditor(Object.class, null);
 		}
-		return listInscripcionDorsal;
+		return listInscripcionesDorsal;
 	}
 }

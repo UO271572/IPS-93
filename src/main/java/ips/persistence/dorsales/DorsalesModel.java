@@ -103,7 +103,6 @@ public class DorsalesModel {
 		}
 		
 		dorsal++;
-//		int dorsal = db.executeQueryPojo(Integer.class, SQL_FIND_MAX_DORSAL, idcarrera).get(0);
 		if(dorsal == 0 || dorsal <=reservadas) {
 			dorsal = reservadas + 1;
 			return dorsal;

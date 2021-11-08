@@ -149,9 +149,40 @@ public class MenuCrearCarreraController {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-	    DefaultListModel modelo = (DefaultListModel) view.getLista_Categorias().getModel();
-	    modelo.remove(view.getLista_Categorias().getSelectedIndex());
-	    view.getLista_Categorias().setModel(modelo);
+
+	    if (comprobarCambioSeguro((CategoriaDTO) view.getLista_Categorias().getSelectedValue())) {
+		DefaultListModel modelo = (DefaultListModel) view.getLista_Categorias().getModel();
+		modelo.remove(view.getLista_Categorias().getSelectedIndex());
+		view.getLista_Categorias().setModel(modelo);
+	    } else {
+		JOptionPane.showMessageDialog(view, "Este cambio va a generar huecos.");
+	    }
+	}
+
+	public boolean comprobarCambioSeguro(CategoriaDTO viejo) {
+	    int minSexo = Integer.MAX_VALUE;
+	    int maxSexo = -1;
+
+	    DefaultListModel<CategoriaDTO> modelo = (DefaultListModel<CategoriaDTO>) view.getLista_Categorias()
+		    .getModel();
+
+	    for (int i = 0; i < modelo.getSize(); i++) {
+		if (modelo.get(i).getSexo().equals(viejo.getSexo())) {
+		    if (modelo.get(i).getEdadInicio() < minSexo) {
+			minSexo = modelo.get(i).getEdadInicio();
+		    }
+
+		    if (modelo.get(i).getEdadFin() > maxSexo) {
+			maxSexo = modelo.get(i).getEdadFin();
+		    }
+		}
+	    }
+
+	    if (viejo.getEdadInicio() == minSexo || viejo.getEdadFin() == maxSexo) {
+		return true;
+	    } else {
+		return false;
+	    }
 	}
 
     }

@@ -9,70 +9,74 @@ import ips.ui.carreras.CarrerasView;
 
 public class CarrerasController {
 
-	private CarrerasModel model;
-	private CarrerasView view;
-	
-	public CarrerasController(CarrerasModel m, CarrerasView v) {
-		this.model = m;
-		this.view = v;
-	}
-	
-	public CarrerasController() {
-		model = new CarrerasModel();
-		view = new CarrerasView();
-	}
+    private CarrerasModel model;
+    private CarrerasView view;
 
-	public  List<CarreraDisplayDTO> getListaCarreras() throws BusinessException {
-		List<CarreraDisplayDTO> carreras=model.getListaCarreras();
-		BusinessCheck.isTrue(!carreras.isEmpty(),"No hay carreras disponibles");
-		return carreras;
-	}
-	
-	public List<CarreraDisplayDTO> getListaCarrerasFiltradas() throws BusinessException {
-		List<CarreraDisplayDTO> carreras=model.getListaCarrerasFiltradas();
-		BusinessCheck.isTrue(!carreras.isEmpty(),"No hay carreras disponibles");
-		return carreras;
-	}
+    public CarrerasController(CarrerasModel m, CarrerasView v) {
+	this.model = m;
+	this.view = v;
+    }
 
-	public CarreraDisplayDTO findByIdCarrera(int idCarrera) throws BusinessException {
-		List<CarreraDisplayDTO> carrera = model.getCarreraByIdCarrera(idCarrera);
-		BusinessCheck.isTrue(!carrera.isEmpty(),"La carrera no existe");
-		return carrera.get(0);
-	}
-	
-	
-	// [ADRI]
-	
-	public List<CarreraDisplayDTO> getCarrerasInscripcion() throws BusinessException {
-		List<CarreraDisplayDTO> carreras = model.getCarrerasInscripcion();
-		BusinessCheck.isTrue(!carreras.isEmpty(),"No hay carreras disponibles para la inscripción");
-		return carreras;
-	}
-	
-	public List<CarreraDisplayDTO> getCarrerasById(String idCarrera) throws BusinessException {
-		List<CarreraDisplayDTO> carreras = model.getCarreraById(idCarrera);
-		BusinessCheck.isTrue(!carreras.isEmpty(),"No hay carreras con dicho identificador");
-		return carreras;
-	}
-	
-	public List<CarreraDisplayDTO> getCompeticiones() throws BusinessException {
-		CarrerasController carrerasController = new CarrerasController(new CarrerasModel(),new CarrerasView());
-        return carrerasController.getListaCarreras();
-	}
-	
-	public CarreraDisplayDTO[] getCompeticionesInscripcion() throws BusinessException {
-		//CarrerasController carrerasController = new CarrerasController(new CarrerasModel(),new CarrerasView());
-        return this.getCarrerasInscripcion().toArray(new CarreraDisplayDTO[this.getCarrerasInscripcion().size()]);
-	}
-	
-	public void insertarCarrera(CarreraDisplayDTO carrera) {
-		model.insertarCarrera(carrera);
-	}
+    public CarrerasController() {
+	model = new CarrerasModel();
+	view = new CarrerasView();
+    }
 
-	public int getMaxIdCarrera() {
-		return model.getMaxIdCarrera();
-	}
+    public List<CarreraDisplayDTO> getListaCarreras() throws BusinessException {
+	List<CarreraDisplayDTO> carreras = model.getListaCarreras();
+	BusinessCheck.isTrue(!carreras.isEmpty(), "No hay carreras disponibles");
+	return carreras;
+    }
 
-	
-	
+    public List<CarreraDisplayDTO> getListaCarrerasTodas() throws BusinessException {
+	List<CarreraDisplayDTO> carreras = model.getListaCarrerasTodas();
+	BusinessCheck.isTrue(!carreras.isEmpty(), "No hay carreras disponibles");
+	return carreras;
+    }
+
+    public List<CarreraDisplayDTO> getListaCarrerasFiltradas() throws BusinessException {
+	List<CarreraDisplayDTO> carreras = model.getListaCarrerasFiltradas();
+	BusinessCheck.isTrue(!carreras.isEmpty(), "No hay carreras disponibles");
+	return carreras;
+    }
+
+    public CarreraDisplayDTO findByIdCarrera(int idCarrera) throws BusinessException {
+	List<CarreraDisplayDTO> carrera = model.getCarreraByIdCarrera(idCarrera);
+	BusinessCheck.isTrue(!carrera.isEmpty(), "La carrera no existe");
+	return carrera.get(0);
+    }
+
+    // [ADRI]
+
+    public List<CarreraDisplayDTO> getCarrerasInscripcion() throws BusinessException {
+	List<CarreraDisplayDTO> carreras = model.getCarrerasInscripcion();
+	BusinessCheck.isTrue(!carreras.isEmpty(), "No hay carreras disponibles para la inscripción");
+	return carreras;
+    }
+
+    public List<CarreraDisplayDTO> getCarrerasById(String idCarrera) throws BusinessException {
+	List<CarreraDisplayDTO> carreras = model.getCarreraById(idCarrera);
+	BusinessCheck.isTrue(!carreras.isEmpty(), "No hay carreras con dicho identificador");
+	return carreras;
+    }
+
+    public List<CarreraDisplayDTO> getCompeticiones() throws BusinessException {
+	CarrerasController carrerasController = new CarrerasController(new CarrerasModel(), new CarrerasView());
+	return carrerasController.getListaCarreras();
+    }
+
+    public CarreraDisplayDTO[] getCompeticionesInscripcion() throws BusinessException {
+	// CarrerasController carrerasController = new CarrerasController(new
+	// CarrerasModel(),new CarrerasView());
+	return this.getCarrerasInscripcion().toArray(new CarreraDisplayDTO[this.getCarrerasInscripcion().size()]);
+    }
+
+    public void insertarCarrera(CarreraDisplayDTO carrera) {
+	model.insertarCarrera(carrera);
+    }
+
+    public int getMaxIdCarrera() {
+	return model.getMaxIdCarrera();
+    }
+
 }

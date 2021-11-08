@@ -18,6 +18,9 @@ public class CarrerasModel {
 
     private static final int PRECIO_POR_DEFECTO = 5;
     private Database db = new Database();
+
+    public static final String SQL_LISTA_CARRERAS = "select * from carreras order by fechacompeticion desc";
+
     public static final String SQL_LISTA_CARRERAS_ABIERTAS = "select * from carreras c where (select min(fechaFin) from plazos p2 where p2.idcarrera = c.idCarrera) <= ? "
 	    + "and (select min(fechaFin) from plazos p2 where p2.idcarrera = c.idCarrera) <= ?";
 
@@ -48,6 +51,12 @@ public class CarrerasModel {
 	// List<CarreraDisplayDTO> listCarreras = new ArrayList<CarreraDisplayDTO>();
 	Date fecha = java.sql.Date.valueOf(LocalDate.now());
 	return db.executeQueryPojo(CarreraDisplayDTO.class, SQL_LISTA_CARRERAS_ABIERTAS, fecha, fecha);
+    }
+
+    public List<CarreraDisplayDTO> getListaCarrerasTodas() {
+	// List<CarreraDisplayDTO> listCarreras = new ArrayList<CarreraDisplayDTO>();
+	Date fecha = java.sql.Date.valueOf(LocalDate.now());
+	return db.executeQueryPojo(CarreraDisplayDTO.class, SQL_LISTA_CARRERAS);
     }
 
     public List<CarreraDisplayDTO> getListaCarrerasFiltradas() {

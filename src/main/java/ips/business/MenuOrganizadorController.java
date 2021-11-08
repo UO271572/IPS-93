@@ -125,7 +125,7 @@ public class MenuOrganizadorController {
 	CarrerasController carreraController = new CarrerasController(new CarrerasModel(), new CarrerasView());
 	List<CarreraDisplayDTO> listaCarreras = null;
 	try {
-	    listaCarreras = carreraController.getListaCarreras();
+	    listaCarreras = carreraController.getListaCarrerasTodas();
 	} catch (BusinessException e) {
 
 	    e.printStackTrace();

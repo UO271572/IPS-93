@@ -303,7 +303,6 @@ public class MenuOrganizadorController {
 		int[] res = inscripcionController.comprobarPagosDeCarrera(
 			((CarreraDisplayDTO) (view.getListCarreras().getSelectedValue())).getIdCarrera());
 
-		// queda enseñar el dialogo con el resultado
 		String resultado = "Inscripciones procesadas: " + (res[0] + res[1]) + "\n" + "Válidas : " + res[0]
 			+ "\n" + "No válidas: " + res[1];
 

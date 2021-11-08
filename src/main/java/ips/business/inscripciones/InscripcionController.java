@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import ips.business.BusinessCheck;
@@ -52,7 +53,7 @@ public class InscripcionController {
 	CarrerasModel carrerasModel = new CarrerasModel();
 
 	// Veo cuanto cuesta la inscripción en la carrera
-	double precioCarrera = carrerasModel.getPrecioCarrera(idCarrera);
+	double precioCarrera; // = carrerasModel.getPrecioCarrera(idCarrera);
 
 	// Leo el fichero de pagos de la carrera
 	BufferedReader reader;
@@ -61,6 +62,7 @@ public class InscripcionController {
 
 	    String linea = reader.readLine();
 	    String[] campos;
+	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-mm-dd");
 
 	    while (linea != null) {
 		campos = linea.split(",");
@@ -68,6 +70,11 @@ public class InscripcionController {
 		// Ahora mismo tengo la cantidad del pago que ha hecho y la fecha en la que se
 		// ha realizado
 		List<InscripcionDTO> inscripcion = modelBanco.verPagosCarrera(idCarrera, campos[0]);
+
+		String fechaInscripcion = inscripcion.get(0).getFechainscripcion();
+		LocalDate fechaLocalDate = LocalDate.parse(fechaInscripcion);
+
+		precioCarrera = carrerasModel.getPrecioCarrera(idCarrera, fechaLocalDate);
 
 		// comprobar que la cantidad sea adecuada
 		// si es mas anotar en incidencias que hay que devolver x euros
@@ -131,8 +138,11 @@ public class InscripcionController {
 	    if (LocalDate.now().compareTo(LocalDate.parse(pendiente.getFechainscripcion()).plusDays(2)) > 0) { // No ha
 													       // pagado
 													       // en 48h
-		System.out.println("El atleta " + pendiente.getDnicorredor() + " inscrito en la carrera " + idCarrera
-			+ " no ha pagado en 48h, se le anula inscripcion");
+		// System.out.println("El atleta " + pendiente.getDnicorredor() + " inscrito en
+		// la carrera " + idCarrera
+		// + " no ha pagado en 48h, se le anula inscripcion");
+		modelBanco.anotarIncidencia(pendiente.getDnicorredor(), pendiente.getIdcarrera(),
+			"No ha hecho ningún pago en 48h");
 		modelBanco.updateInscriptionAnular(pendiente.getDnicorredor(), idCarrera);
 
 		resultado[1] = resultado[1] + 1;

@@ -9,12 +9,14 @@ import java.time.LocalDate;
 import java.util.List;
 
 import ips.business.carreras.CarreraDisplayDTO;
+import ips.business.plazos.PlazoDTO;
 import ips.util.Database;
 import ips.util.Jdbc;
 import ips.util.UnexpectedException;
 
 public class CarrerasModel {
 
+    private static final int PRECIO_POR_DEFECTO = 5;
     private Database db = new Database();
     public static final String SQL_LISTA_CARRERAS = "select * from carreras order by fechacompeticion desc";
 
@@ -30,14 +32,16 @@ public class CarrerasModel {
     public static final String SQL_CARRERA_BY_ID = "SELECT * FROM CARRERAS WHERE IDCARRERA=?";
 
     public static final String SQL_INSERT_CARRERA = "INSERT INTO carreras (idcarrera,nombre,fechacompeticion,tipo,distancia,plazasdisponibles,plazasreservadas,lugar,estadocarrera) "
-			+ "VALUES (?,?,?,?,?,?,?,?,'ABIERTO')"; // Mirar con base nueva
-	
+	    + "VALUES (?,?,?,?,?,?,?,?,'ABIERTO')"; // Mirar con base nueva
+
     public static final String SQL_FIND_MAX_IDCARRERA = "select max(idcarrera) from carreras";
 
     public static final String SQL_FIND_PLAZAS = "select plazasdisponibles from carreras where idcarrera = ?";
     public static final String SQL_FIND_PLAZASRESERVADAS = "select plazasreservadas from carreras where idcarrera = ?";
 
     public static final String SQL_FIND_PRECIO_IDCARRERA = "select precio from carreras where idcarrera = ?";
+
+    public static final String SQL_FIND_PLAZOS_IDCARRERA = "select * from plazos where idcarrera = ?";
 
     public List<CarreraDisplayDTO> getListaCarreras() {
 	// List<CarreraDisplayDTO> listCarreras = new ArrayList<CarreraDisplayDTO>();
@@ -171,35 +175,73 @@ public class CarrerasModel {
 	}
     }
 
-    public double getPrecioCarrera(int idCarrera) {
-	Connection c = null;
-	PreparedStatement pst = null;
+    public double getPrecioCarrera(int idCarrera, LocalDate fechaInscripcion) {
 
 	double resultado;
 
-	try {
-	    c = Jdbc.createThreadConnection();
-	    pst = c.prepareStatement(SQL_FIND_PRECIO_IDCARRERA);
-	    pst.setInt(1, idCarrera);
+	List<PlazoDTO> plazos = verPlazosCarrera(idCarrera);
 
-	    ResultSet rs = pst.executeQuery();
-
-	    if (rs.next() == false) {
-		System.out.print("fallo");
-	    }
-
-	    resultado = rs.getDouble(1);
-
-	    c.close();
-
-	} catch (SQLException e) {
-	    throw new UnexpectedException(e);
-	} finally {
-	    Jdbc.close(pst);
-
+	if (plazos.isEmpty()) { // La carrera no tiene plazos asociados
+	    return PRECIO_POR_DEFECTO;
 	}
 
+	PlazoDTO plazoElegido = null;
+
+	for (int i = 0; i < plazos.size(); i++) {
+	    LocalDate fechaInicioPlazo = plazos.get(i).getFechaInicio().toLocalDate();
+	    LocalDate fechaFinPlazo = plazos.get(i).getFechaFin().toLocalDate();
+
+	    if (fechaInscripcion.isAfter(fechaInicioPlazo) && fechaInscripcion.isBefore(fechaFinPlazo)) {
+		if (i != 0) {
+		    plazoElegido = plazos.get(i);
+		}
+	    }
+	}
+
+	if (plazoElegido == null) { // La fecha de inscripción del atleta no está dentro de ningún plazo
+	    plazoElegido = plazos.get(0);
+	}
+
+	resultado = plazoElegido.getCuota();
+
 	return resultado;
+//	Connection c = null;
+//	PreparedStatement pst = null;
+//
+//	double resultado;
+//
+//	try {
+//	    c = Jdbc.createThreadConnection();
+//	    // pst = c.prepareStatement(SQL_FIND_PRECIO_IDCARRERA);
+//	    // Cambiar a que saque los plazos con ese idCarrera
+//	    // despues usando la fecha de inscripción del atleta ver en qué plazo cae, coger
+//	    // y retornar la cuota de ese plazo
+//
+//	    pst = c.prepareStatement(SQL_FIND_PLAZOS_IDCARRERA);
+//	    pst.setInt(1, idCarrera);
+//
+//	    ResultSet rs = pst.executeQuery();
+//
+//	    if (rs.next() == false) {
+//		System.out.print("fallo");
+//	    }
+//
+//	    resultado = rs.getDouble(1);
+//
+//	    c.close();
+//
+//	} catch (SQLException e) {
+//	    throw new UnexpectedException(e);
+//	} finally {
+//	    Jdbc.close(pst);
+//
+//	}
+//
+//	return resultado;
+    }
+
+    public List<PlazoDTO> verPlazosCarrera(int idCarrera) {
+	return db.executeQueryPojo(PlazoDTO.class, SQL_FIND_PLAZOS_IDCARRERA, idCarrera);
     }
 
 }

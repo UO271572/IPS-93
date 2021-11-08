@@ -35,14 +35,16 @@ public class MenuDorsalesController {
 	dorsalView.getBtOk().addActionListener(accionCerrarVentana());
 	CarreraDisplayDTO dto = ((CarreraDisplayDTO) menOrgView.getListCarreras().getSelectedValue());
 	// comprobamos que las carreras esten en estado cerrado
-	if (dto != null) {
+	if (dto == null) {
 	    JOptionPane.showMessageDialog(null, "Debes seleccionar una carrera");
-	}
-	if (isCarreraCerrada(dto)) {
-	    asignarDorsalesACorredores(dto);
-	    mostrarDorsales(dto);
 	} else {
-	    JOptionPane.showMessageDialog(null, "La carrera esta en estado ABIERTO\nNo se puede asignar los dorsales");
+	    if (isCarreraCerrada(dto)) {
+		asignarDorsalesACorredores(dto);
+		mostrarDorsales(dto);
+	    } else {
+		JOptionPane.showMessageDialog(null,
+			"La carrera esta en estado ABIERTO\nNo se puede asignar los dorsales");
+	    }
 	}
     }
 
@@ -53,7 +55,9 @@ public class MenuDorsalesController {
      * @return
      */
     private boolean isCarreraCerrada(CarreraDisplayDTO dto) {
+
 	return (dto.getEstadoCarrera() == null || dto.getEstadoCarrera().equals("ABIERTO")) ? false : true;
+
     }
 
     private void asignarDorsalesACorredores(CarreraDisplayDTO dto) {

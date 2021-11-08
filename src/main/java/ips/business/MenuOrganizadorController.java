@@ -308,13 +308,17 @@ public class MenuOrganizadorController {
 	    public void actionPerformed(ActionEvent e) {
 		InscripcionController inscripcionController = new InscripcionController(
 			new PagoTransferenciaBancariaModel());
-		int[] res = inscripcionController.comprobarPagosDeCarrera(
-			((CarreraDisplayDTO) (view.getListCarreras().getSelectedValue())).getIdCarrera());
+		if (view.getListCarreras().getSelectedValue() != null) {
+		    int[] res = inscripcionController.comprobarPagosDeCarrera(
+			    ((CarreraDisplayDTO) (view.getListCarreras().getSelectedValue())).getIdCarrera());
 
-		String resultado = "Inscripciones procesadas: " + (res[0] + res[1]) + "\n" + "Válidas : " + res[0]
-			+ "\n" + "No válidas: " + res[1];
+		    String resultado = "Inscripciones procesadas: " + (res[0] + res[1]) + "\n" + "Válidas : " + res[0]
+			    + "\n" + "No válidas: " + res[1];
 
-		JOptionPane.showMessageDialog(view, resultado);
+		    JOptionPane.showMessageDialog(view, resultado);
+		} else {
+		    JOptionPane.showMessageDialog(view, "Hay que seleccionar una carrera");
+		}
 	    }
 	};
     }

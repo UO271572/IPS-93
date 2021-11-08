@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 public class MenuRolSelectionView extends JFrame {
 
@@ -16,12 +17,14 @@ public class MenuRolSelectionView extends JFrame {
 
     private JPanel panelTexto;
     private JPanel panelBotones;
-    private JLabel label;
+    private JLabel lblE;
     private JButton btnOrganizador;
     private JButton btnCorredor;
     private JPanel panelSur;
     private JPanel panelNorte;
     private JPanel panelBotonesInterior;
+    private JPanel panelOeste;
+    private JPanel panelEste;
 
     public MenuRolSelectionView() {
 	setTitle("Eleccion de rol");
@@ -37,19 +40,19 @@ public class MenuRolSelectionView extends JFrame {
 	if (panelTexto == null) {
 	    panelTexto = new JPanel();
 	    panelTexto.setBackground(Color.WHITE);
-	    panelTexto.setLayout(null);
-	    panelTexto.add(getLabel());
+	    panelTexto.setLayout(new BorderLayout(0, 0));
+	    panelTexto.add(getLblE(), BorderLayout.CENTER);
 	}
 	return panelTexto;
     }
 
-    private JLabel getLabel() {
-	if (label == null) {
-	    label = new JLabel("Elige tu rol");
-	    label.setBounds(233, 5, 96, 25);
-	    label.setFont(new Font("Tahoma", Font.PLAIN, 20));
+    private JLabel getLblE() {
+	if (lblE == null) {
+	    lblE = new JLabel("Estoy accediendo a la aplicación como...");
+	    lblE.setHorizontalAlignment(SwingConstants.CENTER);
+	    lblE.setFont(new Font("Tahoma", Font.PLAIN, 20));
 	}
-	return label;
+	return lblE;
     }
 
     private JPanel getPanelBotones() {
@@ -60,6 +63,8 @@ public class MenuRolSelectionView extends JFrame {
 	    panelBotones.add(getPanelSur(), BorderLayout.SOUTH);
 	    panelBotones.add(getPanel_1_1(), BorderLayout.NORTH);
 	    panelBotones.add(getPanelBotonesInterior(), BorderLayout.CENTER);
+	    panelBotones.add(getPanelOeste(), BorderLayout.WEST);
+	    panelBotones.add(getPanelEste(), BorderLayout.EAST);
 	}
 	return panelBotones;
     }
@@ -94,6 +99,7 @@ public class MenuRolSelectionView extends JFrame {
     public JButton getBtnOrganizador() {
 	if (btnOrganizador == null) {
 	    btnOrganizador = new JButton("Organizador");
+	    btnOrganizador.setBackground(Color.WHITE);
 	    btnOrganizador.setFont(new Font("Tahoma", Font.PLAIN, 18));
 	}
 	return btnOrganizador;
@@ -102,9 +108,26 @@ public class MenuRolSelectionView extends JFrame {
     public JButton getBtnCorredor() {
 	if (btnCorredor == null) {
 	    btnCorredor = new JButton("Corredor");
+	    btnCorredor.setForeground(Color.BLACK);
+	    btnCorredor.setBackground(Color.WHITE);
 	    btnCorredor.setFont(new Font("Tahoma", Font.PLAIN, 18));
 	}
 	return btnCorredor;
     }
 
+    private JPanel getPanelOeste() {
+	if (panelOeste == null) {
+	    panelOeste = new JPanel();
+	    panelOeste.setBackground(Color.WHITE);
+	}
+	return panelOeste;
+    }
+
+    private JPanel getPanelEste() {
+	if (panelEste == null) {
+	    panelEste = new JPanel();
+	    panelEste.setBackground(Color.WHITE);
+	}
+	return panelEste;
+    }
 }

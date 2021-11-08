@@ -52,6 +52,7 @@ public class EditarCategoriaView extends JDialog {
      * @param jList
      */
     public EditarCategoriaView(JList lista) {
+	setTitle("Menu Organizador: Configuracion de categoria");
 	setModal(true);
 	setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 	setBounds(100, 100, 571, 310);

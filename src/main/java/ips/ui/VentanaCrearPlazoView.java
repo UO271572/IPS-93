@@ -1,41 +1,43 @@
 package ips.ui;
 
 import java.awt.Color;
-import java.awt.Font;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
 
 import com.toedter.calendar.JDateChooser;
 
 public class VentanaCrearPlazoView extends JDialog {
     private JDateChooser fechaInicio;
     private JDateChooser fechaFin;
-    private JLabel lblCuotaDelPlazo;
     private JLabel lblEuros;
-    private JLabel lblFechaInicioDel;
-    private JLabel lblFechaFinalDel;
     private JButton btnGuardar;
     private JButton btnCancelar;
     private JSpinner spCuota;
+    private JPanel panel;
+    private JPanel panel_1;
+    private JPanel panel_2;
+    private JLabel label;
+    private JLabel label_1;
 
     public VentanaCrearPlazoView() {
+	setResizable(false);
 	setBounds(100, 100, 487, 286);
 	getContentPane().setBackground(Color.WHITE);
 	getContentPane().setLayout(null);
-	getContentPane().add(getFechaInicio());
-	getContentPane().add(getFechaFin());
-	getContentPane().add(getLblCuotaDelPlazo());
-	getContentPane().add(getLblEuros());
-	getContentPane().add(getLblFechaInicioDel());
-	getContentPane().add(getLblFechaFinalDel());
 	getContentPane().add(getBtnGuardar());
 	getContentPane().add(getBtnCancelar());
-	getContentPane().add(getSpCuota());
+	getContentPane().add(getPanel());
+	getContentPane().add(getPanel_1());
+	getContentPane().add(getPanel_2());
 	setTitle("Organizador: Introduce los datos del plazo de la carrera");
 	this.setModal(true);
 	setLocationRelativeTo(null);
@@ -44,7 +46,6 @@ public class VentanaCrearPlazoView extends JDialog {
     public JDateChooser getFechaInicio() {
 	if (fechaInicio == null) {
 	    fechaInicio = new JDateChooser();
-	    fechaInicio.setBounds(176, 35, 127, 19);
 	}
 	return fechaInicio;
     }
@@ -52,50 +53,21 @@ public class VentanaCrearPlazoView extends JDialog {
     public JDateChooser getFechaFin() {
 	if (fechaFin == null) {
 	    fechaFin = new JDateChooser();
-	    fechaFin.setBounds(176, 96, 127, 19);
 	}
 	return fechaFin;
-    }
-
-    public JLabel getLblCuotaDelPlazo() {
-	if (lblCuotaDelPlazo == null) {
-	    lblCuotaDelPlazo = new JLabel("Cuota del plazo:");
-	    lblCuotaDelPlazo.setFont(new Font("Tahoma", Font.PLAIN, 14));
-	    lblCuotaDelPlazo.setBounds(10, 153, 132, 27);
-	}
-	return lblCuotaDelPlazo;
     }
 
     public JLabel getLblEuros() {
 	if (lblEuros == null) {
 	    lblEuros = new JLabel("euros");
-	    lblEuros.setBounds(232, 162, 46, 13);
 	}
 	return lblEuros;
-    }
-
-    public JLabel getLblFechaInicioDel() {
-	if (lblFechaInicioDel == null) {
-	    lblFechaInicioDel = new JLabel("Fecha inicial del plazo:");
-	    lblFechaInicioDel.setFont(new Font("Tahoma", Font.PLAIN, 14));
-	    lblFechaInicioDel.setBounds(10, 32, 141, 27);
-	}
-	return lblFechaInicioDel;
-    }
-
-    public JLabel getLblFechaFinalDel() {
-	if (lblFechaFinalDel == null) {
-	    lblFechaFinalDel = new JLabel("Fecha final del plazo:");
-	    lblFechaFinalDel.setFont(new Font("Tahoma", Font.PLAIN, 14));
-	    lblFechaFinalDel.setBounds(10, 96, 186, 19);
-	}
-	return lblFechaFinalDel;
     }
 
     public JButton getBtnGuardar() {
 	if (btnGuardar == null) {
 	    btnGuardar = new JButton("Guardar");
-	    btnGuardar.setBounds(284, 223, 85, 21);
+	    btnGuardar.setBounds(284, 206, 85, 38);
 	}
 	return btnGuardar;
     }
@@ -103,7 +75,7 @@ public class VentanaCrearPlazoView extends JDialog {
     public JButton getBtnCancelar() {
 	if (btnCancelar == null) {
 	    btnCancelar = new JButton("Cancelar");
-	    btnCancelar.setBounds(379, 223, 85, 21);
+	    btnCancelar.setBounds(379, 206, 85, 38);
 	}
 	return btnCancelar;
     }
@@ -112,13 +84,61 @@ public class VentanaCrearPlazoView extends JDialog {
 	if (spCuota == null) {
 	    SpinnerModel model = new SpinnerNumberModel(0.0, 0.0, 100000.0, 0.1);
 	    spCuota = new JSpinner(model);
-	    spCuota.setBounds(176, 159, 46, 20);
 	}
 	return spCuota;
     }
 
-    /*
-     * private static class __Tmp { private static void __tmp() { javax.swing.JPanel
-     * __wbp_panel = new javax.swing.JPanel(); } }
-     */
+    private JPanel getPanel() {
+	if (panel == null) {
+	    panel = new JPanel();
+	    panel.setBorder(new TitledBorder(null, "Fecha inicial del plazo", TitledBorder.LEADING, TitledBorder.TOP,
+		    null, null));
+	    panel.setBounds(53, 27, 374, 41);
+	    panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+	    panel.add(getFechaInicio());
+	}
+	return panel;
+    }
+
+    private JPanel getPanel_1() {
+	if (panel_1 == null) {
+	    panel_1 = new JPanel();
+	    panel_1.setBorder(new TitledBorder(null, "Fecha final del plazo", TitledBorder.LEADING, TitledBorder.TOP,
+		    null, null));
+	    panel_1.setBounds(53, 82, 374, 41);
+	    panel_1.setLayout(new BoxLayout(panel_1, BoxLayout.X_AXIS));
+	    panel_1.add(getFechaFin());
+	}
+	return panel_1;
+    }
+
+    private JPanel getPanel_2() {
+	if (panel_2 == null) {
+	    panel_2 = new JPanel();
+	    panel_2.setBorder(new TitledBorder(
+		    new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Cuota",
+		    TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+	    panel_2.setBounds(53, 138, 374, 41);
+	    panel_2.setLayout(new BoxLayout(panel_2, BoxLayout.X_AXIS));
+	    panel_2.add(getLabel());
+	    panel_2.add(getLabel_1());
+	    panel_2.add(getSpCuota());
+	    panel_2.add(getLblEuros());
+	}
+	return panel_2;
+    }
+
+    private JLabel getLabel() {
+	if (label == null) {
+	    label = new JLabel("");
+	}
+	return label;
+    }
+
+    private JLabel getLabel_1() {
+	if (label_1 == null) {
+	    label_1 = new JLabel("");
+	}
+	return label_1;
+    }
 }

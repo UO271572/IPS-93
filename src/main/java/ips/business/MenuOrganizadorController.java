@@ -1,6 +1,6 @@
 package ips.business;
 
-import java.awt.Component; 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -11,6 +11,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,12 +28,10 @@ import ips.business.clasificaciones.ClasificacionDTO;
 import ips.business.corredores.CorredorDTO;
 import ips.business.corredores.CorredoresController;
 import ips.business.inscripciones.InscripcionController;
-import ips.business.resultados.ResultadoController;
-import ips.business.resultados.ResultadoDTO;
+import ips.business.inscripciones.InscripcionDTO;
 import ips.persistence.carreras.CarrerasModel;
 import ips.persistence.clasificaciones.ClasificacionModel;
 import ips.persistence.corredores.CorredoresModel;
-import ips.persistence.dorsales.DorsalesModel;
 import ips.persistence.pagos.PagoTransferenciaBancariaModel;
 import ips.ui.MenuCrearCarreraView;
 import ips.ui.MenuOrganizadorView;
@@ -57,62 +57,68 @@ public class MenuOrganizadorController {
 	view.getBtnProcesarPagos().addActionListener(accionProcesaPagosCarrera());
 	view.getBtnGenerarClasificacion().addActionListener(accionBotonClasificaSinFiltro());
 	view.getBtMostrarClasificacionSinFiltro().addActionListener(accionBotonClasificaSinFiltro());
-	view.getBtnGenerarClasificacion().addActionListener(accionGenerarClasificaciones());
+	view.getBtnCargarDatos().addActionListener(accionCargarDatos());
 	cargarCarreras();
 
     }
 
-    private ActionListener accionGenerarClasificaciones() {
+    private ActionListener accionCargarDatos() {
 	return new ActionListener() {
 	    @Override
 	    public void actionPerformed(ActionEvent e) {
 		try {
-		    generarClasificaciones();
+		    cargarDatos();
+		    JOptionPane.showMessageDialog(view, "¡Datos cargados con éxito!");
 		} catch (BusinessException e1) {
+		    e1.printStackTrace();
+		} catch (ParseException e1) {
 		    e1.printStackTrace();
 		}
 	    }
 	};
     }
 
-    private void generarClasificaciones() throws BusinessException {
-	File fichero = new File("doc/tiempos_1.txt"); // cambie .split(_) [1]
+    private void cargarDatos() throws BusinessException, ParseException {
+	// INICIALMENTE PARA LA CARRERA CON ID = 238
+	String fileName = "tiempos_238.txt";
+	File fichero = new File(fileName);
+	int idCarrera = Integer.valueOf(fileName.substring(fileName.indexOf("_") + 1, fileName.indexOf(".")));
 	BufferedReader br;
-	List<Integer> dorsales = new ArrayList<Integer>();
-	List<ResultadoDTO> resultados = new ArrayList<ResultadoDTO>();
+	List<InscripcionDTO> inscripciones = new ArrayList<InscripcionDTO>();
 	try {
 	    br = new BufferedReader(new FileReader(fichero));
 	    String linea;
 	    while ((linea = br.readLine()) != null) {
-		int i = linea.indexOf(";");
-		String dorsal = linea.substring(0, i - 1);
-		dorsales.add(Integer.valueOf(dorsal));
+		InscripcionDTO inscripcion = new InscripcionDTO();
 
-		ResultadoDTO resultado = new ResultadoDTO();
+		inscripcion.setIdcarrera(idCarrera);
+
+		int i = linea.indexOf(";");
+		inscripcion.setDorsal(Integer.valueOf(linea.substring(0, i)));
 
 		int j = linea.indexOf("-");
-		Time tiempo = Time.valueOf(linea.substring(i + 1, j - 1));
-		resultado.setTiempoinicio(tiempo);
+		String s = linea.substring(i + 1, j);
+		SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
+		long ms = sdf.parse(s).getTime();
+		Time t = new Time(ms);
+		inscripcion.setTiempofin(t);
 
 		i = linea.indexOf("%");
-		tiempo = Time.valueOf(linea.substring(j + 1, i - 1));
-		resultado.setTiempofin(tiempo);
+		s = linea.substring(j + 1, i);
+		sdf = new SimpleDateFormat("hh:mm:ss");
+		ms = sdf.parse(s).getTime();
+		t = new Time(ms);
+		inscripcion.setTiempofin(t);
 
-		resultados.add(resultado);
+		inscripciones.add(inscripcion);
 	    }
 	    br.close();
 	} catch (IOException e) {
 	    e.printStackTrace();
 	}
 
-	// INICIALMENTE PARA LA CARRERA CON ID = 1
 	InscripcionController ic = new InscripcionController();
-	List<String> dnis = ic.getDniCorredoresByDorsales(dorsales);
-	for (int i = 0; i < resultados.size(); i++)
-	    resultados.get(i).setDnicorredor(dnis.get(i));
-
-	ResultadoController rc = new ResultadoController();
-	rc.updateResultados(resultados);
+	ic.updateInscripciones(inscripciones);
     }
 
     private void cargarCarreras() {
@@ -162,6 +168,7 @@ public class MenuOrganizadorController {
 	view.getBtnAsignarDorsales().addActionListener(accionAsignarDorsales());
     }
 
+<<<<<<< HEAD
 	/**
 	 * Asigna a los corredores de cierta carrera que este en estado cerrado, los dorsales a los inscritos en ella
 	 * @return
@@ -180,6 +187,29 @@ public class MenuOrganizadorController {
 		};
 	}
 	
+=======
+    /**
+     * Asigna a los corredores de cierta carrera que este en estado cerrado, los
+     * dorsales a los inscritos en ella
+     * 
+     * @return
+     */
+    private ActionListener accionAsignarDorsales() {
+	return new ActionListener() {
+
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+		// Al crear el constructor ya se realizan los 2 metodos de asignar dorsales y
+		// mostrarlos
+		DorsalesView dorsalview = new DorsalesView();
+		MenuDorsalesController mdc = new MenuDorsalesController(dorsalview, view);
+		// ((CarreraDisplayDTO)dorsalView.getMenOrgView().getListCorredores().getSelectedValue()).getIdCarrera()
+		dorsalview.setVisible(true);
+	    }
+	};
+    }
+
+>>>>>>> branch 'master' of https://github.com/UO271572/IPS-93.git
     // Acciones
     private ActionListener accionBotonClasificaPorSexo() {
 	return new ActionListener() {
@@ -316,8 +346,5 @@ public class MenuOrganizadorController {
 	    }
 	};
     }
-    
-    
-    
 
 }

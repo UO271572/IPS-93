@@ -162,19 +162,19 @@ public class MenuCorredorController {
     }
 
     private void abrirVentanaInscripcion() throws BusinessException {
-	if (emailRegistrado()) {
+	CorredorDTO corredor = emailRegistrado();
+	if (corredor != null) {
 	    InscripcionView inscripcion = new InscripcionView();
+	    inscripcion.setCorredor(corredor);
 	    inscripcion.setVisible(true);
 	} else
 	    registrarCorredor();
     }
 
-    private boolean emailRegistrado() {
+    private CorredorDTO emailRegistrado() {
 	String email = view.getTfEmail().getText();
 	CorredorDTO corredor = coc.getCorredorRegistradoByEmail(email);
-	if (corredor == null)
-	    return false;
-	return true;
+	return corredor;
     }
 
     private void registrarCorredor() throws BusinessException {
@@ -184,6 +184,7 @@ public class MenuCorredorController {
 	    CorredorDTO corredor = recogidaDatos();
 	    if (corredor != null) {
 		InscripcionView inscripcion = new InscripcionView();
+		inscripcion.setCorredor(corredor);
 		inscripcion.setVisible(true);
 	    }
 	}

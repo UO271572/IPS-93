@@ -16,8 +16,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 
 import ips.business.BusinessException;
 import ips.business.MenuInscripcionController;
@@ -25,7 +23,6 @@ import ips.business.carreras.CarreraDisplayDTO;
 import ips.business.carreras.CarrerasController;
 import ips.business.corredores.CorredorDTO;
 import ips.ui.MenuInscripcionView;
-import ips.ui.corredores.CorredoresView;
 
 public class InscripcionView extends JDialog {
 
@@ -35,8 +32,6 @@ public class InscripcionView extends JDialog {
     private JLabel lbInscripcion;
     private JLabel lbCarreras;
     private JComboBox<CarreraDisplayDTO> cbCarreras;
-    private JLabel lbEmail;
-    private JTextField txtEmail;
     private JButton btSiguiente;
     private JButton btCancelar;
 
@@ -45,13 +40,15 @@ public class InscripcionView extends JDialog {
     private JRadioButton rbtnPagoTarjeta;
     private final ButtonGroup buttonGroup = new ButtonGroup();
 
+    private CorredorDTO corredor;
+
     public InscripcionView() throws BusinessException {
 	controller = new CarrerasController();
 
 	setTitle("Inscripción");
 	setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	setResizable(false);
-	setBounds(100, 100, 433, 426);
+	setBounds(100, 100, 433, 361);
 	setLocationRelativeTo(null);
 	setModal(true);
 
@@ -62,8 +59,6 @@ public class InscripcionView extends JDialog {
 	contentPane.add(getLbInscripcion());
 	contentPane.add(getLbCarreras());
 	contentPane.add(getCbCarreras());
-	contentPane.add(getLbEmail());
-	contentPane.add(getTxtEmail());
 	contentPane.add(getBtSiguiente());
 	contentPane.add(getBtCancelar());
 	contentPane.add(getRdbtnTransferenciaBancaria());
@@ -107,29 +102,6 @@ public class InscripcionView extends JDialog {
 	return view.getCompeticionesInscripcion();
     }
 
-    private JLabel getLbEmail() {
-	if (lbEmail == null) {
-	    lbEmail = new JLabel("Email:");
-	    lbEmail.setLabelFor(getTxtEmail());
-	    lbEmail.setDisplayedMnemonic('e');
-	    lbEmail.setFont(new Font("Tahoma", Font.PLAIN, 13));
-	    lbEmail.setBounds(42, 230, 144, 22);
-	}
-	return lbEmail;
-    }
-
-    private JTextField getTxtEmail() {
-	if (txtEmail == null) {
-	    txtEmail = new JTextField();
-	    txtEmail.setHorizontalAlignment(SwingConstants.CENTER);
-	    txtEmail.setFont(new Font("Tahoma", Font.PLAIN, 13));
-	    txtEmail.setEditable(true);
-	    txtEmail.setBackground(SystemColor.WHITE);
-	    txtEmail.setBounds(42, 257, 310, 42);
-	}
-	return txtEmail;
-    }
-
     private JButton getBtSiguiente() {
 	if (btSiguiente == null) {
 	    btSiguiente = new JButton("Siguiente");
@@ -155,7 +127,7 @@ public class InscripcionView extends JDialog {
 	    });
 	    btSiguiente.setForeground(Color.WHITE);
 	    btSiguiente.setBackground(new Color(0, 128, 0));
-	    btSiguiente.setBounds(308, 332, 90, 30);
+	    btSiguiente.setBounds(308, 260, 90, 30);
 	}
 	return btSiguiente;
     }
@@ -176,7 +148,7 @@ public class InscripcionView extends JDialog {
      * @throws BusinessException
      */
     private void mostrarVentanaJustificante() throws BusinessException {
-	CorredorDTO corredor = obtenerCorredor();
+	CorredorDTO corredor = getCorredor();
 	CarreraDisplayDTO carrera = obtenerCarreraSeleccionada();
 	if (comprobaciones(corredor, carrera)) {
 	    corredor.setIdCarrera(carrera.getIdCarrera());
@@ -188,16 +160,8 @@ public class InscripcionView extends JDialog {
 	}
     }
 
-    CorredorDTO obtenerCorredor() throws BusinessException {
-	String email = getTxtEmail().getText();
-	CorredoresView view = new CorredoresView();
-	CorredorDTO corredor = view.getCorredorByEmail(email).get(0);
-	return corredor;
-    }
-
     public CarreraDisplayDTO obtenerCarreraSeleccionada() throws BusinessException {
-	CarreraDisplayDTO carrera = (CarreraDisplayDTO) getCbCarreras().getSelectedItem();
-	return carrera;
+	return (CarreraDisplayDTO) getCbCarreras().getSelectedItem();
     }
 
     private boolean comprobaciones(CorredorDTO corredor, CarreraDisplayDTO carrera) throws BusinessException {
@@ -222,7 +186,7 @@ public class InscripcionView extends JDialog {
 	    });
 	    btCancelar.setBackground(Color.RED);
 	    btCancelar.setForeground(Color.WHITE);
-	    btCancelar.setBounds(183, 332, 90, 30);
+	    btCancelar.setBounds(197, 260, 90, 30);
 	}
 	return btCancelar;
     }
@@ -233,7 +197,7 @@ public class InscripcionView extends JDialog {
 	    rdbtnTransferenciaBancaria.setSelected(true);
 	    buttonGroup.add(rdbtnTransferenciaBancaria);
 	    rdbtnTransferenciaBancaria.setBackground(Color.WHITE);
-	    rdbtnTransferenciaBancaria.setBounds(6, 317, 161, 22);
+	    rdbtnTransferenciaBancaria.setBounds(16, 243, 161, 22);
 	}
 	return rdbtnTransferenciaBancaria;
     }
@@ -243,8 +207,16 @@ public class InscripcionView extends JDialog {
 	    rbtnPagoTarjeta = new JRadioButton("Pago con tarjeta");
 	    buttonGroup.add(rbtnPagoTarjeta);
 	    rbtnPagoTarjeta.setBackground(Color.WHITE);
-	    rbtnPagoTarjeta.setBounds(6, 342, 161, 22);
+	    rbtnPagoTarjeta.setBounds(16, 268, 161, 22);
 	}
 	return rbtnPagoTarjeta;
+    }
+
+    public CorredorDTO getCorredor() {
+	return corredor;
+    }
+
+    public void setCorredor(CorredorDTO corredor) {
+	this.corredor = corredor;
     }
 }

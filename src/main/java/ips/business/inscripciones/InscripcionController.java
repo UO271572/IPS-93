@@ -46,10 +46,6 @@ public class InscripcionController {
 	return inscripciones;
     }
 
-    public List<String> getDniCorredoresByDorsales(List<Integer> dorsales) {
-	return imodel.getDniCorredoresByDorsales(dorsales);
-    }
-
     public int[] comprobarPagosDeCarrera(int idCarrera) {
 	int[] resultado = new int[2];
 
@@ -144,6 +140,10 @@ public class InscripcionController {
 	}
 
 	return resultado;
+    }
+
+    public void updateInscripciones(List<InscripcionDTO> lista) throws BusinessException {
+	imodel.updateInscripciones(lista);
     }
 
 }

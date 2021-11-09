@@ -1,5 +1,6 @@
 package ips.ui;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
 
@@ -9,7 +10,10 @@ import javax.swing.JDialog;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTable;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableModel;
 
 import ips.business.carreras.CarreraDisplayDTO;
 
@@ -33,7 +37,16 @@ public class MenuOrganizadorView extends JDialog {
     private JButton btnGenerarClasificacion;
     private JButton btMostrarClasificacionSinFiltro;
 
+    // ---
+    private DefaultTableModel tablemodel;
+    private JTable table;
+    private JTabbedPane tabbedPane;
+    private JTabbedPane tabbedPane_1;
+    private JPanel pnFiltros;
+    private JScrollPane scrollPane;
+
     public MenuOrganizadorView() {
+	tablemodel = new DefaultTableModel();
 	setTitle("Menú: Organizador");
 	setResizable(false);
 	setBounds(100, 100, 953, 504);
@@ -47,13 +60,70 @@ public class MenuOrganizadorView extends JDialog {
 	getContentPane().add(getPn_Carreras());
 	getContentPane().add(getPn_BotonesCarreras());
 
+	iniciar();
+
 	this.setModal(true);
     }
+
+    private void iniciar() {
+	getContentPane().add(getPnFiltros());
+	getPnFiltros().setLayout(new BorderLayout(0, 0));
+	getPnFiltros().add(getTabbedPane());
+    }
+
+    /**
+     * Añadir la tabla al panel que se necesite
+     * 
+     * @return
+     */
+    public JTable getTable() {
+	if (table == null) {
+	    table = new JTable(tablemodel);
+	    tablemodel.addColumn("Id Carrera");
+	    tablemodel.addColumn("Nombre");
+	    tablemodel.addColumn("Dorsal");
+	    tablemodel.addColumn("Categoria");
+	    tablemodel.addColumn("Tiempo");
+	    table.setDefaultEditor(Object.class, null);
+	    // table.setVisible(true);
+	}
+	return table;
+    }
+
+    /**
+     * Creacion dinamica de scrollpane
+     * 
+     * @return
+     */
+    public JScrollPane crearScrollPane() {
+	JScrollPane scp = new JScrollPane(getTabbedPane());
+	scp.setViewportView(getTable());
+	// scp.setVisible(true);
+	return scp;
+    }
+
+    /**
+     * tABED PANE SOBRE EL QUE SE PONDRAN LOS FILTROS
+     * 
+     * @return
+     */
+    public JTabbedPane getTabbedPane() {
+	if (tabbedPane == null) {
+	    tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+	    tabbedPane.setBounds(386, 56, 543, 169);
+	    tabbedPane.addTab("New tab", null, crearScrollPane(), null);
+//	tabbedPane.addTab("NOMBRE DEL FILTRO CATEGORIA ", null, crearScrollPane(), null);
+//	    AÑADIR TABS CUANDO SEPAMOS CUALOS SON LOS FILTROS
+	}
+	return tabbedPane;
+    }
+
+    // ------------------------------------------------------------------------
 
     private JScrollPane getScrollPaneCorredores() {
 	if (scrollPaneCorredores == null) {
 	    scrollPaneCorredores = new JScrollPane();
-	    scrollPaneCorredores.setBounds(386, 120, 543, 259);
+	    scrollPaneCorredores.setBounds(386, 254, 543, 125);
 	    scrollPaneCorredores.setViewportView(getListCorredores());
 	}
 	return scrollPaneCorredores;
@@ -111,7 +181,7 @@ public class MenuOrganizadorView extends JDialog {
 	    pn_FiltrosClasificacion
 		    .setBorder(new TitledBorder(null, "Filtros", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 	    pn_FiltrosClasificacion.setBackground(Color.WHITE);
-	    pn_FiltrosClasificacion.setBounds(386, 10, 543, 100);
+	    pn_FiltrosClasificacion.setBounds(386, 10, 543, 25);
 	    pn_FiltrosClasificacion.setLayout(new GridLayout(0, 3, 0, 0));
 	    pn_FiltrosClasificacion.add(getBtMostrarClasificacionSinFiltro());
 	    pn_FiltrosClasificacion.add(getBtMostrarClasificacionSexo());
@@ -209,4 +279,16 @@ public class MenuOrganizadorView extends JDialog {
 	}
 	return btMostrarClasificacionSinFiltro;
     }
+
+    private JPanel getPnFiltros() {
+	if (pnFiltros == null) {
+	    pnFiltros = new JPanel();
+	    pnFiltros.setBorder(new TitledBorder(null, "Filtrado por categorias", TitledBorder.LEADING,
+		    TitledBorder.TOP, null, null));
+	    pnFiltros.setBackground(Color.WHITE);
+	    pnFiltros.setBounds(384, 46, 545, 185);
+	}
+	return pnFiltros;
+    }
+
 }

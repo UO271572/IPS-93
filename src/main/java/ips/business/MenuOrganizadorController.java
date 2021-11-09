@@ -23,6 +23,7 @@ import ips.business.carreras.CarreraDisplayDTO;
 import ips.business.carreras.CarrerasController;
 import ips.business.categorias.CategoriaDTO;
 import ips.business.clasificaciones.ClasificacionController;
+import ips.business.clasificaciones.ClasificacionDTO;
 import ips.business.corredores.CorredorDTO;
 import ips.business.corredores.CorredoresController;
 import ips.business.inscripciones.InscripcionController;
@@ -79,11 +80,15 @@ public class MenuOrganizadorController {
 		    for (int i = 0; i < listaCat.size(); i++) {
 			view.iniciarBotonesFiltros(i, listaCat.get(i).getNombre());
 //			view.getTabbedPane().addTab(listaCat.get(i).getNombre(), null, view.crearScrollPane(), null);
+			// añadir una jlist por cada boton
+
 		    }
 		    // si decido hacerlo con botones crear para cada boton el listener para que
 		    // segun el id del boton realizar el filtro necesario
 		    // si es un Jlist vaciarla cada vez que se cambia de pestaña
 
+		    DefaultListModel<ClasificacionDTO> dm = new DefaultListModel<ClasificacionDTO>();
+		    dm.addAll(coleccion);
 		    // AL ACABAR CAMBIAR LOS DTO Q SE VAN A MOSTRAR SI CIERTAS COLUMNAS SON NULL
 		} catch (BusinessException e1) {
 		    e1.printStackTrace();

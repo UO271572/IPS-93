@@ -85,7 +85,7 @@ public class MenuOrganizadorView extends JDialog {
 	}
 
 	private void filtrar(String actionCommand) {
-	    // hacer
+	     hacer
 	}
 
     }

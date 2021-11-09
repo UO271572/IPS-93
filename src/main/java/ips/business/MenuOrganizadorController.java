@@ -23,7 +23,6 @@ import ips.business.carreras.CarreraDisplayDTO;
 import ips.business.carreras.CarrerasController;
 import ips.business.categorias.CategoriaDTO;
 import ips.business.clasificaciones.ClasificacionController;
-import ips.business.clasificaciones.ClasificacionDTO;
 import ips.business.corredores.CorredorDTO;
 import ips.business.corredores.CorredoresController;
 import ips.business.inscripciones.InscripcionController;
@@ -85,12 +84,13 @@ public class MenuOrganizadorController {
 		    for (int i = 0; i < listaCat.size(); i++) {
 			view.iniciarBotonesFiltros(i, listaCat.get(i).getNombre());
 //			view.getTabbedPane().addTab(listaCat.get(i).getNombre(), null, view.crearScrollPane(), null);
-			// añadir el boton a un panel con scrollpane y un jlist
-			DefaultListModel<ClasificacionDTO> dm = new DefaultListModel<ClasificacionDTO>();
-			dm.addAll(controller.obtenerCategoriasFiltrado(listaCat.get(i).getIdCarrera(),
-				listaCat.get(i).getSexo(), listaCat.get(i).getEdadInicio(),
-				listaCat.get(i).getEdadFin()));
-			view.getListCorredores().setModel(dm);// ¿Como obtengo un componente en dinamica?
+
+//			// añadir el boton a un panel con scrollpane y un jlist
+//			DefaultListModel<ClasificacionDTO> dm = new DefaultListModel<ClasificacionDTO>();
+//			dm.addAll(controller.obtenerCategoriasFiltrado(listaCat.get(i).getIdCarrera(),
+//				listaCat.get(i).getSexo(), listaCat.get(i).getEdadInicio(),
+//				listaCat.get(i).getEdadFin()));
+//			view.getListCorredores().setModel(dm);
 
 		    }
 		    // si decido hacerlo con botones crear para cada boton el listener para que

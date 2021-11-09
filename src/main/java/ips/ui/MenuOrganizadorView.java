@@ -26,8 +26,6 @@ public class MenuOrganizadorView extends JDialog {
     private JList listCorredores;
     private JButton btnBuscarCorredores;
     private JComboBox<CarreraDisplayDTO> cbCarreras;
-    private JButton btMostrarClasificacionSexo;
-    private JButton btMostrarClasificacionCategoria;
     private JButton btnCrearCarrera;
     private JPanel pn_FiltrosClasificacion;
     private JPanel pn_OpcionesOrganizador;
@@ -39,7 +37,6 @@ public class MenuOrganizadorView extends JDialog {
     private JList listCarreras;
     private JPanel pn_BotonesCarreras;
     private JButton btnGenerarClasificacion;
-    private JButton btMostrarClasificacionSinFiltro;
 
     // ---
     private DefaultTableModel tablemodel;
@@ -87,7 +84,7 @@ public class MenuOrganizadorView extends JDialog {
 
 	private void filtrar(String actionCommand) {
 	    // mostrar el panel y scroll y lista asociados al boton
-	    getPn_listaCorredores().show();arreglar a jtabbed
+//	    getPn_listaCorredores().show();arreglar a jtabbed
 	}
 
     }
@@ -95,6 +92,8 @@ public class MenuOrganizadorView extends JDialog {
     public void iniciarBotonesFiltros(int i, String nombre) {
 	// getListCorredores().removeAll();
 	getPn_FiltrosClasificacion().add(crearBotonesFiltro(i, nombre));
+	getPn_FiltrosClasificacion().validate();
+	getPn_FiltrosClasificacion().repaint();
 	getPn_listaCorredores().add(crearPanelesScroll(nombre));
     }
 
@@ -112,6 +111,8 @@ public class MenuOrganizadorView extends JDialog {
 	panel.setName("pn" + nombre);
 	panel.setLayout(new BorderLayout(0, 0));
 	panel.add(crearScrollPane(nombre));
+	panel.validate();
+	panel.repaint();
 	return panel;
     }
 
@@ -210,30 +211,6 @@ public class MenuOrganizadorView extends JDialog {
 	return btnBuscarCorredores;
     }
 
-//	public JComboBox<CarreraDisplayDTO> getCbCarreras() {
-//		if (cbCarreras == null) {
-//			cbCarreras = new JComboBox<CarreraDisplayDTO>();
-//			cbCarreras.setBounds(30, 20, 249, 26);
-//		}
-//		return cbCarreras;
-//	}
-
-    public JButton getBtMostrarClasificacionSexo() {
-	if (btMostrarClasificacionSexo == null) {
-	    btMostrarClasificacionSexo = new JButton("Por sexo");
-	    btMostrarClasificacionSexo.setEnabled(false);
-	}
-	return btMostrarClasificacionSexo;
-    }
-
-    public JButton getBtMostrarClasificacionCategoria() {
-	if (btMostrarClasificacionCategoria == null) {
-	    btMostrarClasificacionCategoria = new JButton("Por categoría");
-	    btMostrarClasificacionCategoria.setEnabled(false);
-	}
-	return btMostrarClasificacionCategoria;
-    }
-
     public JButton getBtnCrearCarrera() {
 	if (btnCrearCarrera == null) {
 	    btnCrearCarrera = new JButton("Crear carrera");
@@ -247,11 +224,8 @@ public class MenuOrganizadorView extends JDialog {
 	    pn_FiltrosClasificacion
 		    .setBorder(new TitledBorder(null, "Filtros", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 	    pn_FiltrosClasificacion.setBackground(Color.WHITE);
-	    pn_FiltrosClasificacion.setBounds(386, 10, 661, 83);
+	    pn_FiltrosClasificacion.setBounds(382, 10, 665, 83);
 	    pn_FiltrosClasificacion.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-	    pn_FiltrosClasificacion.add(getBtMostrarClasificacionSinFiltro());
-	    pn_FiltrosClasificacion.add(getBtMostrarClasificacionSexo());
-	    pn_FiltrosClasificacion.add(getBtMostrarClasificacionCategoria());
 	}
 	return pn_FiltrosClasificacion;
     }
@@ -338,14 +312,6 @@ public class MenuOrganizadorView extends JDialog {
 	return btnGenerarClasificacion;
     }
 
-    public JButton getBtMostrarClasificacionSinFiltro() {
-	if (btMostrarClasificacionSinFiltro == null) {
-	    btMostrarClasificacionSinFiltro = new JButton("Sin filtros");
-	    btMostrarClasificacionSinFiltro.setEnabled(false);
-	}
-	return btMostrarClasificacionSinFiltro;
-    }
-
     private JPanel getPnFiltros() {
 	if (pnFiltros == null) {
 	    pnFiltros = new JPanel();
@@ -360,7 +326,7 @@ public class MenuOrganizadorView extends JDialog {
     private JPanel getPn_listaCorredores() {
 	if (pn_listaCorredores == null) {
 	    pn_listaCorredores = new JPanel();
-	    pn_listaCorredores.setBounds(382, 161, 665, 217);
+	    pn_listaCorredores.setBounds(382, 127, 665, 251);
 	    pn_listaCorredores.setLayout(new BorderLayout(0, 0));
 
 	    pn_listaCorredores.add(getPn_lista());

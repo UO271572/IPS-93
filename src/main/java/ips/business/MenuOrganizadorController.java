@@ -86,14 +86,17 @@ public class MenuOrganizadorController {
 			view.iniciarBotonesFiltros(i, listaCat.get(i).getNombre());
 //			view.getTabbedPane().addTab(listaCat.get(i).getNombre(), null, view.crearScrollPane(), null);
 			// añadir el boton a un panel con scrollpane y un jlist
+			DefaultListModel<ClasificacionDTO> dm = new DefaultListModel<ClasificacionDTO>();
+			dm.addAll(controller.obtenerCategoriasFiltrado(listaCat.get(i).getIdCarrera(),
+				listaCat.get(i).getSexo(), listaCat.get(i).getEdadInicio(),
+				listaCat.get(i).getEdadFin()));
+			view.getListCorredores().setModel(dm);// ¿Como obtengo un componente en dinamica?
 
 		    }
 		    // si decido hacerlo con botones crear para cada boton el listener para que
 		    // segun el id del boton realizar el filtro necesario
 		    // si es un Jlist vaciarla cada vez que se cambia de pestaña
 
-		    DefaultListModel<ClasificacionDTO> dm = new DefaultListModel<ClasificacionDTO>();
-		    dm.addAll(coleccion);
 		    // AL ACABAR CAMBIAR LOS DTO Q SE VAN A MOSTRAR SI CIERTAS COLUMNAS SON NULL
 		} catch (BusinessException e1) {
 		    e1.printStackTrace();

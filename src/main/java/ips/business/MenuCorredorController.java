@@ -198,6 +198,7 @@ public class MenuCorredorController {
 	int dia = (int) view.getSpDia().getValue();
 	int mes = (int) view.getSpMes().getValue();
 	int año = (int) view.getSpAño().getValue();
+	String fecha = año + "-" + mes + "-" + dia;
 	String sexo = (String) view.getCbSexo().getSelectedItem();
 
 	if (!validarDatos(email, nombre, apellidos, dni))
@@ -208,7 +209,7 @@ public class MenuCorredorController {
 	corredor.setNombre(nombre);
 	corredor.setApellidos(apellidos);
 	corredor.setDniCorredor(dni);
-	corredor.setFechaNacimiento(new Date(año, mes, dia));
+	corredor.setFechaNacimiento(Date.valueOf(fecha));
 	corredor.setSexo(sexo);
 
 	coc.addCorredor(corredor);

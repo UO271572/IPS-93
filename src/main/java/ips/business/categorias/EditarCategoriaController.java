@@ -103,8 +103,9 @@ public class EditarCategoriaController {
 		    DefaultListModel<CategoriaDTO> modelo = (DefaultListModel<CategoriaDTO>) view.getListaCategorias()
 			    .getModel();
 
-		    if (!modelo.get(indice).getSexo().equals(view.getCb_sexo().getSelectedItem().toString())
-			    && !comprobarCambioSeguro(modelo.get(indice))) {
+		    // !modelo.get(indice).getSexo().equals(view.getCb_sexo().getSelectedItem().toString())
+		    // &&
+		    if (!comprobarCambioSeguro(modelo.get(indice))) {
 			JOptionPane.showMessageDialog(view, "Este cambio va a generar huecos.");
 		    } else {
 			if (!comprobarCategoriaValida(new CategoriaDTO(nombre, edadInicio, edadFinal,

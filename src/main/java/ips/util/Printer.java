@@ -19,15 +19,11 @@ public class Printer {
 	sb.append(" ");
 	sb.append("Tipo: " + carrera.getTipo());
 	sb.append(" ");
-	sb.append("Precio: " + carrera.getPrecio());
-	sb.append(" ");
-	sb.append("Fecha inicio: " + carrera.getFechaInicio());
-	sb.append(" ");
-	sb.append("Fecha fin: " + carrera.getFechaFin());
-	sb.append(" ");
 	sb.append("Fecha competicion: " + carrera.getFechaCompeticion());
 	sb.append(" ");
 	sb.append("Plazas disponibles: " + carrera.getPlazasDisponibles());
+	sb.append(" ");
+	sb.append("Plazas reservadas: " + carrera.getPlazasReservadas());
 	return sb.toString();
     }
 

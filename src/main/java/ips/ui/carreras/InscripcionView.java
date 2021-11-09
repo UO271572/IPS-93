@@ -139,7 +139,7 @@ public class InscripcionView extends JDialog {
      */
     private void mostrarMenuInscripcion() throws BusinessException {
 	MenuInscripcionController menInscripcion = new MenuInscripcionController(new MenuInscripcionView(this));
-	menInscripcion.initController();
+	// menInscripcion.initController();
 	menInscripcion.getMenuView().setVisible(true);
     }
 

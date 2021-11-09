@@ -62,6 +62,11 @@ public class MenuOrganizadorController {
 
     }
 
+    /**
+     * Filtrado
+     * 
+     * @return
+     */
     private ActionListener accionGenerarClasificaciones() {
 	return new ActionListener() {
 
@@ -80,7 +85,7 @@ public class MenuOrganizadorController {
 		    for (int i = 0; i < listaCat.size(); i++) {
 			view.iniciarBotonesFiltros(i, listaCat.get(i).getNombre());
 //			view.getTabbedPane().addTab(listaCat.get(i).getNombre(), null, view.crearScrollPane(), null);
-			// añadir una jlist por cada boton
+			// añadir el boton a un panel con scrollpane y un jlist
 
 		    }
 		    // si decido hacerlo con botones crear para cada boton el listener para que

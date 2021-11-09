@@ -2,6 +2,7 @@ package ips.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -85,14 +86,16 @@ public class MenuOrganizadorView extends JDialog {
 	}
 
 	private void filtrar(String actionCommand) {
-	     hacer
+	    // mostrar el panel y scroll y lista asociados al boton
+	    getPn_listaCorredores().show();arreglar a jtabbed
 	}
 
     }
 
     public void iniciarBotonesFiltros(int i, String nombre) {
-	getListCorredores().removeAll();
+	// getListCorredores().removeAll();
 	getPn_FiltrosClasificacion().add(crearBotonesFiltro(i, nombre));
+	getPn_listaCorredores().add(crearPanelesScroll(nombre));
     }
 
     public JButton crearBotonesFiltro(int i, String nombre) {
@@ -102,6 +105,30 @@ public class MenuOrganizadorView extends JDialog {
 	btBoton.addActionListener(pa);
 	btBoton.setEnabled(true);
 	return btBoton;
+    }
+
+    private JPanel crearPanelesScroll(String nombre) {
+	JPanel panel = new JPanel();
+	panel.setName("pn" + nombre);
+	panel.setLayout(new BorderLayout(0, 0));
+	panel.add(crearScrollPane(nombre));
+	return panel;
+    }
+
+    private Component crearScrollPane(String nombre) {
+	JScrollPane scpanel = new JScrollPane();
+	scpanel.setName("sc" + nombre);
+	scpanel.setBounds(386, 254, 661, 125);
+	scpanel.setViewportView(crearList(nombre));
+
+	return scpanel;
+    }
+
+    private JList crearList(String nombre) {
+	JList jlist = new JList();
+	jlist.setName("jlist" + nombre);
+	jlist.setBackground(Color.WHITE);
+	return jlist;
     }
 
 //    /**

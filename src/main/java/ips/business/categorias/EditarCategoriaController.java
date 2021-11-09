@@ -61,7 +61,7 @@ public class EditarCategoriaController {
 		    if (!comprobarCategoriaValidaAnadir(new CategoriaDTO(nombre, edadInicio, edadFinal,
 			    (String) view.getCb_sexo().getModel().getSelectedItem(), CategoriaDTO.NO_CARRERA))) {
 			JOptionPane.showMessageDialog(view,
-				"Las categorías no son válidas. Por favor, revíselas. No puede haber huecos en los rangos");
+				"Las categorías no son válidas. Por favor, revíselas. No puede haber huecos ni solapamientos en los rangos");
 		    } else {
 
 			CategoriaDTO cat = new CategoriaDTO(nombre, edadInicio, edadFinal,
@@ -111,7 +111,7 @@ public class EditarCategoriaController {
 			if (!comprobarCategoriaValida(new CategoriaDTO(nombre, edadInicio, edadFinal,
 				(String) view.getCb_sexo().getModel().getSelectedItem(), CategoriaDTO.NO_CARRERA))) {
 			    JOptionPane.showMessageDialog(view,
-				    "Las categorías no son válidas. Por favor, revíselas. No puede haber huecos en los rangos");
+				    "Las categorías no son válidas. Por favor, revíselas. No puede haber huecos ni solapamientos en los rangos");
 			} else {
 
 			    CategoriaDTO cat = new CategoriaDTO(nombre, edadInicio, edadFinal,

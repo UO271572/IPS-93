@@ -2,7 +2,10 @@ package ips.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -44,16 +47,19 @@ public class MenuOrganizadorView extends JDialog {
     private JTabbedPane tabbedPane_1;
     private JPanel pnFiltros;
     private JScrollPane scrollPane;
+    private ProcesaAccion pa = new ProcesaAccion();
+    private JPanel pn_listaCorredores;
+    private JPanel pn_lista;
 
     public MenuOrganizadorView() {
 	tablemodel = new DefaultTableModel();
 	setTitle("Menú: Organizador");
 	setResizable(false);
-	setBounds(100, 100, 953, 504);
+	setBounds(100, 100, 1063, 510);
 	setLocationRelativeTo(null);
 	getContentPane().setBackground(Color.WHITE);
 	getContentPane().setLayout(null);
-	getContentPane().add(getScrollPaneCorredores());
+//	getContentPane().add(getScrollPaneCorredores());
 //		getContentPane().add(getCbCarreras());
 	getContentPane().add(getPn_FiltrosClasificacion());
 	getContentPane().add(getPn_OpcionesOrganizador());
@@ -66,64 +72,97 @@ public class MenuOrganizadorView extends JDialog {
     }
 
     private void iniciar() {
-	getContentPane().add(getPnFiltros());
-	getPnFiltros().setLayout(new BorderLayout(0, 0));
-	getPnFiltros().add(getTabbedPane());
+//	getContentPane().add(getPnFiltros());
+//	getPnFiltros().setLayout(new BorderLayout(0, 0));
+	getContentPane().add(getPn_listaCorredores());
+//	getPnFiltros().add(getTabbedPane());
     }
 
-    /**
-     * Añadir la tabla al panel que se necesite
-     * 
-     * @return
-     */
-    public JTable getTable() {
-	if (table == null) {
-	    table = new JTable(tablemodel);
-	    tablemodel.addColumn("Id Carrera");
-	    tablemodel.addColumn("Nombre");
-	    tablemodel.addColumn("Dorsal");
-	    tablemodel.addColumn("Categoria");
-	    tablemodel.addColumn("Tiempo");
-	    table.setDefaultEditor(Object.class, null);
-	    // table.setVisible(true);
+    class ProcesaAccion implements ActionListener {
+
+	public void actionPerformed(ActionEvent a) {
+	    filtrar(a.getActionCommand());
 	}
-	return table;
-    }
 
-    /**
-     * Creacion dinamica de scrollpane
-     * 
-     * @return
-     */
-    public JScrollPane crearScrollPane() {
-	JScrollPane scp = new JScrollPane(getTabbedPane());
-	scp.setViewportView(getTable());
-	// scp.setVisible(true);
-	return scp;
-    }
-
-    /**
-     * tABED PANE SOBRE EL QUE SE PONDRAN LOS FILTROS
-     * 
-     * @return
-     */
-    public JTabbedPane getTabbedPane() {
-	if (tabbedPane == null) {
-	    tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-	    tabbedPane.setBounds(386, 56, 543, 169);
-	    tabbedPane.addTab("New tab", null, crearScrollPane(), null);
-//	tabbedPane.addTab("NOMBRE DEL FILTRO CATEGORIA ", null, crearScrollPane(), null);
-//	    AÑADIR TABS CUANDO SEPAMOS CUALOS SON LOS FILTROS
+	private void filtrar(String actionCommand) {
+	    // hacer
 	}
-	return tabbedPane;
+
     }
+
+    public void iniciarBotonesFiltros(int i, String nombre) {
+	getListCorredores().removeAll();
+	getPn_FiltrosClasificacion().add(crearBotonesFiltro(i, nombre));
+    }
+
+    public JButton crearBotonesFiltro(int i, String nombre) {
+	JButton btBoton = new JButton();
+	btBoton = new JButton(nombre);
+	btBoton.setActionCommand(Integer.toString(i));
+	btBoton.addActionListener(pa);
+	btBoton.setEnabled(true);
+	return btBoton;
+    }
+
+//    /**
+//     * Añadir la tabla al panel que se necesite
+//     * 
+//     * @return
+//     */
+//    public JTable getTable() {
+//	if (table == null) {
+//	    table = new JTable(tablemodel);
+//	    tablemodel.addColumn("Id Carrera");
+//	    tablemodel.addColumn("Nombre");
+//	    tablemodel.addColumn("Dorsal");
+//	    tablemodel.addColumn("Categoria");
+//	    tablemodel.addColumn("Tiempo");
+//	    table.setDefaultEditor(Object.class, null);
+//	    // table.setVisible(true);
+//	}
+//	return table;
+//    }
+//
+//    /**
+//     * Creacion dinamica de scrollpane
+//     * 
+//     * @return
+//     */
+//    public JScrollPane crearScrollPane() {
+//	JScrollPane scp = new JScrollPane(getTabbedPane());
+//	scp.setViewportView(getTable());
+//	// scp.setVisible(true);
+//	return scp;
+//    }
+
+//    /**
+//     * tABED PANE SOBRE EL QUE SE PONDRAN LOS FILTROS
+//     * 
+//     * @return
+//     */
+//    public JTabbedPane getTabbedPane() {
+//	if (tabbedPane == null) {
+//	    tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+//	    tabbedPane.setBounds(386, 56, 543, 169);
+//	    tabbedPane.addTab("New tab", null, crearScrollPane(), null);
+////	    añadir();
+////	tabbedPane.addTab("NOMBRE DEL FILTRO CATEGORIA ", null, crearScrollPane(), null);
+////	    AÑADIR TABS CUANDO SEPAMOS CUALOS SON LOS FILTROS
+//	}
+//
+//	return tabbedPane;
+//    }
+
+//    private void añadir() {
+//	tabbedPane.addTab("New tab", null, crearScrollPane(), null);
+//    }
 
     // ------------------------------------------------------------------------
 
     private JScrollPane getScrollPaneCorredores() {
 	if (scrollPaneCorredores == null) {
 	    scrollPaneCorredores = new JScrollPane();
-	    scrollPaneCorredores.setBounds(386, 254, 543, 125);
+	    scrollPaneCorredores.setBounds(386, 254, 661, 125);
 	    scrollPaneCorredores.setViewportView(getListCorredores());
 	}
 	return scrollPaneCorredores;
@@ -181,8 +220,8 @@ public class MenuOrganizadorView extends JDialog {
 	    pn_FiltrosClasificacion
 		    .setBorder(new TitledBorder(null, "Filtros", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 	    pn_FiltrosClasificacion.setBackground(Color.WHITE);
-	    pn_FiltrosClasificacion.setBounds(386, 10, 543, 25);
-	    pn_FiltrosClasificacion.setLayout(new GridLayout(0, 3, 0, 0));
+	    pn_FiltrosClasificacion.setBounds(386, 10, 661, 83);
+	    pn_FiltrosClasificacion.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 	    pn_FiltrosClasificacion.add(getBtMostrarClasificacionSinFiltro());
 	    pn_FiltrosClasificacion.add(getBtMostrarClasificacionSexo());
 	    pn_FiltrosClasificacion.add(getBtMostrarClasificacionCategoria());
@@ -193,7 +232,7 @@ public class MenuOrganizadorView extends JDialog {
     private JPanel getPn_OpcionesOrganizador() {
 	if (pn_OpcionesOrganizador == null) {
 	    pn_OpcionesOrganizador = new JPanel();
-	    pn_OpcionesOrganizador.setBounds(386, 389, 543, 68);
+	    pn_OpcionesOrganizador.setBounds(386, 389, 661, 68);
 	    pn_OpcionesOrganizador.setLayout(new GridLayout(1, 0, 0, 0));
 	    pn_OpcionesOrganizador.add(getBtnAsignarDorsales());
 	    pn_OpcionesOrganizador.add(getBtnProcesarPagos());
@@ -286,9 +325,28 @@ public class MenuOrganizadorView extends JDialog {
 	    pnFiltros.setBorder(new TitledBorder(null, "Filtrado por categorias", TitledBorder.LEADING,
 		    TitledBorder.TOP, null, null));
 	    pnFiltros.setBackground(Color.WHITE);
-	    pnFiltros.setBounds(384, 46, 545, 185);
+	    pnFiltros.setBounds(384, 78, 663, 57);
 	}
 	return pnFiltros;
     }
 
+    private JPanel getPn_listaCorredores() {
+	if (pn_listaCorredores == null) {
+	    pn_listaCorredores = new JPanel();
+	    pn_listaCorredores.setBounds(382, 161, 665, 217);
+	    pn_listaCorredores.setLayout(new BorderLayout(0, 0));
+
+	    pn_listaCorredores.add(getPn_lista());
+	}
+	return pn_listaCorredores;
+    }
+
+    private JPanel getPn_lista() {
+	if (pn_lista == null) {
+	    pn_lista = new JPanel();
+	    pn_lista.setLayout(new BorderLayout(0, 0));
+	    pn_lista.add(getScrollPaneCorredores());
+	}
+	return pn_lista;
+    }
 }

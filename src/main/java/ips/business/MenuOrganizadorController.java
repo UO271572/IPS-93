@@ -75,8 +75,10 @@ public class MenuOrganizadorController {
 		    // en un for
 		    // crear en ejecucion los filtros y asignarles a la misma vez sus listas
 		    // filtradas
+
 		    for (int i = 0; i < listaCat.size(); i++) {
-			view.getTabbedPane().addTab(listaCat.get(i).getNombre(), null, view.crearScrollPane(), null);
+			view.iniciarBotonesFiltros(i, listaCat.get(i).getNombre());
+//			view.getTabbedPane().addTab(listaCat.get(i).getNombre(), null, view.crearScrollPane(), null);
 		    }
 		    // si decido hacerlo con botones crear para cada boton el listener para que
 		    // segun el id del boton realizar el filtro necesario

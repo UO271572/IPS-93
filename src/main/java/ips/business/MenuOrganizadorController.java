@@ -8,6 +8,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.text.ParseException;
@@ -15,9 +16,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.DefaultListModel;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 import ips.business.carreras.CarreraDisplayDTO;
 import ips.business.carreras.CarrerasController;
@@ -41,6 +42,7 @@ import ips.util.Printer;
 public class MenuOrganizadorController {
 
     private MenuOrganizadorView view;
+    private CarrerasController cc = new CarrerasController(new CarrerasModel(), new CarrerasView());
 
     public MenuOrganizadorController(MenuOrganizadorView view) {
 	this.view = view;
@@ -50,6 +52,8 @@ public class MenuOrganizadorController {
 
     public void initController() {
 	view.addWindowListener(notCloseDirectly());
+
+	inicializarTablaCarreras();
 	inicializarComboBox();
 	// view.getBtnOrganizador().addActionListener(accionBotonOrganizador());
 	view.getBtnProcesarPagos().addActionListener(accionProcesaPagosCarrera());
@@ -57,7 +61,7 @@ public class MenuOrganizadorController {
 	view.getBtnGenerarClasificacion().addActionListener(accionGenerarClasificaciones());
 //	view.getBtMostrarClasificacionSinFiltro().addActionListener(accionBotonClasificaSinFiltro());
 	view.getBtnCargarDatos().addActionListener(accionCargarDatos());
-	cargarCarreras();
+	// cargarCarrerasEnTabla();
 
     }
 
@@ -74,8 +78,11 @@ public class MenuOrganizadorController {
 		// obtener las categorias de la carrera
 		ClasificacionController controller = new ClasificacionController(new ClasificacionModel());
 		try {
-		    List<CategoriaDTO> listaCat = controller.obtenerCategorias(
-			    ((CarreraDisplayDTO) view.getListCarreras().getSelectedValue()).getIdCarrera());
+
+		    int fila = view.getTablaCarreras().getSelectedRow();
+		    int idCarrera = (int) view.getTablaCarreras().getModel().getValueAt(fila, 0);
+
+		    List<CategoriaDTO> listaCat = controller.obtenerCategorias(idCarrera);
 
 		    // en un for
 		    // crear en ejecucion los filtros y asignarles a la misma vez sus listas
@@ -167,35 +174,31 @@ public class MenuOrganizadorController {
 	ic.updateInscripciones(inscripciones);
     }
 
-    private void cargarCarreras() {
-	CarrerasController carreraController = new CarrerasController(new CarrerasModel(), new CarrerasView());
-	List<CarreraDisplayDTO> listaCarreras = null;
-	try {
-	    listaCarreras = carreraController.getListaCarrerasTodas();
-	} catch (BusinessException e) {
-
-	    e.printStackTrace();
-	}
-
-	DefaultListModel modelo = new DefaultListModel();
-
-	for (CarreraDisplayDTO carrera : listaCarreras) {
-	    modelo.addElement(carrera);
-	}
-
-	view.getListCarreras().setModel(modelo);
-    }
+    // Borrar cuando tablas funcionen
+//    private void cargarCarrerasEnTabla() {
+//	
+//	CarrerasController carreraController = new CarrerasController(new CarrerasModel(), new CarrerasView());
+//	List<CarreraDisplayDTO> listaCarreras = null;
+//	try {
+//	    listaCarreras = carreraController.getListaCarrerasTodas();
+//	} catch (BusinessException e) {
+//
+//	    e.printStackTrace();
+//	}
+//
+//	DefaultListModel modelo = new DefaultListModel();
+//
+//	for (CarreraDisplayDTO carrera : listaCarreras) {
+//	    modelo.addElement(carrera);
+//	}
+//
+//	view.getListCarreras().setModel(modelo);
+//    }
 
     public WindowAdapter notCloseDirectly() {
 	return new WindowAdapter() {
 	    public void windowClosing(WindowEvent e) {
 		view.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
-		/*
-		 * int result = JOptionPane.showConfirmDialog( view,
-		 * "¿Está seguro de que quiere cerrar la aplicación?", "Exit Application",
-		 * JOptionPane.YES_NO_OPTION);
-		 */
-		// if (result == JOptionPane.YES_OPTION)
 		view.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 	    }
 	};
@@ -206,8 +209,7 @@ public class MenuOrganizadorController {
 //		view.getCbOpciones().addItem("Ver estado de la clasificacion por sexo");  
 //		view.getCbOpciones().addItem("Ver estado de la clasificacion por categoria");  
 	// view.getBtnGo().addActionListener(accionBotonGo(view.getCbOpciones().getSelectedIndex()));
-	view.getBtnBuscarCorredores()
-		.addActionListener(accionBotonBuscarCorredores(view.getListCarreras().getSelectedIndex()));
+	view.getBtnBuscarCorredores().addActionListener(accionBotonBuscarCorredores());
 //	view.getBtMostrarClasificacionCategoria().addActionListener(accionBotonClasificaPorCategoria());
 //	view.getBtMostrarClasificacionSexo().addActionListener(accionBotonClasificaPorSexo());
 	view.getBtnCrearCarrera().addActionListener(cambiarAVentanaCrearCarrera());
@@ -323,20 +325,36 @@ public class MenuOrganizadorController {
 //
 //    }
 
-    private ActionListener accionBotonBuscarCorredores(Object index) {
+    private ActionListener accionBotonBuscarCorredores() {
 	return new ActionListener() {
 
 	    @Override
 	    public void actionPerformed(ActionEvent e) {
 		CorredoresController carreraController = new CorredoresController(new CorredoresModel(),
 			new CorredoresView());
+		view.getTableModelCorredor().setRowCount(0);
+		int fila = view.getTablaCarreras().getSelectedRow();
+
 		try {
-		    if (view.getListCarreras().getSelectedValue() != null) {
-			DefaultListModel<CorredorDTO> dlm = new DefaultListModel<CorredorDTO>();
+		    if (fila != -1) { //
+			int idCarrera = (int) view.getTablaCarreras().getModel().getValueAt(fila, 0);
+
+			List<CorredorDTO> corredores = carreraController.getCorredoresByIdCarrera(idCarrera);
+
+			for (int i = 0; i < corredores.size(); i++) {
+			    String DNI = corredores.get(i).getDniCorredor();
+			    String nombre = corredores.get(i).getNombre();
+			    String categoria = corredores.get(i).getCategoria();
+			    Date fecha_inscripcion = corredores.get(i).getFechaInscripcion();
+			    String estado_inscripcion = corredores.get(i).getEstadoInscripcion();
+			    Object[] data = { DNI, nombre, categoria, fecha_inscripcion, estado_inscripcion };
+			    view.getTableModelCorredor().insertRow(0, data);
+			}
+
+			// DefaultListModel<CorredorDTO> dlm = new DefaultListModel<CorredorDTO>();
 			// dlm.addAll(carreraController.getCorredoresByIdCarrera(((CarreraDisplayDTO)(view.getCbCarreras().getSelectedItem())).getIdCarrera()));
-			dlm.addAll(carreraController.getCorredoresByIdCarrera(
-				((CarreraDisplayDTO) (view.getListCarreras().getSelectedValue())).getIdCarrera()));
-			view.getListCorredores().setModel(dlm);
+			// dlm.addAll(carreraController.getCorredoresByIdCarrera(idCarrera));
+			// view.getListCorredores().setModel(dlm);
 		    } else {
 			JOptionPane.showMessageDialog(null, "Debes seleccionar una carrera");
 		    }
@@ -354,9 +372,12 @@ public class MenuOrganizadorController {
 	    public void actionPerformed(ActionEvent e) {
 		InscripcionController inscripcionController = new InscripcionController(
 			new PagoTransferenciaBancariaModel());
-		if (view.getListCarreras().getSelectedValue() != null) {
-		    int[] res = inscripcionController.comprobarPagosDeCarrera(
-			    ((CarreraDisplayDTO) (view.getListCarreras().getSelectedValue())).getIdCarrera());
+
+		int fila = view.getTablaCarreras().getSelectedRow();
+
+		if (fila != -1) {
+		    int idCarrera = (int) view.getTablaCarreras().getModel().getValueAt(fila, 0);
+		    int[] res = inscripcionController.comprobarPagosDeCarrera(idCarrera);
 
 		    String resultado = "Inscripciones procesadas: " + (res[0] + res[1]) + "\n" + "Válidas : " + res[0]
 			    + "\n" + "No válidas: " + res[1];
@@ -375,12 +396,38 @@ public class MenuOrganizadorController {
 	    @Override
 	    public void actionPerformed(ActionEvent e) {
 		MenuCrearCarreraView crearCarrera = new MenuCrearCarreraView();
-		MenuCrearCarreraController controllerCrearCarrera = new MenuCrearCarreraController(crearCarrera);
-		// MenuCorredorController controller = new MenuCorredorController(frame);
-		// controller.initController();
 		crearCarrera.setVisible(true);
 	    }
 	};
+    }
+
+    private void inicializarTablaCarreras() {
+	vaciarTabla(view.getTableModelCarreras());
+	try {
+	    List<CarreraDisplayDTO> listaCarreras = cc.getListaCarrerasTodas();
+	    añadirListaCarrerasTabla(listaCarreras);
+	} catch (BusinessException e1) {
+	    Printer.printBusinessException(e1);
+	}
+    }
+
+    private void añadirListaCarrerasTabla(List<CarreraDisplayDTO> listaCarreras) {
+	for (int i = 0; i < listaCarreras.size(); i++) {
+	    int idCarerra = listaCarreras.get(i).getIdCarrera();
+	    String nombre = listaCarreras.get(i).getNombre();
+	    Date fecha = listaCarreras.get(i).getFechaCompeticion();
+	    String tipo = listaCarreras.get(i).getTipo();
+	    int plazasDisponibles = listaCarreras.get(i).getPlazasDisponibles();
+	    double distancia = listaCarreras.get(i).getDistancia();
+	    String lugar = listaCarreras.get(i).getLugar();
+	    Object[] data = { idCarerra, nombre, fecha, tipo, lugar, distancia, plazasDisponibles };
+	    view.getTableModelCarreras().insertRow(0, data);
+	}
+
+    }
+
+    private void vaciarTabla(DefaultTableModel tableModelCarreras) {
+	tableModelCarreras.setRowCount(0);
     }
 
 }

@@ -8,10 +8,13 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import ips.business.carreras.CarreraDisplayDTO;
+import ips.business.carreras.CarrerasController;
 import ips.business.dorsales.DorsalesController;
 import ips.business.inscripciones.InscripcionDTO;
+import ips.persistence.carreras.CarrerasModel;
 import ips.persistence.dorsales.DorsalesModel;
 import ips.ui.MenuOrganizadorView;
+import ips.ui.carreras.CarrerasView;
 import ips.ui.inscripciones.DorsalesView;
 
 public class MenuDorsalesController {
@@ -32,8 +35,21 @@ public class MenuDorsalesController {
      * Iniciamos el controlador
      */
     private void iniciarController() {
+
+	CarrerasController cc = new CarrerasController(new CarrerasModel(), new CarrerasView());
+
 	dorsalView.getBtOk().addActionListener(accionCerrarVentana());
-	CarreraDisplayDTO dto = ((CarreraDisplayDTO) menOrgView.getListCarreras().getSelectedValue());
+
+	int fila = menOrgView.getTablaCarreras().getSelectedRow();
+	List<CarreraDisplayDTO> listaCarreras = null;
+	try {
+	    listaCarreras = cc.getCarrerasById((String) menOrgView.getTablaCarreras().getModel().getValueAt(fila, 0));
+	} catch (BusinessException e) {
+	    e.printStackTrace();
+	}
+
+	CarreraDisplayDTO dto = listaCarreras.get(0);// ((CarreraDisplayDTO)
+						     // menOrgView.getListCarreras().getSelectedValue());
 	// comprobamos que las carreras esten en estado cerrado
 	if (dto == null) {
 	    JOptionPane.showMessageDialog(null, "Debes seleccionar una carrera");

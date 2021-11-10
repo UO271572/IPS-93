@@ -46,39 +46,10 @@ public class MenuCorredorController {
 	return new WindowAdapter() {
 	    public void windowClosing(WindowEvent e) {
 		view.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
-		/*
-		 * int result = JOptionPane.showConfirmDialog( view,
-		 * "¿Está seguro de que quiere cerrar la aplicación?", "Exit Application",
-		 * JOptionPane.YES_NO_OPTION);
-		 */
-		// if (result == JOptionPane.YES_OPTION)
 		view.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 	    }
 	};
     }
-
-    /*
-     * // Acciones private ActionListener accionBotonGo(int index) { return new
-     * ActionListener() {
-     * 
-     * @Override public void actionPerformed(ActionEvent e) { switch (index) { case
-     * 0:
-     * 
-     * try { List<CarreraDisplayDTO> listaCarreras = cc.getListaCarreras(); //
-     * [ADRI] hacer un metodo getListaCarrerasPorCategoria /* [ADRI] Pone que las
-     * categorías son específicas para cada competición (cuando estas tengan
-     * categorías específicas, la clase Competición debería implementar un método
-     * que sea obtenerCategoría)
-     *//*
-        * añadirListaCarrerasTabla(listaCarreras);
-        * 
-        * } catch (BusinessException e1) { Printer.printBusinessException(e1); break; }
-        * 
-        * } }
-        * 
-        * 
-        * }; }
-        */
 
     private ActionListener accionBotonVerNoCompetidas() {
 	return new ActionListener() {
@@ -101,12 +72,7 @@ public class MenuCorredorController {
     private void inicializarTablaCarrerasSinFiltro() {
 	vaciarTabla();
 	try {
-	    List<CarreraDisplayDTO> listaCarreras = cc.getListaCarreras(); // [ADRI] hacer un metodo
-	    /*
-	     * [ADRI] Pone que las categorías son específicas para cada competición (cuando
-	     * estas tengan categorías específicas, la clase Competición debería implementar
-	     * un método que sea obtenerCategoría)
-	     */
+	    List<CarreraDisplayDTO> listaCarreras = cc.getListaCarreras();
 	    añadirListaCarrerasTabla(listaCarreras);
 	} catch (BusinessException e1) {
 	    Printer.printBusinessException(e1);
@@ -120,12 +86,7 @@ public class MenuCorredorController {
     private void inicializarTablaCarrerasConFiltro() {
 	vaciarTabla();
 	try {
-	    List<CarreraDisplayDTO> listaCarreras = cc.getListaCarrerasFiltradas(); // [ADRI] hacer un metodo
-	    /*
-	     * [ADRI] Pone que las categorías son específicas para cada competición (cuando
-	     * estas tengan categorías específicas, la clase Competición debería implementar
-	     * un método que sea obtenerCategoría)
-	     */
+	    List<CarreraDisplayDTO> listaCarreras = cc.getListaCarrerasFiltradas();
 	    añadirListaCarrerasTabla(listaCarreras);
 	} catch (BusinessException e1) {
 	    Printer.printBusinessException(e1);

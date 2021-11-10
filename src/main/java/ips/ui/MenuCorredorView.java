@@ -313,7 +313,7 @@ public class MenuCorredorView extends JDialog {
     public JSpinner getSpAño() {
 	if (spAño == null) {
 	    spAño = new JSpinner();
-	    spAño.setModel(new SpinnerNumberModel(1991, 1921, 2003, 0));
+	    spAño.setModel(new SpinnerNumberModel(1960, 1921, 2003, 1));
 	    spAño.setBounds(302, 118, 65, 20);
 	}
 	return spAño;

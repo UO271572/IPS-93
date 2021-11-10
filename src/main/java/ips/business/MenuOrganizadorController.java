@@ -1,6 +1,5 @@
 package ips.business;
 
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -17,14 +16,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.DefaultListModel;
-import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
 import ips.business.carreras.CarreraDisplayDTO;
 import ips.business.carreras.CarrerasController;
+import ips.business.categorias.CategoriaDTO;
 import ips.business.clasificaciones.ClasificacionController;
-import ips.business.clasificaciones.ClasificacionDTO;
 import ips.business.corredores.CorredorDTO;
 import ips.business.corredores.CorredoresController;
 import ips.business.inscripciones.InscripcionController;
@@ -55,11 +53,59 @@ public class MenuOrganizadorController {
 	inicializarComboBox();
 	// view.getBtnOrganizador().addActionListener(accionBotonOrganizador());
 	view.getBtnProcesarPagos().addActionListener(accionProcesaPagosCarrera());
-	view.getBtnGenerarClasificacion().addActionListener(accionBotonClasificaSinFiltro());
-	view.getBtMostrarClasificacionSinFiltro().addActionListener(accionBotonClasificaSinFiltro());
+	// CREA LAS CLASIFICACIONES
+	view.getBtnGenerarClasificacion().addActionListener(accionGenerarClasificaciones());
+//	view.getBtMostrarClasificacionSinFiltro().addActionListener(accionBotonClasificaSinFiltro());
 	view.getBtnCargarDatos().addActionListener(accionCargarDatos());
 	cargarCarreras();
 
+    }
+
+    /**
+     * Filtrado
+     * 
+     * @return
+     */
+    private ActionListener accionGenerarClasificaciones() {
+	return new ActionListener() {
+
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+		// obtener las categorias de la carrera
+		ClasificacionController controller = new ClasificacionController(new ClasificacionModel());
+		try {
+		    List<CategoriaDTO> listaCat = controller.obtenerCategorias(
+			    ((CarreraDisplayDTO) view.getListCarreras().getSelectedValue()).getIdCarrera());
+
+		    // en un for
+		    // crear en ejecucion los filtros y asignarles a la misma vez sus listas
+		    // filtradas
+
+		    for (int i = 0; i < listaCat.size(); i++) {
+			view.iniciarBotonesFiltros(i, listaCat.get(i).getNombre());
+//			view.getTabbedPane().addTab(listaCat.get(i).getNombre(), null, view.crearScrollPane(), null);
+
+//			// añadir el boton a un panel con scrollpane y un jlist
+//			DefaultListModel<ClasificacionDTO> dm = new DefaultListModel<ClasificacionDTO>();
+//			dm.addAll(controller.obtenerCategoriasFiltrado(listaCat.get(i).getIdCarrera(),
+//				listaCat.get(i).getSexo(), listaCat.get(i).getEdadInicio(),
+//				listaCat.get(i).getEdadFin()));
+//			view.getListCorredores().setModel(dm);
+
+		    }
+		    // si decido hacerlo con botones crear para cada boton el listener para que
+		    // segun el id del boton realizar el filtro necesario
+		    // si es un Jlist vaciarla cada vez que se cambia de pestaña
+
+		    // AL ACABAR CAMBIAR LOS DTO Q SE VAN A MOSTRAR SI CIERTAS COLUMNAS SON NULL
+		} catch (BusinessException e1) {
+		    e1.printStackTrace();
+		} catch (SQLException e1) {
+		    e1.printStackTrace();
+		}
+
+	    }
+	};
     }
 
     private ActionListener accionCargarDatos() {
@@ -162,8 +208,8 @@ public class MenuOrganizadorController {
 	// view.getBtnGo().addActionListener(accionBotonGo(view.getCbOpciones().getSelectedIndex()));
 	view.getBtnBuscarCorredores()
 		.addActionListener(accionBotonBuscarCorredores(view.getListCarreras().getSelectedIndex()));
-	view.getBtMostrarClasificacionCategoria().addActionListener(accionBotonClasificaPorCategoria());
-	view.getBtMostrarClasificacionSexo().addActionListener(accionBotonClasificaPorSexo());
+//	view.getBtMostrarClasificacionCategoria().addActionListener(accionBotonClasificaPorCategoria());
+//	view.getBtMostrarClasificacionSexo().addActionListener(accionBotonClasificaPorSexo());
 	view.getBtnCrearCarrera().addActionListener(cambiarAVentanaCrearCarrera());
 	view.getBtnAsignarDorsales().addActionListener(accionAsignarDorsales());
     }
@@ -189,93 +235,93 @@ public class MenuOrganizadorController {
 	};
     }
 
-    // Acciones
-    private ActionListener accionBotonClasificaPorSexo() {
-	return new ActionListener() {
-
-	    @Override
-	    public void actionPerformed(ActionEvent e) {
-		ClasificacionController controller = new ClasificacionController(new ClasificacionModel());
-		DefaultListModel<ClasificacionDTO> dlm = new DefaultListModel<ClasificacionDTO>();
-		try {
-		    // dlm.addAll(controller.mostrarResultadosPorSexo(((CarreraDisplayDTO)view.getCbCarreras().getSelectedItem()).getIdCarrera()));
-		    // ADRI
-		    dlm.addAll(controller.mostrarResultadosPorSexo(
-			    ((CarreraDisplayDTO) view.getListCarreras().getSelectedValue()).getIdCarrera()));
-		    view.getListCorredores().setModel(dlm);
-		} catch (NumberFormatException e1) {
-		    e1.printStackTrace();
-		} catch (BusinessException e1) {
-		    e1.printStackTrace();
-		} catch (SQLException e1) {
-		    e1.printStackTrace();
-		}
-	    }
-	};
-
-    }
-
-    private ActionListener accionBotonClasificaPorCategoria() {
-	return new ActionListener() {
-
-	    @Override
-	    public void actionPerformed(ActionEvent e) {
-		ClasificacionController controller = new ClasificacionController(new ClasificacionModel());
-		DefaultListModel<ClasificacionDTO> dlm = new DefaultListModel<ClasificacionDTO>();
-		try {
-		    // int index = view.getCbCarreras().getSelectedItem()
-		    // dlm.addAll(controller.mostrarResultadosPorCategoria(((CarreraDisplayDTO)view.getCbCarreras().getSelectedItem()).getIdCarrera()));
-		    dlm.addAll(controller.mostrarResultadosPorCategoria(
-			    ((CarreraDisplayDTO) view.getListCarreras().getSelectedValue()).getIdCarrera()));
-		    view.getListCorredores().setModel(dlm);
-
-		} catch (NumberFormatException e1) {
-		    e1.printStackTrace();
-		} catch (BusinessException e1) {
-		    e1.printStackTrace();
-		} catch (SQLException e1) {
-		    e1.printStackTrace();
-		}
-	    }
-	};
-
-    }
-
-    private ActionListener accionBotonClasificaSinFiltro() {
-	return new ActionListener() {
-
-	    @Override
-	    public void actionPerformed(ActionEvent e) {
-		ClasificacionController controller = new ClasificacionController(new ClasificacionModel());
-		DefaultListModel<ClasificacionDTO> dlm = new DefaultListModel<ClasificacionDTO>();
-		try {
-		    if (view.getListCarreras().getSelectedValue() != null) {
-			// int index = view.getCbCarreras().getSelectedItem()
-			// dlm.addAll(controller.mostrarResultadosPorCategoria(((CarreraDisplayDTO)view.getCbCarreras().getSelectedItem()).getIdCarrera()));
-			dlm.addAll(controller.mostrarResultados(
-				((CarreraDisplayDTO) view.getListCarreras().getSelectedValue()).getIdCarrera()));
-			view.getListCorredores().setModel(dlm);
-
-			for (Component c : view.getPn_FiltrosClasificacion().getComponents()) {
-
-			    JButton boton = (JButton) c;
-
-			    boton.setEnabled(true);
-			}
-		    } else {
-			JOptionPane.showMessageDialog(null, "Debes seleccionar una carrera");
-		    }
-		} catch (NumberFormatException e1) {
-		    e1.printStackTrace();
-		} catch (BusinessException e1) {
-		    e1.printStackTrace();
-		} catch (SQLException e1) {
-		    e1.printStackTrace();
-		}
-	    }
-	};
-
-    }
+//    // Acciones
+//    private ActionListener accionBotonClasificaPorSexo() {
+//	return new ActionListener() {
+//
+//	    @Override
+//	    public void actionPerformed(ActionEvent e) {
+//		ClasificacionController controller = new ClasificacionController(new ClasificacionModel());
+//		DefaultListModel<ClasificacionDTO> dlm = new DefaultListModel<ClasificacionDTO>();
+//		try {
+//		    // dlm.addAll(controller.mostrarResultadosPorSexo(((CarreraDisplayDTO)view.getCbCarreras().getSelectedItem()).getIdCarrera()));
+//		    // ADRI
+//		    dlm.addAll(controller.mostrarResultadosPorSexo(
+//			    ((CarreraDisplayDTO) view.getListCarreras().getSelectedValue()).getIdCarrera()));
+//		    view.getListCorredores().setModel(dlm);
+//		} catch (NumberFormatException e1) {
+//		    e1.printStackTrace();
+//		} catch (BusinessException e1) {
+//		    e1.printStackTrace();
+//		} catch (SQLException e1) {
+//		    e1.printStackTrace();
+//		}
+//	    }
+//	};
+//
+//    }
+//
+//    private ActionListener accionBotonClasificaPorCategoria() {
+//	return new ActionListener() {
+//
+//	    @Override
+//	    public void actionPerformed(ActionEvent e) {
+//		ClasificacionController controller = new ClasificacionController(new ClasificacionModel());
+//		DefaultListModel<ClasificacionDTO> dlm = new DefaultListModel<ClasificacionDTO>();
+//		try {
+//		    // int index = view.getCbCarreras().getSelectedItem()
+//		    // dlm.addAll(controller.mostrarResultadosPorCategoria(((CarreraDisplayDTO)view.getCbCarreras().getSelectedItem()).getIdCarrera()));
+//		    dlm.addAll(controller.mostrarResultadosPorCategoria(
+//			    ((CarreraDisplayDTO) view.getListCarreras().getSelectedValue()).getIdCarrera()));
+//		    view.getListCorredores().setModel(dlm);
+//
+//		} catch (NumberFormatException e1) {
+//		    e1.printStackTrace();
+//		} catch (BusinessException e1) {
+//		    e1.printStackTrace();
+//		} catch (SQLException e1) {
+//		    e1.printStackTrace();
+//		}
+//	    }
+//	};
+//
+//    }
+//
+//    private ActionListener accionBotonClasificaSinFiltro() {
+//	return new ActionListener() {
+//
+//	    @Override
+//	    public void actionPerformed(ActionEvent e) {
+//		ClasificacionController controller = new ClasificacionController(new ClasificacionModel());
+//		DefaultListModel<ClasificacionDTO> dlm = new DefaultListModel<ClasificacionDTO>();
+//		try {
+//		    if (view.getListCarreras().getSelectedValue() != null) {
+//			// int index = view.getCbCarreras().getSelectedItem()
+//			// dlm.addAll(controller.mostrarResultadosPorCategoria(((CarreraDisplayDTO)view.getCbCarreras().getSelectedItem()).getIdCarrera()));
+//			dlm.addAll(controller.mostrarResultados(
+//				((CarreraDisplayDTO) view.getListCarreras().getSelectedValue()).getIdCarrera()));
+//			view.getListCorredores().setModel(dlm);
+//
+//			for (Component c : view.getPn_FiltrosClasificacion().getComponents()) {
+//
+//			    JButton boton = (JButton) c;
+//
+//			    boton.setEnabled(true);
+//			}
+//		    } else {
+//			JOptionPane.showMessageDialog(null, "Debes seleccionar una carrera");
+//		    }
+//		} catch (NumberFormatException e1) {
+//		    e1.printStackTrace();
+//		} catch (BusinessException e1) {
+//		    e1.printStackTrace();
+//		} catch (SQLException e1) {
+//		    e1.printStackTrace();
+//		}
+//	    }
+//	};
+//
+//    }
 
     private ActionListener accionBotonBuscarCorredores(Object index) {
 	return new ActionListener() {

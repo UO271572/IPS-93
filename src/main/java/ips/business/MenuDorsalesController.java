@@ -3,6 +3,7 @@ package ips.business;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Time;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -37,13 +38,13 @@ public class MenuDorsalesController {
     private void iniciarController() {
 
 	CarrerasController cc = new CarrerasController(new CarrerasModel(), new CarrerasView());
-
 	dorsalView.getBtOk().addActionListener(accionCerrarVentana());
 
 	int fila = menOrgView.getTablaCarreras().getSelectedRow();
 	List<CarreraDisplayDTO> listaCarreras = null;
 	try {
-	    listaCarreras = cc.getCarrerasById((String) menOrgView.getTablaCarreras().getModel().getValueAt(fila, 0));
+	    listaCarreras = cc
+		    .getCarrerasById(String.valueOf(menOrgView.getTablaCarreras().getModel().getValueAt(fila, 0)));
 	} catch (BusinessException e) {
 	    e.printStackTrace();
 	}
@@ -54,12 +55,13 @@ public class MenuDorsalesController {
 	if (dto == null) {
 	    JOptionPane.showMessageDialog(null, "Debes seleccionar una carrera");
 	} else {
-	    if (isCarreraCerrada(dto)) {
+	    if (isCarreraCerrada(cc.getMaxFechaFin(dto.getIdCarrera()))) {
+
 		asignarDorsalesACorredores(dto);
 		mostrarDorsales(dto);
 	    } else {
 		JOptionPane.showMessageDialog(null,
-			"La carrera esta en estado ABIERTO\nNo se puede asignar los dorsales");
+			"Aun no se han finalizado los plazos de inscripcion\nNo se puede asignar los dorsales");
 	    }
 	}
     }
@@ -70,9 +72,13 @@ public class MenuDorsalesController {
      * @param dto
      * @return
      */
-    private boolean isCarreraCerrada(CarreraDisplayDTO dto) {
-
-	return (dto.getEstadoCarrera() == null || dto.getEstadoCarrera().equals("ABIERTO")) ? false : true;
+    private boolean isCarreraCerrada(Date date) {
+	if (date == null)
+	    return false;
+	Date ahora = new Date();
+	return (ahora.after(date)) ? true : false;
+	// return (dto.getEstadoCarrera() == null ||
+	// dto.getEstadoCarrera().equals("ABIERTO")) ? false : true;
 
     }
 

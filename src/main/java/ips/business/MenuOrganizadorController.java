@@ -58,7 +58,7 @@ public class MenuOrganizadorController {
 	// view.getBtnOrganizador().addActionListener(accionBotonOrganizador());
 	view.getBtnProcesarPagos().addActionListener(accionProcesaPagosCarrera());
 	// CREA LAS CLASIFICACIONES
-	view.getBtnGenerarClasificacion().addActionListener(accionGenerarClasificaciones());
+	view.getBtnVerClasificacion().addActionListener(accionGenerarClasificaciones());
 //	view.getBtMostrarClasificacionSinFiltro().addActionListener(accionBotonClasificaSinFiltro());
 	view.getBtnCargarDatos().addActionListener(accionCargarDatos());
 	// cargarCarrerasEnTabla();

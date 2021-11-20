@@ -56,6 +56,7 @@ public class MenuOrganizadorView extends JDialog {
     private DefaultTableModel modelTablaCorredores = new DefaultTableModel();
     private JTable tableCorredores;
     private JScrollPane scrollPaneCorre;
+    private JButton btnResumenFinanciero;
 
     public MenuOrganizadorView() {
 	tablemodel = new DefaultTableModel();
@@ -243,6 +244,7 @@ public class MenuOrganizadorView extends JDialog {
 	    pn_OpcionesOrganizador = new JPanel();
 	    pn_OpcionesOrganizador.setBounds(639, 551, 625, 68);
 	    pn_OpcionesOrganizador.setLayout(new GridLayout(1, 0, 0, 0));
+	    pn_OpcionesOrganizador.add(getBtnResumenFinanciero());
 	    pn_OpcionesOrganizador.add(getBtnAsignarDorsales());
 	    pn_OpcionesOrganizador.add(getBtnProcesarPagos());
 	    pn_OpcionesOrganizador.add(getBtnCargarDatos());
@@ -410,5 +412,12 @@ public class MenuOrganizadorView extends JDialog {
 	    scrollPaneCorre.setViewportView(getTableCorredores());
 	}
 	return scrollPaneCorre;
+    }
+
+    public JButton getBtnResumenFinanciero() {
+	if (btnResumenFinanciero == null) {
+	    btnResumenFinanciero = new JButton("Resumen financiero");
+	}
+	return btnResumenFinanciero;
     }
 }

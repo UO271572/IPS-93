@@ -271,7 +271,9 @@ public class CarrerasModel {
 
 	    ResultSet rs = pst.executeQuery();
 
-	    res = rs.getInt(1);
+	    if (rs.next()) {
+		res = rs.getInt(1);
+	    }
 
 	    c.close();
 	} catch (SQLException e) {

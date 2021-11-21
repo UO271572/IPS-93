@@ -112,6 +112,7 @@ public class MenuCorredorView extends JDialog {
 	    model.addColumn("Lugar");
 	    model.addColumn("Distancia");
 	    model.addColumn("Plazas disponibles");
+	    model.addColumn("Lista de espera");
 	    table.setDefaultEditor(Object.class, null);
 	}
 	return table;

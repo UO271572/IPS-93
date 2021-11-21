@@ -254,4 +254,9 @@ public class CarrerasModel {
 	return db.executeQueryPojo(PlazoDTO.class, SQL_FIND_PLAZOS_IDCARRERA, idCarrera);
     }
 
+    public int getInscritosCarrera(int idCarrera) {
+	// TODO Auto-generated method stub
+	return 0;
+    }
+
 }

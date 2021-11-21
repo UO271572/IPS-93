@@ -47,6 +47,8 @@ public class CarrerasModel {
 
     public static final String SQL_FIND_PLAZOS_IDCARRERA = "select * from plazos where idcarrera = ?";
 
+    public static final String SQL_GET_NUMERO_INSCRIPCIONES_VALIDA = "SELECT COUNT(*) FROM INSCRIPCIONES WHERE IDCARRERA=? AND ESTADOINSCRIPCION<>'ANULADA'";
+
     public List<CarreraDisplayDTO> getListaCarreras() {
 	// List<CarreraDisplayDTO> listCarreras = new ArrayList<CarreraDisplayDTO>();
 	Date fecha = java.sql.Date.valueOf(LocalDate.now());
@@ -255,8 +257,31 @@ public class CarrerasModel {
     }
 
     public int getInscritosCarrera(int idCarrera) {
-	// TODO Auto-generated method stub
-	return 0;
+	Connection c = null;
+	PreparedStatement pst = null;
+
+	int res = 0;
+
+	try {
+	    c = Jdbc.createThreadConnection();
+
+	    pst = c.prepareStatement(SQL_GET_NUMERO_INSCRIPCIONES_VALIDA);
+
+	    pst.setInt(1, idCarrera);
+
+	    ResultSet rs = pst.executeQuery();
+
+	    res = rs.getInt(1);
+
+	    c.close();
+	} catch (SQLException e) {
+	    throw new UnexpectedException(e);
+	} finally {
+	    Jdbc.close(pst);
+
+	}
+
+	return res;
     }
 
 }

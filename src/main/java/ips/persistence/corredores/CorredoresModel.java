@@ -16,7 +16,11 @@ public class CorredoresModel {
 
     private final static String SQL_EMAIL_CORREDORES = "select email from corredores";
 
-    private final static String SQL_ADD_CORREDOR = "insert into corredores(dnicorredor, nombre, apellidos, fechanacimiento, sexo, email) where (?, ?, ?, ?, ?, ?)";
+    // private final static String SQL_ADD_CORREDOR = "insert into
+    // corredores(dnicorredor, nombre, apellidos, fechanacimiento, sexo, email)
+    // where (?, ?, ?, ?, ?, ?)";
+
+    private final static String SQL_ADD_CORREDOR = "insert into corredores(dnicorredor, nombre, apellidos, fechanacimiento, sexo, email) values (?, ?, ?, ?, ?, ?)";
 
     public List<CorredorDTO> getListaCorredoresByIdCarrera(int idCarrera) {
 	return db.executeQueryPojo(CorredorDTO.class, SQL_LISTA_CORREDORES_BY_IDCARRERA, idCarrera);

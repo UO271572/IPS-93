@@ -396,6 +396,7 @@ public class MenuOrganizadorController {
 	    @Override
 	    public void actionPerformed(ActionEvent e) {
 		MenuCrearCarreraView crearCarrera = new MenuCrearCarreraView();
+		new MenuCrearCarreraController(crearCarrera);
 		crearCarrera.setVisible(true);
 	    }
 	};

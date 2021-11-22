@@ -58,7 +58,7 @@ public class MenuOrganizadorController {
 	// view.getBtnOrganizador().addActionListener(accionBotonOrganizador());
 	view.getBtnProcesarPagos().addActionListener(accionProcesaPagosCarrera());
 	// CREA LAS CLASIFICACIONES
-	view.getBtnGenerarClasificacion().addActionListener(accionGenerarClasificaciones());
+	view.getBtnVerClasificacion().addActionListener(accionGenerarClasificaciones());
 //	view.getBtMostrarClasificacionSinFiltro().addActionListener(accionBotonClasificaSinFiltro());
 	view.getBtnCargarDatos().addActionListener(accionCargarDatos());
 	// cargarCarrerasEnTabla();
@@ -75,42 +75,26 @@ public class MenuOrganizadorController {
 
 	    @Override
 	    public void actionPerformed(ActionEvent e) {
-		// obtener las categorias de la carrera
 		ClasificacionController controller = new ClasificacionController(new ClasificacionModel());
 		try {
-
 		    int fila = view.getTablaCarreras().getSelectedRow();
 		    int idCarrera = (int) view.getTablaCarreras().getModel().getValueAt(fila, 0);
 
 		    List<CategoriaDTO> listaCat = controller.obtenerCategorias(idCarrera);
 
-		    // en un for
-		    // crear en ejecucion los filtros y asignarles a la misma vez sus listas
-		    // filtradas
-
-		    for (int i = 0; i < listaCat.size(); i++) {
-			view.iniciarBotonesFiltros(i, listaCat.get(i).getNombre());
-//			view.getTabbedPane().addTab(listaCat.get(i).getNombre(), null, view.crearScrollPane(), null);
-
-//			// añadir el boton a un panel con scrollpane y un jlist
-//			DefaultListModel<ClasificacionDTO> dm = new DefaultListModel<ClasificacionDTO>();
-//			dm.addAll(controller.obtenerCategoriasFiltrado(listaCat.get(i).getIdCarrera(),
-//				listaCat.get(i).getSexo(), listaCat.get(i).getEdadInicio(),
-//				listaCat.get(i).getEdadFin()));
-//			view.getListCorredores().setModel(dm);
-
+		    for (CategoriaDTO categoria : listaCat) {
+			String nombre = categoria.getNombre();
+			int inicio = categoria.getEdadInicio();
+			int fin = categoria.getEdadFin();
+			String sexo = categoria.getSexo();
+			Object[] data = { nombre, sexo, inicio, fin };
+			view.getModelTablaCategorias().insertRow(0, data);
 		    }
-		    // si decido hacerlo con botones crear para cada boton el listener para que
-		    // segun el id del boton realizar el filtro necesario
-		    // si es un Jlist vaciarla cada vez que se cambia de pestaña
-
-		    // AL ACABAR CAMBIAR LOS DTO Q SE VAN A MOSTRAR SI CIERTAS COLUMNAS SON NULL
 		} catch (BusinessException e1) {
 		    e1.printStackTrace();
 		} catch (SQLException e1) {
 		    e1.printStackTrace();
 		}
-
 	    }
 	};
     }

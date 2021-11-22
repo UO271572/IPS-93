@@ -1,5 +1,6 @@
 package ips.business.carreras;
 
+import java.util.Date;
 import java.util.List;
 
 import ips.business.BusinessCheck;
@@ -77,6 +78,16 @@ public class CarrerasController {
 
     public int getMaxIdCarrera() {
 	return model.getMaxIdCarrera();
+    }
+
+    /**
+     * Obtiene la ultima fecha de plazo de una carrera
+     * 
+     * @param idcarrera
+     * @return
+     */
+    public Date getMaxFechaFin(int idcarrera) {
+	return model.getMaxFechaFin(idcarrera);
     }
 
 }

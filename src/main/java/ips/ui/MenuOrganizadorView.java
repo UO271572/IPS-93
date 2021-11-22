@@ -1,18 +1,13 @@
 package ips.ui;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -25,7 +20,6 @@ public class MenuOrganizadorView extends JDialog {
     private JScrollPane scrollPaneCorredores;
     private JButton btnBuscarCorredores;
     private JButton btnCrearCarrera;
-    private JPanel pn_FiltrosClasificacion;
     private JPanel pn_OpcionesOrganizador;
     private JButton btnCargarDatos;
     private JButton btnProcesarPagos;
@@ -38,7 +32,7 @@ public class MenuOrganizadorView extends JDialog {
     // ---
     private DefaultTableModel tablemodel;
     private JPanel pnFiltros;
-    private ProcesaAccion pa = new ProcesaAccion();
+//    private ProcesaAccion pa = new ProcesaAccion();
     private JPanel pn_listaCorredores;
     private JTable tablaCarreras;
 
@@ -67,9 +61,6 @@ public class MenuOrganizadorView extends JDialog {
 	setLocationRelativeTo(null);
 	getContentPane().setBackground(Color.WHITE);
 	getContentPane().setLayout(null);
-//	getContentPane().add(getScrollPaneCorredores());
-//		getContentPane().add(getCbCarreras());
-	getContentPane().add(getPn_FiltrosClasificacion());
 	getContentPane().add(getPn_OpcionesOrganizador());
 	getContentPane().add(getPn_Carreras());
 	getContentPane().add(getPn_BotonesCarreras());
@@ -87,66 +78,66 @@ public class MenuOrganizadorView extends JDialog {
 //	getPnFiltros().add(getTabbedPane());
     }
 
-    class ProcesaAccion implements ActionListener {
+//    class ProcesaAccion implements ActionListener {
+//
+//	public void actionPerformed(ActionEvent a) {
+//	    filtrar(a.getActionCommand());
+//	}
+//
+//	private void filtrar(String actionCommand) {
+//	    // mostrar el panel y scroll y lista asociados al boton
+////	    getPn_listaCorredores().show();arreglar a jtabbed
+//	}
+//
+//    }
 
-	public void actionPerformed(ActionEvent a) {
-	    filtrar(a.getActionCommand());
-	}
+//    /**
+//     * 
+//     * @param i
+//     * @param nombre
+//     */
+//    public void iniciarBotonesFiltros(int i, String nombre) {
+//	// getListCorredores().removeAll();
+//	getPn_FiltrosClasificacion().add(crearBotonesFiltro(i, nombre));
+//	getPn_FiltrosClasificacion().validate();
+//	getPn_FiltrosClasificacion().repaint();
+//	// getPn_listaCorredores().add(crearPanelesScroll(nombre));
+//    }
 
-	private void filtrar(String actionCommand) {
-	    // mostrar el panel y scroll y lista asociados al boton
-//	    getPn_listaCorredores().show();arreglar a jtabbed
-	}
+//    public JButton crearBotonesFiltro(int i, String nombre) {
+//	JButton btBoton = new JButton();
+//	btBoton = new JButton(nombre);
+//	btBoton.setActionCommand(Integer.toString(i));
+//	btBoton.addActionListener(pa);
+//	btBoton.setEnabled(true);
+//	return btBoton;
+//    }
 
-    }
+//    private JPanel crearPanelesScroll(String nombre) {
+//	JPanel panel = new JPanel();
+//	panel.setName("pn" + nombre);
+//	panel.setLayout(new BorderLayout(0, 0));
+//	panel.add(crearScrollPane(nombre));
+//	panel.validate();
+//	panel.repaint();
+//	return panel;
+//    }
 
-    /**
-     * 
-     * @param i
-     * @param nombre
-     */
-    public void iniciarBotonesFiltros(int i, String nombre) {
-	// getListCorredores().removeAll();
-	getPn_FiltrosClasificacion().add(crearBotonesFiltro(i, nombre));
-	getPn_FiltrosClasificacion().validate();
-	getPn_FiltrosClasificacion().repaint();
-	// getPn_listaCorredores().add(crearPanelesScroll(nombre));
-    }
+//    private Component crearScrollPane(String nombre) {
+//	JScrollPane scpanel = new JScrollPane();
+//	scpanel.setName("sc" + nombre);
+//	scpanel.setBounds(386, 254, 661, 125);
+//	scpanel.setViewportView(crearList(nombre));
+//
+//	return scpanel;
+//    }
 
-    public JButton crearBotonesFiltro(int i, String nombre) {
-	JButton btBoton = new JButton();
-	btBoton = new JButton(nombre);
-	btBoton.setActionCommand(Integer.toString(i));
-	btBoton.addActionListener(pa);
-	btBoton.setEnabled(true);
-	return btBoton;
-    }
-
-    private JPanel crearPanelesScroll(String nombre) {
-	JPanel panel = new JPanel();
-	panel.setName("pn" + nombre);
-	panel.setLayout(new BorderLayout(0, 0));
-	panel.add(crearScrollPane(nombre));
-	panel.validate();
-	panel.repaint();
-	return panel;
-    }
-
-    private Component crearScrollPane(String nombre) {
-	JScrollPane scpanel = new JScrollPane();
-	scpanel.setName("sc" + nombre);
-	scpanel.setBounds(386, 254, 661, 125);
-	scpanel.setViewportView(crearList(nombre));
-
-	return scpanel;
-    }
-
-    private JList crearList(String nombre) {
-	JList jlist = new JList();
-	jlist.setName("jlist" + nombre);
-	jlist.setBackground(Color.WHITE);
-	return jlist;
-    }
+//    private JList crearList(String nombre) {
+//	JList jlist = new JList();
+//	jlist.setName("jlist" + nombre);
+//	jlist.setBackground(Color.WHITE);
+//	return jlist;
+//    }
 
 //    /**
 //     * Añadir la tabla al panel que se necesite
@@ -232,18 +223,6 @@ public class MenuOrganizadorView extends JDialog {
 	    btnCrearCarrera = new JButton("Crear carrera");
 	}
 	return btnCrearCarrera;
-    }
-
-    public JPanel getPn_FiltrosClasificacion() {
-	if (pn_FiltrosClasificacion == null) {
-	    pn_FiltrosClasificacion = new JPanel();
-	    pn_FiltrosClasificacion
-		    .setBorder(new TitledBorder(null, "Filtros", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-	    pn_FiltrosClasificacion.setBackground(Color.WHITE);
-	    pn_FiltrosClasificacion.setBounds(639, 10, 625, 44);
-	    pn_FiltrosClasificacion.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-	}
-	return pn_FiltrosClasificacion;
     }
 
     private JPanel getPn_OpcionesOrganizador() {
@@ -423,7 +402,7 @@ public class MenuOrganizadorView extends JDialog {
     private JTabbedPane getTabbedPane() {
 	if (tabbedPane == null) {
 	    tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-	    tabbedPane.setBounds(639, 53, 625, 487);
+	    tabbedPane.setBounds(639, 11, 625, 529);
 	    tabbedPane.addTab("Corredores", null, getScCorredores(), null);
 	    tabbedPane.addTab("Categorias", null, getScCategorias(), null);
 	    tabbedPane.addTab("New tab", null, getScrollPane_2(), null);

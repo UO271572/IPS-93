@@ -17,10 +17,9 @@ public class InscripcionModel {
 	    db.executeUpdate(SQL_UPDATE_INSCRIPCION, i.getTiempoinicio(), i.getTiempofin(), i.getDorsal(),
 		    i.getIdcarrera());
     }
-    
-    
-    HACER?
-    public List<InscripcionDTO> inscripcionesOrdenarPorTiempos(){
+
+    // HACER?
+    public List<InscripcionDTO> inscripcionesOrdenarPorTiempos() {
 	return db.executeQueryPojo(InscripcionDTO.class, SQL_ORDENAR_POR_TIEMPO, null);
     }
 

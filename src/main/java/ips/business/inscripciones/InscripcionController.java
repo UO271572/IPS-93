@@ -35,6 +35,10 @@ public class InscripcionController {
 	imodel = new InscripcionModel();
     }
 
+    public List<InscripcionDTO> getInscripcionesByEmail(String email) throws BusinessException {
+	return imodel.getInscripcionesByEmail(email);
+    }
+
     public List<InscripcionDTO> actualizarPagoConTarjeta(String dni, int idCarrera) throws BusinessException {
 	List<InscripcionDTO> inscripciones = model.updateInscription(dni, idCarrera);
 	BusinessCheck.isTrue(!inscripciones.isEmpty(), "No existe alguna asociacion entre el corredor y la carrera");
@@ -155,6 +159,10 @@ public class InscripcionController {
 
     public void updateInscripciones(List<InscripcionDTO> lista) throws BusinessException {
 	imodel.updateInscripciones(lista);
+    }
+
+    public void calcelarInscripcion(InscripcionDTO inscripcion) {
+	imodel.calcelarInscripcion(inscripcion.getDnicorredor(), inscripcion.getIdcarrera());
     }
 
 }

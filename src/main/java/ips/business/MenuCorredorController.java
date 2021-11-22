@@ -11,12 +11,14 @@ import javax.swing.JDialog;
 
 import ips.business.carreras.CarreraDisplayDTO;
 import ips.business.carreras.CarrerasController;
+import ips.business.carreras.EstadoInscripcionesController;
 import ips.business.corredores.CorredorDTO;
 import ips.business.corredores.CorredoresController;
 import ips.persistence.carreras.CarrerasModel;
 import ips.persistence.corredores.CorredoresModel;
 import ips.ui.MenuCorredorView;
 import ips.ui.carreras.CarrerasView;
+import ips.ui.carreras.EstadoInscripcionesView;
 import ips.ui.carreras.InscripcionView;
 import ips.ui.corredores.CorredoresView;
 import ips.util.Printer;
@@ -40,6 +42,41 @@ public class MenuCorredorController {
 	view.getRdbtnVerTodas().addActionListener(accionBotonVerTodas());
 	view.getRdbtnAbiertas().addActionListener(accionBotonVerNoCompetidas());
 	view.getBtnInscribirse().addActionListener(accionBtnInscribirse());
+	view.getBtnVerInscripciones().addActionListener(accionBtnVerInscripciones());
+    }
+
+    private ActionListener accionBtnVerInscripciones() {
+	return new ActionListener() {
+	    public void actionPerformed(ActionEvent e) {
+		comprobarCorredor();
+	    }
+	};
+    }
+
+    private void comprobarCorredor() {
+	CorredorDTO corredor = emailRegistrado();
+	if (corredor != null)
+	    abrirVentanaInscripciones(corredor);
+	else {
+	    if (!view.getPnFormulario().isVisible())
+		view.getPnFormulario().setVisible(true);
+	    else {
+		corredor = recogidaDatos();
+		if (corredor != null)
+		    abrirVentanaInscripciones(corredor);
+	    }
+	}
+    }
+
+    private void abrirVentanaInscripciones(CorredorDTO corredor) {
+	try {
+	    EstadoInscripcionesView estado = new EstadoInscripcionesView();
+	    estado.setCorredor(corredor);
+	    new EstadoInscripcionesController(estado);
+	    estado.setVisible(true);
+	} catch (BusinessException e) {
+	    Printer.printBusinessException(e);
+	}
     }
 
     public WindowAdapter notCloseDirectly() {

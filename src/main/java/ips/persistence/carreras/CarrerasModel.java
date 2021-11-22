@@ -19,6 +19,8 @@ public class CarrerasModel {
     private static final int PRECIO_POR_DEFECTO = 5;
     private Database db = new Database();
 
+    private static final String SQL_UPDATE_PLAZAS = "update carreras set plazasdisponibles = ?, plazasreservadas = ? where idcarrera = ?";
+
     public static final String SQL_LISTA_CARRERAS = "select * from carreras order by fechacompeticion desc";
 
     public static final String SQL_LISTA_CARRERAS_ABIERTAS = "select * from carreras c where (select min(fechaFin) from plazos p2 where p2.idcarrera = c.idCarrera) <= ? "
@@ -252,6 +254,11 @@ public class CarrerasModel {
 
     public List<PlazoDTO> verPlazosCarrera(int idCarrera) {
 	return db.executeQueryPojo(PlazoDTO.class, SQL_FIND_PLAZOS_IDCARRERA, idCarrera);
+    }
+
+    public void actualizarPlazasCarrera(CarreraDisplayDTO carrera) {
+	db.executeUpdate(SQL_UPDATE_PLAZAS, carrera.getPlazasDisponibles() + 1, carrera.getPlazasReservadas() - 1,
+		carrera.getIdCarrera());
     }
 
 }

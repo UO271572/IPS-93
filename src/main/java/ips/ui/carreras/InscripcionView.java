@@ -2,14 +2,11 @@ package ips.ui.carreras;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.ButtonGroup;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -30,8 +27,6 @@ public class InscripcionView extends JDialog {
 
     private JPanel contentPane;
     private JLabel lbInscripcion;
-    private JLabel lbCarreras;
-    private JComboBox<CarreraDisplayDTO> cbCarreras;
     private JButton btSiguiente;
     private JButton btCancelar;
 
@@ -57,8 +52,6 @@ public class InscripcionView extends JDialog {
 	contentPane.setLayout(null);
 	setContentPane(contentPane);
 	contentPane.add(getLbInscripcion());
-	contentPane.add(getLbCarreras());
-	contentPane.add(getCbCarreras());
 	contentPane.add(getBtSiguiente());
 	contentPane.add(getBtCancelar());
 	contentPane.add(getRdbtnTransferenciaBancaria());
@@ -73,28 +66,6 @@ public class InscripcionView extends JDialog {
 	    lbInscripcion.setBounds(42, 41, 270, 42);
 	}
 	return lbInscripcion;
-    }
-
-    private JLabel getLbCarreras() throws BusinessException {
-	if (lbCarreras == null) {
-	    lbCarreras = new JLabel("Carreras:");
-	    lbCarreras.setBounds(44, 125, 87, 28);
-	    lbCarreras.setLabelFor(getCbCarreras());
-	    lbCarreras.setDisplayedMnemonic('r');
-	    lbCarreras.setFont(new Font("Tahoma", Font.PLAIN, 13));
-	}
-	return lbCarreras;
-    }
-
-    private JComboBox<CarreraDisplayDTO> getCbCarreras() throws BusinessException {
-	if (cbCarreras == null) {
-	    cbCarreras = new JComboBox<CarreraDisplayDTO>();
-	    cbCarreras.setFont(new Font("Tahoma", Font.PLAIN, 12));
-	    cbCarreras.setBackground(SystemColor.WHITE);
-	    cbCarreras.setBounds(42, 164, 310, 42);
-	    cbCarreras.setModel(new DefaultComboBoxModel<CarreraDisplayDTO>(getCarreras()));
-	}
-	return cbCarreras;
     }
 
     public CarreraDisplayDTO[] getCarreras() throws BusinessException {
@@ -161,14 +132,15 @@ public class InscripcionView extends JDialog {
     }
 
     public CarreraDisplayDTO obtenerCarreraSeleccionada() throws BusinessException {
-	return (CarreraDisplayDTO) getCbCarreras().getSelectedItem();
+	return null;
+//	return (CarreraDisplayDTO) getCbCarreras().getSelectedItem();
     }
 
     private boolean comprobaciones(CorredorDTO corredor, CarreraDisplayDTO carrera) throws BusinessException {
 	if (corredor.getIdCarrera() == carrera.getIdCarrera()) {
 	    JOptionPane.showMessageDialog(null, "Debe seleccionar una carrera en la que no esté ya inscrito", "ERROR",
 		    JOptionPane.ERROR_MESSAGE);
-	    getCbCarreras().grabFocus();
+//	    getCbCarreras().grabFocus();
 	    return false;
 	}
 	return true;

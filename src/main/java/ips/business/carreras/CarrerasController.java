@@ -79,4 +79,8 @@ public class CarrerasController {
 	return model.getMaxIdCarrera();
     }
 
+    public void actualizarPlazasCarrera(CarreraDisplayDTO carrera) {
+	model.actualizarPlazasCarrera(carrera);
+    }
+
 }

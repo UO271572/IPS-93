@@ -21,6 +21,11 @@ public class InscripcionDTO {
     private Time tiempoinicio;
     private Time tiempofin;
     private String club;
+    private Time t1;
+    private Time t2;
+    private Time t3;
+    private Time t4;
+    private Time t5;
 
     public Time getTiempofin() {
 	return tiempofin;
@@ -96,6 +101,46 @@ public class InscripcionDTO {
 
     public void setClub(String club) {
 	this.club = club;
+    }
+
+    public Time getT1() {
+	return t1;
+    }
+
+    public void setT1(Time t1) {
+	this.t1 = t1;
+    }
+
+    public Time getT2() {
+	return t2;
+    }
+
+    public void setT2(Time t2) {
+	this.t2 = t2;
+    }
+
+    public Time getT3() {
+	return t3;
+    }
+
+    public void setT3(Time t3) {
+	this.t3 = t3;
+    }
+
+    public Time getT4() {
+	return t4;
+    }
+
+    public void setT4(Time t4) {
+	this.t4 = t4;
+    }
+
+    public Time getT5() {
+	return t5;
+    }
+
+    public void setT5(Time t5) {
+	this.t5 = t5;
     }
 
 }

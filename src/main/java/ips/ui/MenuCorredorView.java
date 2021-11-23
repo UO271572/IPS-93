@@ -54,6 +54,7 @@ public class MenuCorredorView extends JDialog {
 
     private final ButtonGroup buttonGroup = new ButtonGroup();
     private DefaultTableModel model;
+    private JButton btnComparar;
 
     public MenuCorredorView() {
 	model = new DefaultTableModel();
@@ -76,6 +77,7 @@ public class MenuCorredorView extends JDialog {
 	getContentPane().add(getBtnVerInscripciones());
 	getContentPane().add(getBtnInscribirse());
 	getContentPane().add(getPnFormulario());
+	getContentPane().add(getBtnComparar());
     }
 
     public DefaultTableModel getTableModel() {
@@ -337,5 +339,13 @@ public class MenuCorredorView extends JDialog {
 	    cbSexo.setBounds(75, 149, 106, 22);
 	}
 	return cbSexo;
+    }
+
+    private JButton getBtnComparar() {
+	if (btnComparar == null) {
+	    btnComparar = new JButton("Comparar");
+	    btnComparar.setBounds(744, 524, 105, 38);
+	}
+	return btnComparar;
     }
 }

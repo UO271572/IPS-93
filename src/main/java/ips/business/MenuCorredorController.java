@@ -8,6 +8,7 @@ import java.sql.Date;
 import java.util.List;
 
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 
 import ips.business.carreras.CarreraDisplayDTO;
 import ips.business.carreras.CarrerasController;
@@ -28,6 +29,8 @@ public class MenuCorredorController {
     private MenuCorredorView view;
     private CarrerasController cc;
     private CorredoresController coc;
+
+    private List<CarreraDisplayDTO> listaCarreras;
 
     public MenuCorredorController(MenuCorredorView view) {
 	this.view = view;
@@ -70,7 +73,6 @@ public class MenuCorredorController {
 
     private void abrirVentanaInscripciones(CorredorDTO corredor) {
 	try {
-//		InscripcionDTO inscripcion = inscripciones.get(i);
 	    EstadoInscripcionesView estado = new EstadoInscripcionesView();
 	    estado.setCorredor(corredor);
 	    new EstadoInscripcionesController(estado);
@@ -110,7 +112,7 @@ public class MenuCorredorController {
     private void inicializarTablaCarrerasSinFiltro() {
 	vaciarTabla();
 	try {
-	    List<CarreraDisplayDTO> listaCarreras = cc.getListaCarreras();
+	    listaCarreras = cc.getListaCarreras();
 	    añadirListaCarrerasTabla(listaCarreras);
 	} catch (BusinessException e1) {
 	    Printer.printBusinessException(e1);
@@ -124,7 +126,7 @@ public class MenuCorredorController {
     private void inicializarTablaCarrerasConFiltro() {
 	vaciarTabla();
 	try {
-	    List<CarreraDisplayDTO> listaCarreras = cc.getListaCarrerasFiltradas();
+	    listaCarreras = cc.getListaCarrerasFiltradas();
 	    añadirListaCarrerasTabla(listaCarreras);
 	} catch (BusinessException e1) {
 	    Printer.printBusinessException(e1);
@@ -149,11 +151,10 @@ public class MenuCorredorController {
 	return new ActionListener() {
 	    @Override
 	    public void actionPerformed(ActionEvent e) {
-		inicializarTablaCarrerasSinFiltro();
 		try {
 		    abrirVentanaInscripcion();
 		} catch (BusinessException e1) {
-		    e1.printStackTrace();
+		    Printer.printBusinessException(e1);
 		}
 	    }
 	};
@@ -161,14 +162,27 @@ public class MenuCorredorController {
     }
 
     private void abrirVentanaInscripcion() throws BusinessException {
+	CarreraDisplayDTO carrera = getCarrera();
+	if (carrera == null) {
+	    JOptionPane.showMessageDialog(view, "Debe seleccionar una carrera");
+	    return;
+	}
 	CorredorDTO corredor = emailRegistrado();
-//	CarreraDTo carrera = view.getCarrera();
-	if (corredor != null) {
-	    MenuInscripcionView inscripcion = new MenuInscripcionView();
-//	    inscripcion.setCarrera(carrera);
-	    inscripcion.setVisible(true);
-	} else
+	if (corredor == null) {
 	    registrarCorredor();
+	    return;
+	}
+	if (corredor.getIdCarrera() == carrera.getIdCarrera()) {
+	    JOptionPane.showMessageDialog(view, "Debe seleccionar una carrera en la que no esté ya inscrito", "ERROR",
+		    JOptionPane.ERROR_MESSAGE);
+	    return;
+	} else {
+	    inscripcion(corredor, carrera);
+	    MenuInscripcionView inscripcion = new MenuInscripcionView();
+	    inscripcion.setCorredor(corredor);
+	    inscripcion.setCarrera(getCarrera());
+	    inscripcion.setVisible(true);
+	}
     }
 
     private CorredorDTO emailRegistrado() {
@@ -182,9 +196,16 @@ public class MenuCorredorController {
 	    view.getPnFormulario().setVisible(true);
 	else {
 	    CorredorDTO corredor = recogidaDatos();
+	    CarreraDisplayDTO carrera = getCarrera();
+	    if (carrera == null) {
+		JOptionPane.showMessageDialog(view, "Debe seleccionar una carrera");
+		return;
+	    }
 	    if (corredor != null) {
+		inscripcion(corredor, carrera);
 		MenuInscripcionView inscripcion = new MenuInscripcionView();
 		inscripcion.setCorredor(corredor);
+		inscripcion.setCarrera(getCarrera());
 		inscripcion.setVisible(true);
 	    }
 	}
@@ -233,6 +254,20 @@ public class MenuCorredorController {
 	    return false;
 	} else
 	    return true;
+    }
+
+    private void inscripcion(CorredorDTO corredor, CarreraDisplayDTO carrera) {
+	corredor.setIdCarrera(carrera.getIdCarrera());
+	carrera.setPlazasDisponibles(carrera.getPlazasDisponibles() - 1);
+	corredor.setEstadoInscripcion("Pre-inscrito");
+    }
+
+    public CarreraDisplayDTO getCarrera() {
+	CarreraDisplayDTO carrera = null;
+	int i = view.getTable().getSelectedRow();
+	if (i > -1)
+	    carrera = listaCarreras.get(i);
+	return carrera;
     }
 
 }

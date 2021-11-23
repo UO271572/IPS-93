@@ -13,14 +13,12 @@ import ips.persistence.carreras.CarrerasModel;
 import ips.persistence.inscripciones.InscripcionModel;
 import ips.persistence.pagos.PagoTarjetaModel;
 import ips.persistence.pagos.PagoTransferenciaBancariaModel;
-import ips.ui.carreras.InscripcionView;
 
 public class InscripcionController {
 
     private PagoTarjetaModel model;
     private PagoTransferenciaBancariaModel modelBanco;
     private InscripcionModel imodel;
-    private InscripcionView view;
 
     public InscripcionController(PagoTarjetaModel model) {// , InscripcionView view) {
 	this.model = model;

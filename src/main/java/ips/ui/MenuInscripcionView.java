@@ -15,6 +15,7 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
+import ips.business.carreras.CarreraDisplayDTO;
 import ips.business.corredores.CorredorDTO;
 
 public class MenuInscripcionView extends JDialog {
@@ -38,14 +39,16 @@ public class MenuInscripcionView extends JDialog {
     private JPanel panelTarjeta;
     private JRadioButton rbtnPagoTarjeta;
     private final ButtonGroup buttonGroup = new ButtonGroup();
+    private JButton btFinalizar;
 
     private CorredorDTO corredor;
+    private CarreraDisplayDTO carrera;
 
     /**
      * Create the frame.
      */
     public MenuInscripcionView() {
-	setTitle("Corredor: Inscripcion con tarjeta");
+	setTitle("Corredor: Inscripción");
 	setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	setBounds(100, 100, 809, 368);
 	setLocationRelativeTo(null);
@@ -61,6 +64,7 @@ public class MenuInscripcionView extends JDialog {
 	contentPane.add(getRdbtnTransferenciaBancaria());
 	contentPane.add(getRbtnPagoTarjeta());
 	contentPane.add(getPanelTarjeta());
+	contentPane.add(getBtFinalizar());
     }
 
     private JLabel getLbNumero() {
@@ -144,7 +148,6 @@ public class MenuInscripcionView extends JDialog {
 	if (btValidar == null) {
 	    btValidar = new JButton("Validar");
 	    btValidar.setBounds(151, 272, 121, 33);
-	    btValidar.setEnabled(false);
 	}
 	return btValidar;
     }
@@ -178,7 +181,6 @@ public class MenuInscripcionView extends JDialog {
     public JPanel getPanelTarjeta() {
 	if (panelTarjeta == null) {
 	    panelTarjeta = new JPanel();
-	    panelTarjeta.setVisible(false);
 	    panelTarjeta.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 	    panelTarjeta.setBackground(Color.WHITE);
 	    panelTarjeta.setBounds(10, 90, 285, 165);
@@ -205,7 +207,27 @@ public class MenuInscripcionView extends JDialog {
 	return rbtnPagoTarjeta;
     }
 
+    public JButton getBtFinalizar() {
+	if (btFinalizar == null) {
+	    btFinalizar = new JButton("Finalizar inscripcion");
+	    btFinalizar.setBounds(444, 277, 138, 33);
+	}
+	return btFinalizar;
+    }
+
+    public CorredorDTO getCorredor() {
+	return corredor;
+    }
+
     public void setCorredor(CorredorDTO corredor) {
 	this.corredor = corredor;
+    }
+
+    public CarreraDisplayDTO getCarrera() {
+	return carrera;
+    }
+
+    public void setCarrera(CarreraDisplayDTO carrera) {
+	this.carrera = carrera;
     }
 }

@@ -321,4 +321,5 @@ public class MenuCorredorView extends JDialog {
 	}
 	return cbSexo;
     }
+
 }

@@ -25,10 +25,6 @@ public class EstadoInscripcionesController {
     public EstadoInscripcionesController(EstadoInscripcionesView view) {
 	this.view = view;
 	ic = new InscripcionController();
-	initController();
-    }
-
-    public void initController() {
 	inicializarTabla();
 	view.getBtCancelarInscripcion().addActionListener(accionCancelarInscripcion());
 	view.getBtFinalizar().addActionListener(accionFinalizar());
@@ -88,7 +84,12 @@ public class EstadoInscripcionesController {
 	    JOptionPane.showMessageDialog(view, "La carrera se encuentra anulada actualmente");
 	    return;
 	}
-	// antes del plazo final?
+	/*
+	 * Si la carrera seleccionada -> su fecha tope de cancelación es anterior a la
+	 * fecha actual o es null o el porcentaje a devolver es null =) mensaje error.
+	 * Sino, procesar cancelación y mostrar justificante. Guardar en bbdd la fecha
+	 * cancelación.
+	 */
 	if (Time.valueOf(LocalTime.now()).after(inscripcion.getTiempoinicio()))
 	    JOptionPane.showMessageDialog(view, "No puede cancelar la carrera, se cerró el plazo de cancelación");
 	ic.calcelarInscripcion(inscripcion);

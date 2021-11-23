@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -417,6 +418,7 @@ public class MenuOrganizadorView extends JDialog {
     public JButton getBtnResumenFinanciero() {
 	if (btnResumenFinanciero == null) {
 	    btnResumenFinanciero = new JButton("Resumen financiero");
+	    btnResumenFinanciero.setFont(new Font("Tahoma", Font.PLAIN, 10));
 	}
 	return btnResumenFinanciero;
     }

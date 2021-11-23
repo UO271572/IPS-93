@@ -441,10 +441,11 @@ public class MenuOrganizadorController {
 
 		if (fila != -1) {
 		    int idCarrera = (int) view.getTablaCarreras().getModel().getValueAt(fila, 0);
+		    String nombreCarrera = (String) view.getTablaCarreras().getModel().getValueAt(fila, 1);
 
 		    ResumenFinancieroView resumenView = new ResumenFinancieroView();
 		    ResumenFinancieroController resumenFinancieroController = new ResumenFinancieroController(
-			    resumenView, idCarrera);
+			    resumenView, idCarrera, nombreCarrera);
 		    resumenView.setVisible(true);
 		} else {
 		    JOptionPane.showMessageDialog(view, "Hay que seleccionar una carrera");

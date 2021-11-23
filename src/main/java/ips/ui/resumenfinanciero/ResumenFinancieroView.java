@@ -8,6 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
@@ -15,7 +16,7 @@ import javax.swing.border.TitledBorder;
 public class ResumenFinancieroView extends JDialog {
 
     private final JPanel contentPanel = new JPanel();
-    private JLabel lblIDCarrera;
+    private JLabel lblNombreCarrera;
     private JPanel pnIngresos;
     private JPanel pnPerdidas;
     private JLabel lblInscripcionesConfirmadas;
@@ -27,6 +28,8 @@ public class ResumenFinancieroView extends JDialog {
     private JLabel lblTotalIngresadoN;
     private JLabel lblTotalDevolverN;
     private JButton btnCerrar;
+    private JLabel lblTotal;
+    private JLabel lblTotalN;
 
     /**
      * Create the dialog.
@@ -43,25 +46,30 @@ public class ResumenFinancieroView extends JDialog {
 	getContentPane().add(contentPanel, BorderLayout.CENTER);
 	contentPanel.setLayout(null);
 	{
-	    JLabel lblTitulo = new JLabel("Resumen financiero de la carrera con ID:");
-	    lblTitulo.setFont(new Font("Verdana", Font.PLAIN, 20));
-	    lblTitulo.setBounds(58, 26, 420, 40);
+	    JLabel lblTitulo = new JLabel("Resumen financiero de la carrera con nombre");
+	    lblTitulo.setFont(new Font("Leelawadee UI Semilight", Font.PLAIN, 23));
+	    lblTitulo.setBounds(46, 11, 462, 40);
 	    contentPanel.add(lblTitulo);
 	}
-	contentPanel.add(getLblIDCarrera());
+	contentPanel.add(getLblNombreCarrera());
 	contentPanel.add(getPnIngresos());
 	contentPanel.add(getPnPerdidas());
 	contentPanel.add(getBtnCerrar());
+	contentPanel.add(getLblTotal());
+	contentPanel.add(getLblTotalN());
 	setLocationRelativeTo(null);
     }
 
-    public JLabel getLblIDCarrera() {
-	if (lblIDCarrera == null) {
-	    lblIDCarrera = new JLabel("");
-	    lblIDCarrera.setFont(new Font("Verdana", Font.PLAIN, 20));
-	    lblIDCarrera.setBounds(488, 26, 71, 40);
+    public JLabel getLblNombreCarrera() {
+	if (lblNombreCarrera == null) {
+	    lblNombreCarrera = new JLabel("");
+	    lblNombreCarrera.setHorizontalTextPosition(SwingConstants.CENTER);
+	    lblNombreCarrera.setHorizontalAlignment(SwingConstants.LEFT);
+	    lblNombreCarrera.setBorder(null);
+	    lblNombreCarrera.setFont(new Font("Leelawadee UI Semilight", Font.PLAIN, 19));
+	    lblNombreCarrera.setBounds(46, 46, 558, 31);
 	}
-	return lblIDCarrera;
+	return lblNombreCarrera;
     }
 
     private JPanel getPnIngresos() {
@@ -175,5 +183,23 @@ public class ResumenFinancieroView extends JDialog {
 	    btnCerrar.setBounds(488, 245, 116, 43);
 	}
 	return btnCerrar;
+    }
+
+    private JLabel getLblTotal() {
+	if (lblTotal == null) {
+	    lblTotal = new JLabel("SUBTOTAL:");
+	    lblTotal.setFont(new Font("Leelawadee UI Semilight", Font.PLAIN, 23));
+	    lblTotal.setBounds(46, 246, 126, 42);
+	}
+	return lblTotal;
+    }
+
+    public JLabel getLblTotalN() {
+	if (lblTotalN == null) {
+	    lblTotalN = new JLabel("");
+	    lblTotalN.setFont(new Font("Leelawadee UI Semilight", Font.PLAIN, 23));
+	    lblTotalN.setBounds(170, 246, 150, 42);
+	}
+	return lblTotalN;
     }
 }

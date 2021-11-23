@@ -21,8 +21,8 @@ public class CarrerasModel {
 
     public static final String SQL_LISTA_CARRERAS = "select * from carreras order by fechacompeticion desc";
 
-    public static final String SQL_LISTA_CARRERAS_ABIERTAS = "select * from carreras c where (select min(fechaFin) from plazos p2 where p2.idcarrera = c.idCarrera) <= ? "
-	    + "and (select min(fechaFin) from plazos p2 where p2.idcarrera = c.idCarrera) <= ?";
+    public static final String SQL_LISTA_CARRERAS_ABIERTAS = "select * from carreras c where (select min(fechaInicio) from plazos p2 where p2.idcarrera = c.idCarrera) <= ? "
+	    + "and (select max(fechaFin) from plazos p2 where p2.idcarrera = c.idCarrera) >= ?";
 
     public static final String SQL_LISTA_CARRERAS_NO_COMPETIDAS = "select * from carreras where fechacompeticion >= ? order by fechacompeticion asc";
 

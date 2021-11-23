@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
+import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -287,6 +288,9 @@ public class MenuOrganizadorView extends JDialog {
     private JTabbedPane getTabbedPane() {
 	if (tabbedPane == null) {
 	    tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+	    tabbedPane.setBorder(new TitledBorder(
+		    new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)),
+		    "Contenidos", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 	    tabbedPane.setBounds(639, 11, 625, 529);
 	    tabbedPane.addTab("Corredores", null, getScCorredores(), null);
 	    tabbedPane.addTab("Categorias", null, getScCategorias(), null);

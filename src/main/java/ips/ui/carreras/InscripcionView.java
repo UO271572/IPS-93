@@ -15,11 +15,9 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
 import ips.business.BusinessException;
-import ips.business.MenuInscripcionController;
 import ips.business.carreras.CarreraDisplayDTO;
 import ips.business.carreras.CarrerasController;
 import ips.business.corredores.CorredorDTO;
-import ips.ui.MenuInscripcionView;
 
 public class InscripcionView extends JDialog {
 
@@ -109,9 +107,9 @@ public class InscripcionView extends JDialog {
      * @throws BusinessException
      */
     private void mostrarMenuInscripcion() throws BusinessException {
-	MenuInscripcionController menInscripcion = new MenuInscripcionController(new MenuInscripcionView(this));
+//	MenuInscripcionController menInscripcion = new MenuInscripcionController(new MenuInscripcionView(this));
 	// menInscripcion.initController();
-	menInscripcion.getMenuView().setVisible(true);
+//	menInscripcion.getMenuView().setVisible(true);
     }
 
     /**

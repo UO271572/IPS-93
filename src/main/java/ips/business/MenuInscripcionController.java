@@ -11,13 +11,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
-import ips.business.inscripciones.InscripcionController;
 import ips.business.inscripciones.InscripcionDTO;
-import ips.persistence.pagos.PagoTarjetaModel;
 import ips.ui.MenuInscripcionView;
 import ips.util.Printer;
 
@@ -37,6 +34,28 @@ public class MenuInscripcionController {
     public void initController() {
 	view.addWindowListener(notCloseDirectly());
 	view.getBtValidar().addActionListener(actionValidar());
+	view.getRdbtnTransferenciaBancaria().addActionListener(accionTransferencia());
+	view.getRbtnPagoTarjeta().addActionListener(accionTarjeta());
+    }
+
+    private ActionListener accionTransferencia() {
+	return new ActionListener() {
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+		view.getPanelTarjeta().setVisible(false);
+		view.getBtValidar().setEnabled(false);
+	    }
+	};
+    }
+
+    private ActionListener accionTarjeta() {
+	return new ActionListener() {
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+		view.getPanelTarjeta().setVisible(true);
+		view.getBtValidar().setEnabled(true);
+	    }
+	};
     }
 
     public WindowAdapter notCloseDirectly() {
@@ -56,33 +75,24 @@ public class MenuInscripcionController {
 
     private ActionListener actionValidar() {
 	return new ActionListener() {
-
 	    @Override
 	    public void actionPerformed(ActionEvent e) {
-		InscripcionController controller = new InscripcionController(new PagoTarjetaModel());
-
-		try {
-		    if (validarTarjeta() && validarCamposCorredor()) {
-			List<InscripcionDTO> listaActualizacion = controller.actualizarPagoConTarjeta(
-				view.getTxCorredor().getText(),
-				view.getInscView().obtenerCarreraSeleccionada().getIdCarrera());
-
-			// model.addAll(listaActualizacion);
-			InscripcionDTO[] inscripciones = arrayListToArray(listaActualizacion);
-			view.getListUpdates().setModel(new DefaultComboBoxModel<InscripcionDTO>(inscripciones));// añadir
-														// al
-														// componente
-														// la
-														// lista
-														// de
-														// actualizaciones;
-			// simular con jdialog la pasarela de pago
-			JOptionPane.showMessageDialog(null, "Se esta tramitando el pago... Inscripcion realizada!");
-		    }
-		} catch (BusinessException | NumberFormatException e1) {
-		    JOptionPane.showMessageDialog(null, "No se puedo realizar la inscripcion");
-		    Printer.printBusinessException(e1);
-		}
+//		InscripcionController controller = new InscripcionController(new PagoTarjetaModel());
+//		try {
+//		    if (validarTarjeta() && validarCamposCorredor()) {
+////			List<InscripcionDTO> listaActualizacion = controller.actualizarPagoConTarjeta(
+////				view.getTxCorredor().getText(),
+////				view.getInscView().obtenerCarreraSeleccionada().getIdCarrera());
+////			// model.addAll(listaActualizacion);
+////			InscripcionDTO[] inscripciones = arrayListToArray(listaActualizacion);
+////			view.getListUpdates().setModel(new DefaultComboBoxModel<InscripcionDTO>(inscripciones));// añadir al componente la lista de actualizaciones;
+//			// simular con jdialog la pasarela de pago
+//			JOptionPane.showMessageDialog(null, "Se esta tramitando el pago... Inscripcion realizada!");
+//		    }
+//		} catch (BusinessException | NumberFormatException e1) {
+//		    JOptionPane.showMessageDialog(null, "No se puedo realizar la inscripcion");
+//		    Printer.printBusinessException(e1);
+//		}
 	    }
 	};
     }

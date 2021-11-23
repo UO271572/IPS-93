@@ -17,9 +17,9 @@ import ips.business.corredores.CorredoresController;
 import ips.persistence.carreras.CarrerasModel;
 import ips.persistence.corredores.CorredoresModel;
 import ips.ui.MenuCorredorView;
+import ips.ui.MenuInscripcionView;
 import ips.ui.carreras.CarrerasView;
 import ips.ui.carreras.EstadoInscripcionesView;
-import ips.ui.carreras.InscripcionView;
 import ips.ui.corredores.CorredoresView;
 import ips.util.Printer;
 
@@ -70,6 +70,7 @@ public class MenuCorredorController {
 
     private void abrirVentanaInscripciones(CorredorDTO corredor) {
 	try {
+//		InscripcionDTO inscripcion = inscripciones.get(i);
 	    EstadoInscripcionesView estado = new EstadoInscripcionesView();
 	    estado.setCorredor(corredor);
 	    new EstadoInscripcionesController(estado);
@@ -161,9 +162,10 @@ public class MenuCorredorController {
 
     private void abrirVentanaInscripcion() throws BusinessException {
 	CorredorDTO corredor = emailRegistrado();
+//	CarreraDTo carrera = view.getCarrera();
 	if (corredor != null) {
-	    InscripcionView inscripcion = new InscripcionView();
-	    inscripcion.setCorredor(corredor);
+	    MenuInscripcionView inscripcion = new MenuInscripcionView();
+//	    inscripcion.setCarrera(carrera);
 	    inscripcion.setVisible(true);
 	} else
 	    registrarCorredor();
@@ -181,7 +183,7 @@ public class MenuCorredorController {
 	else {
 	    CorredorDTO corredor = recogidaDatos();
 	    if (corredor != null) {
-		InscripcionView inscripcion = new InscripcionView();
+		MenuInscripcionView inscripcion = new MenuInscripcionView();
 		inscripcion.setCorredor(corredor);
 		inscripcion.setVisible(true);
 	    }

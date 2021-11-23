@@ -20,19 +20,7 @@ public class InscripcionDTO {
     private String incidencia;
     private Time tiempoinicio;
     private Time tiempofin;
-
-//	public Time getTiempoInicio() {
-//		return tiempoInicio;
-//	}
-//	public void setTiempoInicio(Time tiempoInicio) {
-//		this.tiempoInicio = tiempoInicio;
-//	}
-//	public Time getTiempoFin() {
-//		return tiempoFin;
-//	}
-//	public void setTiempoFin(Time tiempoFin) {
-//		this.tiempoFin = tiempoFin;
-//	}
+    private String club;
 
     public Time getTiempofin() {
 	return tiempofin;
@@ -100,6 +88,14 @@ public class InscripcionDTO {
 
     public String toString() {
 	return Printer.print(this);
+    }
+
+    public String getClub() {
+	return club;
+    }
+
+    public void setClub(String club) {
+	this.club = club;
     }
 
 }

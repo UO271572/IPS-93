@@ -24,7 +24,7 @@ public class InscripcionController {
 
     public InscripcionController(PagoTarjetaModel model) {// , InscripcionView view) {
 	this.model = model;
-//		this.view = view;
+	// this.view = view;
     }
 
     public InscripcionController(PagoTransferenciaBancariaModel model) {// , InscripcionView view) {
@@ -155,6 +155,17 @@ public class InscripcionController {
 
     public void updateInscripciones(List<InscripcionDTO> lista) throws BusinessException {
 	imodel.updateInscripciones(lista);
+    }
+
+    /**
+     * Ordena por tiempos mas rapidos a mas lentos los resultados de la carrera de
+     * los corredores
+     * 
+     * @param idcarrera
+     * @return
+     */
+    public List<InscripcionDTO> listInscripcionesByTime(int idcarrera) {
+	return imodel.inscripcionesOrdenarPorTiempos(idcarrera);
     }
 
 }

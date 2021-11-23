@@ -32,8 +32,6 @@ public class MenuOrganizadorView extends JDialog {
     // ---
     private DefaultTableModel tablemodel;
     private JPanel pnFiltros;
-//    private ProcesaAccion pa = new ProcesaAccion();
-    private JPanel pn_listaCorredores;
     private JTable tablaCarreras;
 
     private DefaultTableModel modelTablaCarreras = new DefaultTableModel();
@@ -41,8 +39,6 @@ public class MenuOrganizadorView extends JDialog {
     private DefaultTableModel modelTablaCategorias = new DefaultTableModel();
 
     private JTable tableCorredores;
-    private JScrollPane scrollPaneCorre;
-    private JTabbedPane tabbedPane_2;
     private JTabbedPane tabbedPane;
     private JScrollPane scCorredores;
     private JScrollPane scCategorias;
@@ -77,120 +73,6 @@ public class MenuOrganizadorView extends JDialog {
 	getContentPane().add(getTabbedPane());
 //	getPnFiltros().add(getTabbedPane());
     }
-
-//    class ProcesaAccion implements ActionListener {
-//
-//	public void actionPerformed(ActionEvent a) {
-//	    filtrar(a.getActionCommand());
-//	}
-//
-//	private void filtrar(String actionCommand) {
-//	    // mostrar el panel y scroll y lista asociados al boton
-////	    getPn_listaCorredores().show();arreglar a jtabbed
-//	}
-//
-//    }
-
-//    /**
-//     * 
-//     * @param i
-//     * @param nombre
-//     */
-//    public void iniciarBotonesFiltros(int i, String nombre) {
-//	// getListCorredores().removeAll();
-//	getPn_FiltrosClasificacion().add(crearBotonesFiltro(i, nombre));
-//	getPn_FiltrosClasificacion().validate();
-//	getPn_FiltrosClasificacion().repaint();
-//	// getPn_listaCorredores().add(crearPanelesScroll(nombre));
-//    }
-
-//    public JButton crearBotonesFiltro(int i, String nombre) {
-//	JButton btBoton = new JButton();
-//	btBoton = new JButton(nombre);
-//	btBoton.setActionCommand(Integer.toString(i));
-//	btBoton.addActionListener(pa);
-//	btBoton.setEnabled(true);
-//	return btBoton;
-//    }
-
-//    private JPanel crearPanelesScroll(String nombre) {
-//	JPanel panel = new JPanel();
-//	panel.setName("pn" + nombre);
-//	panel.setLayout(new BorderLayout(0, 0));
-//	panel.add(crearScrollPane(nombre));
-//	panel.validate();
-//	panel.repaint();
-//	return panel;
-//    }
-
-//    private Component crearScrollPane(String nombre) {
-//	JScrollPane scpanel = new JScrollPane();
-//	scpanel.setName("sc" + nombre);
-//	scpanel.setBounds(386, 254, 661, 125);
-//	scpanel.setViewportView(crearList(nombre));
-//
-//	return scpanel;
-//    }
-
-//    private JList crearList(String nombre) {
-//	JList jlist = new JList();
-//	jlist.setName("jlist" + nombre);
-//	jlist.setBackground(Color.WHITE);
-//	return jlist;
-//    }
-
-//    /**
-//     * Añadir la tabla al panel que se necesite
-//     * 
-//     * @return
-//     */
-//    public JTable getTable() {
-//	if (table == null) {
-//	    table = new JTable(tablemodel);
-//	    tablemodel.addColumn("Id Carrera");
-//	    tablemodel.addColumn("Nombre");
-//	    tablemodel.addColumn("Dorsal");
-//	    tablemodel.addColumn("Categoria");
-//	    tablemodel.addColumn("Tiempo");
-//	    table.setDefaultEditor(Object.class, null);
-//	    // table.setVisible(true);
-//	}
-//	return table;
-//    }
-//
-//    /**
-//     * Creacion dinamica de scrollpane
-//     * 
-//     * @return
-//     */
-//    public JScrollPane crearScrollPane() {
-//	JScrollPane scp = new JScrollPane(getTabbedPane());
-//	scp.setViewportView(getTable());
-//	// scp.setVisible(true);
-//	return scp;
-//    }
-
-//    /**
-//     * tABED PANE SOBRE EL QUE SE PONDRAN LOS FILTROS
-//     * 
-//     * @return
-//     */
-//    public JTabbedPane getTabbedPane() {
-//	if (tabbedPane == null) {
-//	    tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-//	    tabbedPane.setBounds(386, 56, 543, 169);
-//	    tabbedPane.addTab("New tab", null, crearScrollPane(), null);
-////	    añadir();
-////	tabbedPane.addTab("NOMBRE DEL FILTRO CATEGORIA ", null, crearScrollPane(), null);
-////	    AÑADIR TABS CUANDO SEPAMOS CUALOS SON LOS FILTROS
-//	}
-//
-//	return tabbedPane;
-//    }
-
-//    private void añadir() {
-//	tabbedPane.addTab("New tab", null, crearScrollPane(), null);
-//    }
 
     // ------------------------------------------------------------------------
 
@@ -381,6 +263,9 @@ public class MenuOrganizadorView extends JDialog {
 
 	    modelTablaCorredores.addColumn("DNI");
 	    modelTablaCorredores.addColumn("Nombre");
+	    modelTablaCorredores.addColumn("Club"); // puede estar en club o no
+	    // modelTablaCorredores.addColumn("Inscrito con club");// poner si fue inscrito
+	    // a la carrera con un club
 	    modelTablaCorredores.addColumn("Categoría");
 	    modelTablaCorredores.addColumn("Fecha inscripción");
 	    modelTablaCorredores.addColumn("Estado inscripción");

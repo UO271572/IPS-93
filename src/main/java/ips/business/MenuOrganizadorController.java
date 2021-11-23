@@ -316,6 +316,8 @@ public class MenuOrganizadorController {
 	    public void actionPerformed(ActionEvent e) {
 		CorredoresController carreraController = new CorredoresController(new CorredoresModel(),
 			new CorredoresView());
+		InscripcionController inscController = new InscripcionController();
+
 		view.getTableModelCorredor().setRowCount(0);
 		int fila = view.getTablaCarreras().getSelectedRow();
 
@@ -324,21 +326,18 @@ public class MenuOrganizadorController {
 			int idCarrera = (int) view.getTablaCarreras().getModel().getValueAt(fila, 0);
 
 			List<CorredorDTO> corredores = carreraController.getCorredoresByIdCarrera(idCarrera);
-
+			List<InscripcionDTO> inscripciones = inscController.listInscripcionesByTime(idCarrera);
+//rehacer el for haciendo primero el de inscripciones y luego comprobar con otro bucle q coinciden los datos del corredor con el de la iteraccion actual
 			for (int i = 0; i < corredores.size(); i++) {
 			    String DNI = corredores.get(i).getDniCorredor();
 			    String nombre = corredores.get(i).getNombre();
+			    // club
 			    String categoria = corredores.get(i).getCategoria();
 			    Date fecha_inscripcion = corredores.get(i).getFechaInscripcion();
 			    String estado_inscripcion = corredores.get(i).getEstadoInscripcion();
 			    Object[] data = { DNI, nombre, categoria, fecha_inscripcion, estado_inscripcion };
 			    view.getTableModelCorredor().insertRow(0, data);
 			}
-
-			// DefaultListModel<CorredorDTO> dlm = new DefaultListModel<CorredorDTO>();
-			// dlm.addAll(carreraController.getCorredoresByIdCarrera(((CarreraDisplayDTO)(view.getCbCarreras().getSelectedItem())).getIdCarrera()));
-			// dlm.addAll(carreraController.getCorredoresByIdCarrera(idCarrera));
-			// view.getListCorredores().setModel(dlm);
 		    } else {
 			JOptionPane.showMessageDialog(null, "Debes seleccionar una carrera");
 		    }

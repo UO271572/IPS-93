@@ -1,5 +1,6 @@
 package ips.ui;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridLayout;
@@ -49,29 +50,31 @@ public class MenuOrganizadorView extends JDialog {
     private JTable tableCategorias;
     private JTable table_2;
     private JTable table_3;
+    private JPanel panel;
+    private JPanel pnsur;
+    private JPanel pnCentro;
 
     public MenuOrganizadorView() {
 	tablemodel = new DefaultTableModel();
 	setTitle("Menú: Organizador");
-	setResizable(false);
 	setBounds(100, 100, 1288, 666);
 	setLocationRelativeTo(null);
 	getContentPane().setBackground(Color.WHITE);
-	getContentPane().setLayout(null);
-	getContentPane().add(getPn_OpcionesOrganizador());
-	getContentPane().add(getPn_Carreras());
-	getContentPane().add(getPn_BotonesCarreras());
-
+//	getContentPane().add(getPn_OpcionesOrganizador());
+//	getContentPane().add(getPn_BotonesCarreras());
+//	getContentPane().add(getPn_Carreras());
+	// getContentPane().add(getTabbedPane());
 	iniciar();
 
 	this.setModal(true);
     }
 
     private void iniciar() {
+	getContentPane().setLayout(new BorderLayout(0, 0));
 //	getContentPane().add(getPnFiltros());
 //	getPnFiltros().setLayout(new BorderLayout(0, 0));
 	// getContentPane().add(getPn_listaCorredores());
-	getContentPane().add(getTabbedPane());
+	getContentPane().add(getPanel());
 //	getPnFiltros().add(getTabbedPane());
     }
 
@@ -149,7 +152,7 @@ public class MenuOrganizadorView extends JDialog {
 	    pn_Carreras.setBackground(Color.WHITE);
 	    pn_Carreras
 		    .setBorder(new TitledBorder(null, "Carreras", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-	    pn_Carreras.setBounds(10, 10, 619, 531);
+	    pn_Carreras.setBounds(10, 10, 619, 243);
 	    pn_Carreras.setLayout(new BoxLayout(pn_Carreras, BoxLayout.X_AXIS));
 	    pn_Carreras.add(getScrollPaneCarreras());
 	    // pn_Carreras.add(getListCarreras());
@@ -159,8 +162,11 @@ public class MenuOrganizadorView extends JDialog {
 
     private JScrollPane getScrollPaneCarreras() {
 	if (scrollPaneCarreras == null) {
-	    scrollPaneCarreras = new JScrollPane();
-	    scrollPaneCarreras.setAlignmentX(Component.RIGHT_ALIGNMENT);
+	    scrollPaneCarreras = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+		    JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+//	    scrollPaneCarreras = new JScrollPane();
+//	    scrollPaneCarreras.setAlignmentX(Component.RIGHT_ALIGNMENT);
 	    scrollPaneCarreras.setViewportView(getTablaCarreras());
 	}
 	return scrollPaneCarreras;
@@ -239,6 +245,8 @@ public class MenuOrganizadorView extends JDialog {
 	    tablaCarreras.getColumn(nombre).setPreferredWidth(nombre.length() * 5);
 
 	    tablaCarreras.setDefaultEditor(Object.class, null);
+	    tablaCarreras.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+//	    tablaCarreras.setAutoscrolls(true);
 	}
 	return tablaCarreras;
     }
@@ -264,12 +272,19 @@ public class MenuOrganizadorView extends JDialog {
 
 	    modelTablaCorredores.addColumn("DNI");
 	    modelTablaCorredores.addColumn("Nombre");
-	    modelTablaCorredores.addColumn("Club"); // puede estar en club o no
-	    // modelTablaCorredores.addColumn("Inscrito con club");// poner si fue inscrito
-	    // a la carrera con un club
-	    modelTablaCorredores.addColumn("Categoría");
+	    modelTablaCorredores.addColumn("Sexo");
+	    modelTablaCorredores.addColumn("Categoria");
 	    modelTablaCorredores.addColumn("Fecha inscripción");
 	    modelTablaCorredores.addColumn("Estado inscripción");
+	    modelTablaCorredores.addColumn("Estado");
+	    modelTablaCorredores.addColumn("Club");
+	    modelTablaCorredores.addColumn("Ritmo");
+	    modelTablaCorredores.addColumn("Diferencia");
+	    modelTablaCorredores.addColumn("Parcial 1");
+	    modelTablaCorredores.addColumn("Parcial 2");
+	    modelTablaCorredores.addColumn("Parcial 3");
+	    modelTablaCorredores.addColumn("Parcial 4");
+	    modelTablaCorredores.addColumn("Parcial 5");
 
 	    tableCorredores.setDefaultEditor(Object.class, null);
 
@@ -382,5 +397,35 @@ public class MenuOrganizadorView extends JDialog {
 
     public void setModelTablaCategorias(DefaultTableModel modelTablaCategorias) {
 	this.modelTablaCategorias = modelTablaCategorias;
+    }
+
+    private JPanel getPanel() {
+	if (panel == null) {
+	    panel = new JPanel();
+	    panel.setLayout(new BorderLayout(0, 0));
+	    panel.add(getPnsur(), BorderLayout.SOUTH);
+	    panel.add(getPnCentro(), BorderLayout.CENTER);
+	}
+	return panel;
+    }
+
+    private JPanel getPnsur() {
+	if (pnsur == null) {
+	    pnsur = new JPanel();
+	    pnsur.setLayout(new GridLayout(1, 0, 0, 0));
+	    pnsur.add(getPn_BotonesCarreras());
+	    pnsur.add(getPn_OpcionesOrganizador());
+	}
+	return pnsur;
+    }
+
+    private JPanel getPnCentro() {
+	if (pnCentro == null) {
+	    pnCentro = new JPanel();
+	    pnCentro.setLayout(new GridLayout(1, 0, 0, 0));
+	    pnCentro.add(getPn_Carreras());
+	    pnCentro.add(getTabbedPane());
+	}
+	return pnCentro;
     }
 }

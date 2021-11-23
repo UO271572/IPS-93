@@ -327,11 +327,27 @@ public class MenuOrganizadorController {
 
 			List<CorredorDTO> corredores = carreraController.getCorredoresByIdCarrera(idCarrera);
 			List<InscripcionDTO> inscripciones = inscController.listInscripcionesByTime(idCarrera);
+
+			int posicion = 0;
+			for (InscripcionDTO inscripcion : inscripciones) {
+			    CorredorDTO corredordto = null;
+			    for (CorredorDTO corredor : corredores) {
+				if (inscripcion.getDnicorredor().equals(corredor.getDniCorredor())) {
+				    corredordto = corredor;
+				    break;
+				}
+			    }
+
+			    Object[] data = { DNI, nombre, sexo, categoria, fecha_inscripcion, estado_inscripcion, club,
+				    ritmo, diferencial, t1, t2, t3, t4, t5 };
+			    view.getTableModelCorredor().insertRow(posicion, data);
+			    posicion++;
+			}
+
 //rehacer el for haciendo primero el de inscripciones y luego comprobar con otro bucle q coinciden los datos del corredor con el de la iteraccion actual
 			for (int i = 0; i < corredores.size(); i++) {
 			    String DNI = corredores.get(i).getDniCorredor();
 			    String nombre = corredores.get(i).getNombre();
-			    // club
 			    String categoria = corredores.get(i).getCategoria();
 			    Date fecha_inscripcion = corredores.get(i).getFechaInscripcion();
 			    String estado_inscripcion = corredores.get(i).getEstadoInscripcion();

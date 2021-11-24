@@ -5,140 +5,197 @@ import java.sql.Date;
 import ips.util.Printer;
 
 public class CarreraDisplayDTO {
-	private int idCarrera;
-	private String nombre;
-	private Date fechaInicio;
-	private Date fechaFin;
-	private Date fechaCompeticion;
-	private double precio;//arreglar a double en la base de datos 
-	private double distancia;
-	private String tipo;
-	private int plazasDisponibles;
-	private int plazasReservadas;
-	private String lugar;
-	private String estadoCarrera;
-	
-	public String getEstadoCarrera() {
-		return estadoCarrera;
-	}
 
-	public void setEstadoCarrera(String estadoCarrera) {
-		this.estadoCarrera = estadoCarrera;
-	}
+    private int idCarrera;
+    private String nombre;
+    private Date fechaInicio;
+    private Date fechaFin;
+    private Date fechaCompeticion;
+    private double precio;// arreglar a double en la base de datos
+    private double distancia;
+    private String tipo;
+    private int plazasDisponibles;
+    private int plazasReservadas;
+    private String lugar;
+    private String estadoCarrera;
+    // Tiempos intermedios posibles (nombre)
+    private String ti_1;
+    private String ti_2;
+    private String ti_3;
+    private String ti_4;
+    private String ti_5;
+    private Date fechamaxcancelacion = null;
+    private double porcentajedevo = -1;
 
-	public Date getFechaCompeticion() {
-		return fechaCompeticion;
-	}
+    public String getEstadoCarrera() {
+	return estadoCarrera;
+    }
 
-	public void setFechaCompeticion(Date fechaCompeticion) {
-		this.fechaCompeticion = fechaCompeticion;
-	}
+    public void setEstadoCarrera(String estadoCarrera) {
+	this.estadoCarrera = estadoCarrera;
+    }
 
-	public double getDistancia() {
-		return distancia;
-	}
+    public Date getFechaCompeticion() {
+	return fechaCompeticion;
+    }
 
-	public void setDistancia(double distancia) {
-		this.distancia = distancia;
-	}
+    public void setFechaCompeticion(Date fechaCompeticion) {
+	this.fechaCompeticion = fechaCompeticion;
+    }
 
-	public int getIdCarrera() {
-		return idCarrera;
-	}
+    public double getDistancia() {
+	return distancia;
+    }
 
-	public void setPrecio(double precio) {
-		this.precio = precio;
-	}
+    public void setDistancia(double distancia) {
+	this.distancia = distancia;
+    }
 
-	
-	
-	public CarreraDisplayDTO() {
-	}
+    public int getIdCarrera() {
+	return idCarrera;
+    }
 
-	public CarreraDisplayDTO(int id, String nombre, Date fechaI, Date fechaF, int precio,
-			double distancia, Date fechaC, String tipo ) {
-		this.idCarrera = id;
-		this.nombre = nombre;
-		this.fechaInicio = fechaI;
-		this.fechaFin = fechaF;
-		this.precio = precio;
-		this.distancia = distancia;
-		this.fechaCompeticion = fechaC;
-		this.tipo = tipo;
-	}
+    public void setPrecio(double precio) {
+	this.precio = precio;
+    }
 
+    public CarreraDisplayDTO() {
+    }
 
-	public void setIdCarrera(int idCarrera) {
-		this.idCarrera = idCarrera;
-	}
+    public CarreraDisplayDTO(int id, String nombre, Date fechaI, Date fechaF, int precio, double distancia, Date fechaC,
+	    String tipo) {
+	this.idCarrera = id;
+	this.nombre = nombre;
+	this.fechaInicio = fechaI;
+	this.fechaFin = fechaF;
+	this.precio = precio;
+	this.distancia = distancia;
+	this.fechaCompeticion = fechaC;
+	this.tipo = tipo;
+    }
 
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
+    public void setIdCarrera(int idCarrera) {
+	this.idCarrera = idCarrera;
+    }
 
-	public void setFechaInicio(Date fechaInicio) {
-		this.fechaInicio = fechaInicio;
-	}
+    public void setNombre(String nombre) {
+	this.nombre = nombre;
+    }
 
-	public void setFechaFin(Date fechaFin) {
-		this.fechaFin = fechaFin;
-	}
+    public void setFechaInicio(Date fechaInicio) {
+	this.fechaInicio = fechaInicio;
+    }
 
-	public String getNombre() {
-		return this.nombre;
-	}
+    public void setFechaFin(Date fechaFin) {
+	this.fechaFin = fechaFin;
+    }
 
-	public Date getFechaInicio() {
-		return this.fechaInicio;
-	}
+    public String getNombre() {
+	return this.nombre;
+    }
 
-	public Date getFechaFin() {
-		return this.fechaFin;
-	}
+    public Date getFechaInicio() {
+	return this.fechaInicio;
+    }
 
-	public double getPrecio() {
-		return this.precio;
-	}
+    public Date getFechaFin() {
+	return this.fechaFin;
+    }
 
-	public String getTipo() {
-		return tipo;
-	}
+    public double getPrecio() {
+	return this.precio;
+    }
 
-	public void setTipo(String tipo) {
-		this.tipo = tipo;
-	}
+    public String getTipo() {
+	return tipo;
+    }
 
-	public int getPlazasDisponibles() {
-		return plazasDisponibles;
-	}
+    public void setTipo(String tipo) {
+	this.tipo = tipo;
+    }
 
-	public void setPlazasDisponibles(int plazasDisponibles) {
-		this.plazasDisponibles = plazasDisponibles;
-	}
-	
-	
-	
-	
-	public int getPlazasReservadas() {
-		return plazasReservadas;
-	}
+    public int getPlazasDisponibles() {
+	return plazasDisponibles;
+    }
 
-	public void setPlazasReservadas(int plazasReservadas) {
-		this.plazasReservadas = plazasReservadas;
-	}
+    public void setPlazasDisponibles(int plazasDisponibles) {
+	this.plazasDisponibles = plazasDisponibles;
+    }
 
-	public String getLugar() {
-		return lugar;
-	}
+    public int getPlazasReservadas() {
+	return plazasReservadas;
+    }
 
-	public void setLugar(String lugar) {
-		this.lugar = lugar;
-	}
+    public void setPlazasReservadas(int plazasReservadas) {
+	this.plazasReservadas = plazasReservadas;
+    }
 
-	public String toString() {
-		
-		return Printer.print(this);
-	}
+    public String getLugar() {
+	return lugar;
+    }
 
-	
+    public void setLugar(String lugar) {
+	this.lugar = lugar;
+    }
+
+    public String getTi_1() {
+	return ti_1;
+    }
+
+    public void setTi_1(String ti_1) {
+	this.ti_1 = ti_1;
+    }
+
+    public String getTi_2() {
+	return ti_2;
+    }
+
+    public void setTi_2(String ti_2) {
+	this.ti_2 = ti_2;
+    }
+
+    public String getTi_3() {
+	return ti_3;
+    }
+
+    public void setTi_3(String ti_3) {
+	this.ti_3 = ti_3;
+    }
+
+    public String getTi_4() {
+	return ti_4;
+    }
+
+    public void setTi_4(String ti_4) {
+	this.ti_4 = ti_4;
+    }
+
+    public String getTi_5() {
+	return ti_5;
+    }
+
+    public void setTi_5(String ti_5) {
+	this.ti_5 = ti_5;
+    }
+
+    public Date getFechamaxcancelacion() {
+	return fechamaxcancelacion;
+    }
+
+    public void setFechamaxcancelacion(Date fechamaxcancelacion) {
+	this.fechamaxcancelacion = fechamaxcancelacion;
+    }
+
+    public double getPorcentajedevo() {
+	return porcentajedevo;
+    }
+
+    public void setPorcentajedevo(double porcentajedevo) {
+	this.porcentajedevo = porcentajedevo;
+    }
+
+    public String toString() {
+	return Printer.print(this);
+    }
+
 }

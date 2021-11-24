@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 import ips.business.BusinessException;
+import ips.ui.inscripciones.EstadoInscripcionesView;
 
 public class JustificanteCancelacionView extends JDialog {
 

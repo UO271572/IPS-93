@@ -1,5 +1,7 @@
 package ips.persistence.inscripciones;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import ips.business.inscripciones.InscripcionDTO;
@@ -14,7 +16,7 @@ public class InscripcionModel {
     public static final String SQL_GET_INSCIPCIONES_BY_EMAIL = "select i.idcarrera, i.estadoinscripcion, i.fechainscripcion, i.dorsal, i.incidencia, i.tiempoinicio, i.tiempofin"
 	    + " from inscripciones i, corredores c where i.dnicorredor=c.dnicorredor and c.email=?";
 
-    public static final String SQL_CANCELAR_INSCRIPCION = "update inscripciones set estadoinscripcion='CANCELADA' where dnicorredor=? and idcarrera=?";
+    public static final String SQL_CANCELAR_INSCRIPCION = "update inscripciones set estadoinscripcion='CANCELADA' and fechacancelacion=? where dnicorredor=? and idcarrera=?";
 
     public void updateInscripciones(List<InscripcionDTO> lista) {
 	for (InscripcionDTO i : lista)
@@ -27,7 +29,7 @@ public class InscripcionModel {
     }
 
     public void calcelarInscripcion(String dnicorredor, int idcarrera) {
-	db.executeUpdate(SQL_CANCELAR_INSCRIPCION, dnicorredor, idcarrera);
+	db.executeUpdate(SQL_CANCELAR_INSCRIPCION, Date.valueOf(LocalDate.now()), dnicorredor, idcarrera);
     }
 
 }

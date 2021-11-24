@@ -12,16 +12,16 @@ import javax.swing.JOptionPane;
 
 import ips.business.carreras.CarreraDisplayDTO;
 import ips.business.carreras.CarrerasController;
-import ips.business.carreras.EstadoInscripcionesController;
 import ips.business.corredores.CorredorDTO;
 import ips.business.corredores.CorredoresController;
+import ips.business.inscripciones.EstadoInscripcionesController;
 import ips.persistence.carreras.CarrerasModel;
 import ips.persistence.corredores.CorredoresModel;
 import ips.ui.MenuCorredorView;
 import ips.ui.MenuInscripcionView;
 import ips.ui.carreras.CarrerasView;
-import ips.ui.carreras.EstadoInscripcionesView;
 import ips.ui.corredores.CorredoresView;
+import ips.ui.inscripciones.EstadoInscripcionesView;
 import ips.util.Printer;
 
 public class MenuCorredorController {

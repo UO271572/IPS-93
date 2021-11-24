@@ -1,4 +1,4 @@
-package ips.ui.carreras;
+package ips.ui.inscripciones;
 
 import java.awt.Color;
 import java.awt.Font;

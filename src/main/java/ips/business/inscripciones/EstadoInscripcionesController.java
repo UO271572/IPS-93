@@ -1,18 +1,19 @@
-package ips.business.carreras;
+package ips.business.inscripciones;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Date;
 import java.sql.Time;
-import java.time.LocalTime;
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.swing.JOptionPane;
 
 import ips.business.BusinessException;
-import ips.business.inscripciones.InscripcionController;
-import ips.business.inscripciones.InscripcionDTO;
-import ips.ui.carreras.EstadoInscripcionesView;
+import ips.business.carreras.CarreraDisplayDTO;
+import ips.business.carreras.CarrerasController;
 import ips.ui.carreras.JustificanteCancelacionView;
+import ips.ui.inscripciones.EstadoInscripcionesView;
 import ips.util.Printer;
 
 public class EstadoInscripcionesController {
@@ -64,41 +65,41 @@ public class EstadoInscripcionesController {
 	return new ActionListener() {
 	    @Override
 	    public void actionPerformed(ActionEvent e) {
-		comprobaciones();
+		try {
+		    comprobaciones();
+		} catch (BusinessException e1) {
+		    Printer.printBusinessException(e1);
+		}
 	    }
 	};
     }
 
-    private void comprobaciones() {
+    private void comprobaciones() throws BusinessException {
 	int i = view.getTable().getSelectedRow();
 	if (i == -1) {
 	    JOptionPane.showMessageDialog(view, "Debe seleccionar una carrera");
 	    return;
 	}
 	InscripcionDTO inscripcion = inscripciones.get(i);
-	if (inscripcion.getEstadoinscripcion() == "CANCELADA") {
-	    JOptionPane.showMessageDialog(view, "La carrera ya se encuentra cancelada actualmente");
+	if (inscripcion.getEstadoinscripcion() == "CANCELADA" | inscripcion.getEstadoinscripcion() == "ANULADA") {
+	    JOptionPane.showMessageDialog(view, "La carrera no se encuentra en estado \"inscrito\"");
 	    return;
 	}
-	if (inscripcion.getEstadoinscripcion() == "ANULADA") {
-	    JOptionPane.showMessageDialog(view, "La carrera se encuentra anulada actualmente");
+	CarreraDisplayDTO carrera = new CarrerasController().findByIdCarrera(inscripcion.getIdcarrera());
+	if (carrera.getFechamaxcancelacion() == null | carrera.getPorcentajedevo() == -1) {
+	    JOptionPane.showMessageDialog(view, "La carrera no admite cancelaciones");
 	    return;
 	}
-	/*
-	 * Si la carrera seleccionada -> su fecha tope de cancelación es anterior a la
-	 * fecha actual o es null o el porcentaje a devolver es null =) mensaje error.
-	 * Sino, procesar cancelación y mostrar justificante. Guardar en bbdd la fecha
-	 * cancelación.
-	 */
-	if (Time.valueOf(LocalTime.now()).after(inscripcion.getTiempoinicio()))
-	    JOptionPane.showMessageDialog(view, "No puede cancelar la carrera, se cerró el plazo de cancelación");
+	if (!carrera.getFechamaxcancelacion().before(Date.valueOf(LocalDate.now()))) {
+	    JOptionPane.showMessageDialog(view, "No es posible cancelar la carrera, se cerró el plazo de cancelación");
+	    return;
+	}
 	ic.calcelarInscripcion(inscripcion);
-	cancelar(inscripcion.getIdcarrera());
+	cancelar(carrera);
     }
 
-    private void cancelar(int id) {
+    private void cancelar(CarreraDisplayDTO carrera) {
 	try {
-	    CarreraDisplayDTO carrera = new CarrerasController().findByIdCarrera(id);
 	    new CarrerasController().actualizarPlazasCarrera(carrera);
 	    JustificanteCancelacionView jv = new JustificanteCancelacionView(view);
 	    jv.setImporte(carrera.getPrecio());

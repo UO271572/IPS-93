@@ -105,7 +105,6 @@ public class MenuOrganizadorController {
 	    public void actionPerformed(ActionEvent e) {
 		try {
 		    cargarDatos();
-		    JOptionPane.showMessageDialog(view, "¡Datos cargados con éxito!");
 		} catch (BusinessException e1) {
 		    e1.printStackTrace();
 		} catch (ParseException e1) {
@@ -127,32 +126,52 @@ public class MenuOrganizadorController {
 	    String linea;
 	    while ((linea = br.readLine()) != null) {
 		InscripcionDTO inscripcion = new InscripcionDTO();
-
 		inscripcion.setIdcarrera(idCarrera);
 
 		int i = linea.indexOf(";");
 		inscripcion.setDorsal(Integer.valueOf(linea.substring(0, i)));
 
-		int j = linea.indexOf("-");
-		String s = linea.substring(i + 1, j);
+		i++;
+		String s = linea.substring(i, i + 8);
 		SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
 		long ms = sdf.parse(s).getTime();
 		Time t = new Time(ms);
-		inscripcion.setTiempofin(t);
+		inscripcion.setTiempoinicio(t);
+		i += 9;
 
-		i = linea.indexOf("%");
-		s = linea.substring(j + 1, i);
-		sdf = new SimpleDateFormat("hh:mm:ss");
-		ms = sdf.parse(s).getTime();
-		t = new Time(ms);
-		inscripcion.setTiempofin(t);
+		int count = 1;
+		while (true) {
+		    s = linea.substring(i, i + 8);
+		    sdf = new SimpleDateFormat("hh:mm:ss");
+		    ms = sdf.parse(s).getTime();
+		    t = new Time(ms);
+		    if (linea.indexOf("%") == i + 8) {
+			inscripcion.setTiempofin(t);
+			break;
+		    }
+		    if (count == 1)
+			inscripcion.setTi_1(t);
+		    if (count == 2)
+			inscripcion.setTi_2(t);
+		    if (count == 3)
+			inscripcion.setTi_3(t);
+		    if (count == 4)
+			inscripcion.setTi_4(t);
+		    if (count == 5)
+			inscripcion.setTi_5(t);
+		    count++;
+		    i += 9;
+		}
 
 		inscripciones.add(inscripcion);
 	    }
 	    br.close();
 	} catch (IOException e) {
-	    e.printStackTrace();
+	    Printer.printBusinessException(e);
 	}
+
+	String mensaje = "¡Tiempos de la carrera con id=" + idCarrera + " cargados con éxito!";
+	JOptionPane.showMessageDialog(view, mensaje);
 
 	InscripcionController ic = new InscripcionController();
 	ic.updateInscripciones(inscripciones);

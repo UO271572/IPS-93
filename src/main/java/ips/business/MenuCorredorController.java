@@ -18,6 +18,7 @@ import ips.persistence.corredores.CorredoresModel;
 import ips.ui.MenuCorredorView;
 import ips.ui.carreras.CarrerasView;
 import ips.ui.carreras.InscripcionView;
+import ips.ui.comparar.VentanaCompararView;
 import ips.ui.corredores.CorredoresView;
 import ips.util.Printer;
 
@@ -40,6 +41,8 @@ public class MenuCorredorController {
 	view.getRdbtnVerTodas().addActionListener(accionBotonVerTodas());
 	view.getRdbtnAbiertas().addActionListener(accionBotonVerNoCompetidas());
 	view.getBtnInscribirse().addActionListener(accionBtnInscribirse());
+
+	view.getBtnComparar().addActionListener(accionAbrirVentanaComparacion());
     }
 
     public WindowAdapter notCloseDirectly() {
@@ -194,6 +197,18 @@ public class MenuCorredorController {
 	    return false;
 	} else
 	    return true;
+    }
+
+    private ActionListener accionAbrirVentanaComparacion() {
+	return new ActionListener() {
+
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+
+		VentanaCompararView compararView = new VentanaCompararView(view.getTfEmail().getText());
+
+	    }
+	};
     }
 
 }

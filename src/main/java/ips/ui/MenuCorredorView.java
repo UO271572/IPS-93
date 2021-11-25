@@ -341,7 +341,7 @@ public class MenuCorredorView extends JDialog {
 	return cbSexo;
     }
 
-    private JButton getBtnComparar() {
+    public JButton getBtnComparar() {
 	if (btnComparar == null) {
 	    btnComparar = new JButton("Comparar");
 	    btnComparar.setBounds(744, 524, 105, 38);

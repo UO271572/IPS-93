@@ -13,22 +13,9 @@ public class VentanaCompararView extends JDialog {
     private final JPanel contentPanel = new JPanel();
 
     /**
-     * Launch the application.
-     */
-    public static void main(String[] args) {
-	try {
-	    VentanaCompararView dialog = new VentanaCompararView();
-	    dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-	    dialog.setVisible(true);
-	} catch (Exception e) {
-	    e.printStackTrace();
-	}
-    }
-
-    /**
      * Create the dialog.
      */
-    public VentanaCompararView() {
+    public VentanaCompararView(String email) {
 	setTitle("Menú Corredor: Comparación");
 	setBounds(100, 100, 838, 447);
 	getContentPane().setLayout(new BorderLayout());

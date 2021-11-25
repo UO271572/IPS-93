@@ -55,6 +55,7 @@ public class MenuOrganizadorView extends JDialog {
     private JPanel pnCentro;
 
     public MenuOrganizadorView() {
+	setResizable(false);
 	tablemodel = new DefaultTableModel();
 	setTitle("Menú: Organizador");
 	setBounds(100, 100, 1288, 666);
@@ -166,8 +167,9 @@ public class MenuOrganizadorView extends JDialog {
 		    JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
 //	    scrollPaneCarreras = new JScrollPane();
-//	    scrollPaneCarreras.setAlignmentX(Component.RIGHT_ALIGNMENT);
 	    scrollPaneCarreras.setViewportView(getTablaCarreras());
+	    scrollPaneCarreras.setAlignmentX(Component.RIGHT_ALIGNMENT);
+
 	}
 	return scrollPaneCarreras;
     }
@@ -242,10 +244,14 @@ public class MenuOrganizadorView extends JDialog {
 
 	    String nombre = "Plazas disponibles";
 	    modelTablaCarreras.addColumn(nombre);
-	    tablaCarreras.getColumn(nombre).setPreferredWidth(nombre.length() * 5);
+
+	    tablaCarreras.getColumn(nombre).setPreferredWidth(nombre.length() * 7);
+	    tablaCarreras.getColumn("Fecha").setPreferredWidth("Fecha".length() * 18);
+	    tablaCarreras.getColumn("Nombre").setPreferredWidth("Nombre".length() * 20);
 
 	    tablaCarreras.setDefaultEditor(Object.class, null);
-	    tablaCarreras.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+
+//	    tablaCarreras.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 //	    tablaCarreras.getColumn(0).setPreferredWidth(50);
 //	    tablaCarreras.getColumn(1).setPreferredWidth(50);
 //	    tablaCarreras.getColumn(2).setPreferredWidth(50);
@@ -280,8 +286,8 @@ public class MenuOrganizadorView extends JDialog {
 	    modelTablaCorredores.addColumn("Nombre");
 	    modelTablaCorredores.addColumn("Sexo");
 	    modelTablaCorredores.addColumn("Categoria");
-	    modelTablaCorredores.addColumn("Fecha inscripción");
-	    modelTablaCorredores.addColumn("Estado inscripción");
+	    modelTablaCorredores.addColumn("Fecha Insc");
+	    modelTablaCorredores.addColumn("Estado");
 	    modelTablaCorredores.addColumn("Club");
 	    modelTablaCorredores.addColumn("Ritmo");
 	    modelTablaCorredores.addColumn("Diferencia");
@@ -292,7 +298,7 @@ public class MenuOrganizadorView extends JDialog {
 	    modelTablaCorredores.addColumn("Parcial 5");
 
 	    tableCorredores.setDefaultEditor(Object.class, null);
-
+	    tableCorredores.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 	}
 	return tableCorredores;
     }
@@ -322,8 +328,13 @@ public class MenuOrganizadorView extends JDialog {
 
     private JScrollPane getScCorredores() {
 	if (scCorredores == null) {
-	    scCorredores = new JScrollPane();
+//	    scCorredores = new JScrollPane();
+	    scCorredores = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+		    JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
 	    scCorredores.setViewportView(getTableCorredores());
+	    scCorredores.setAlignmentX(Component.RIGHT_ALIGNMENT);
+//	    scCorredores.setViewportView(getTableCorredores());
 	}
 	return scCorredores;
     }

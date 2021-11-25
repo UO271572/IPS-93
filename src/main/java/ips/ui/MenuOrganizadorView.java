@@ -246,6 +246,12 @@ public class MenuOrganizadorView extends JDialog {
 
 	    tablaCarreras.setDefaultEditor(Object.class, null);
 	    tablaCarreras.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+//	    tablaCarreras.getColumn(0).setPreferredWidth(50);
+//	    tablaCarreras.getColumn(1).setPreferredWidth(50);
+//	    tablaCarreras.getColumn(2).setPreferredWidth(50);
+//	    tablaCarreras.getColumn(3).setPreferredWidth(50);
+//	    tablaCarreras.getColumn(4).setPreferredWidth(50);
+//	    tablaCarreras.getColumn(5).setPreferredWidth(50);
 //	    tablaCarreras.setAutoscrolls(true);
 	}
 	return tablaCarreras;
@@ -276,7 +282,6 @@ public class MenuOrganizadorView extends JDialog {
 	    modelTablaCorredores.addColumn("Categoria");
 	    modelTablaCorredores.addColumn("Fecha inscripción");
 	    modelTablaCorredores.addColumn("Estado inscripción");
-	    modelTablaCorredores.addColumn("Estado");
 	    modelTablaCorredores.addColumn("Club");
 	    modelTablaCorredores.addColumn("Ritmo");
 	    modelTablaCorredores.addColumn("Diferencia");

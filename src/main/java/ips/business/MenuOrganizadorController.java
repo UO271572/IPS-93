@@ -314,7 +314,7 @@ public class MenuOrganizadorController {
 
 	    @Override
 	    public void actionPerformed(ActionEvent e) {
-		CorredoresController carreraController = new CorredoresController(new CorredoresModel(),
+		CorredoresController corredoresController = new CorredoresController(new CorredoresModel(),
 			new CorredoresView());
 		InscripcionController inscController = new InscripcionController();
 
@@ -325,7 +325,7 @@ public class MenuOrganizadorController {
 		    if (fila != -1) { //
 			int idCarrera = (int) view.getTablaCarreras().getModel().getValueAt(fila, 0);
 
-			List<CorredorDTO> corredores = carreraController.getCorredoresByIdCarrera(idCarrera);
+			List<CorredorDTO> corredores = corredoresController.getCorredoresByIdCarrera(idCarrera);
 			List<InscripcionDTO> inscripciones = inscController.listInscripcionesByTime(idCarrera);
 
 			int posicion = 0;
@@ -337,22 +337,37 @@ public class MenuOrganizadorController {
 				    break;
 				}
 			    }
+			    String DNI = corredordto.getDniCorredor();
+			    String nombre = corredordto.getNombre();
+			    String sexo = corredordto.getSexo();
+			    String categoria = corredordto.getCategoria();
+
+			    String fecha_inscripcion = inscripcion.getFechainscripcion();
+			    String estado_inscripcion = inscripcion.getEstadoinscripcion();
+			    String club = inscripcion.getClub();
+
+			    // obtenemos la carrera seleccionada para obtener su distancia
+			    CarrerasController carrerasController = new CarrerasController();
+			    CarreraDisplayDTO carrera = carrerasController.getCarrerasById(String.valueOf(idCarrera))
+				    .get(0);
+			    String ritmo = calcularRitmo(inscripcion, carrera.getDistancia()) + " km/h";
+			    String diferencial = "-----";
+			    if (inscripciones.get(0).equals(inscripcion)) {
+				diferencial = "-----";
+			    } else {
+				diferencial = "+" + calcularDiferenciaTiempo(inscripciones, inscripcion);
+			    }
+
+			    Time t1 = inscripcion.getT1();
+			    Time t2 = inscripcion.getT2();
+			    Time t3 = inscripcion.getT3();
+			    Time t4 = inscripcion.getT4();
+			    Time t5 = inscripcion.getT5();
 
 			    Object[] data = { DNI, nombre, sexo, categoria, fecha_inscripcion, estado_inscripcion, club,
 				    ritmo, diferencial, t1, t2, t3, t4, t5 };
 			    view.getTableModelCorredor().insertRow(posicion, data);
 			    posicion++;
-			}
-
-//rehacer el for haciendo primero el de inscripciones y luego comprobar con otro bucle q coinciden los datos del corredor con el de la iteraccion actual
-			for (int i = 0; i < corredores.size(); i++) {
-			    String DNI = corredores.get(i).getDniCorredor();
-			    String nombre = corredores.get(i).getNombre();
-			    String categoria = corredores.get(i).getCategoria();
-			    Date fecha_inscripcion = corredores.get(i).getFechaInscripcion();
-			    String estado_inscripcion = corredores.get(i).getEstadoInscripcion();
-			    Object[] data = { DNI, nombre, categoria, fecha_inscripcion, estado_inscripcion };
-			    view.getTableModelCorredor().insertRow(0, data);
 			}
 		    } else {
 			JOptionPane.showMessageDialog(null, "Debes seleccionar una carrera");
@@ -361,9 +376,68 @@ public class MenuOrganizadorController {
 		    Printer.printBusinessException(e1);
 		}
 	    }
+
 	};
     }
 
+    /**
+     * Calcula el ritmo medio al que corrio el participante
+     * 
+     * @param inscripcion
+     * @param distancia
+     * @return
+     */
+    private String calcularRitmo(InscripcionDTO inscripcion, double distancia) {
+	Time cronometraje = restarTiempo(inscripcion.getTiempofin(), inscripcion.getTiempoinicio());
+	double h = cronometraje.getHours();
+	double m = cronometraje.getMinutes() / 60.0;
+	double s = (cronometraje.getSeconds() / 60.0) / 60.0;
+//	double horas = h + (m / 60) + ((s / 60) / 60);
+	double horas = h + m + s;
+//	return String.valueOf(distancia / horas);
+	return String.format("%.2f", (distancia / horas));
+    }
+
+    /**
+     * Calcula la diferencia de tiempos entre las dos inscripciones
+     * 
+     * @param inscripciones
+     * @param inscripcion
+     * @return
+     */
+    private String calcularDiferenciaTiempo(List<InscripcionDTO> inscripciones, InscripcionDTO inscripcion) {
+	StringBuilder str = new StringBuilder();
+	Time primerofin = inscripciones.get(0).getTiempofin();
+	Time primeroinic = inscripciones.get(0).getTiempoinicio();
+	Time t1 = restarTiempo(primerofin, primeroinic);
+
+	Time segundofin = inscripcion.getTiempofin();
+	Time segundoinic = inscripcion.getTiempoinicio();
+	Time t2 = restarTiempo(segundofin, segundoinic);
+
+	str.append(restarTiempo(t2, t1));
+	return str.toString();
+    }
+
+    /**
+     * Resta dos tiempos y lo devuelve en un nuevo objeto Time
+     * 
+     * @param primerofin
+     * @param primeroinic
+     * @return
+     */
+    @SuppressWarnings("deprecation")
+    private Time restarTiempo(Time primerofin, Time primeroinic) {
+	int h = primerofin.getHours() - primeroinic.getHours();
+	int m = primerofin.getMinutes() - primeroinic.getMinutes();
+	int s = primerofin.getSeconds() - primeroinic.getSeconds();
+	return new Time(h, m, s);
+    }
+
+    /**
+     * 
+     * @return
+     */
     private ActionListener accionProcesaPagosCarrera() {
 	return new ActionListener() {
 

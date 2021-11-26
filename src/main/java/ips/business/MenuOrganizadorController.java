@@ -58,46 +58,46 @@ public class MenuOrganizadorController {
 	// view.getBtnOrganizador().addActionListener(accionBotonOrganizador());
 	view.getBtnProcesarPagos().addActionListener(accionProcesaPagosCarrera());
 	// CREA LAS CLASIFICACIONES
-	view.getBtnVerClasificacion().addActionListener(accionGenerarClasificaciones());
+//	view.getBtnVerClasificacion().addActionListener(accionGenerarClasificaciones());
 //	view.getBtMostrarClasificacionSinFiltro().addActionListener(accionBotonClasificaSinFiltro());
 	view.getBtnCargarDatos().addActionListener(accionCargarDatos());
 	// cargarCarrerasEnTabla();
 
     }
 
-    /**
-     * Filtrado
-     * 
-     * @return
-     */
-    private ActionListener accionGenerarClasificaciones() {
-	return new ActionListener() {
-
-	    @Override
-	    public void actionPerformed(ActionEvent e) {
-		ClasificacionController controller = new ClasificacionController(new ClasificacionModel());
-		try {
-		    int fila = view.getTablaCarreras().getSelectedRow();
-		    int idCarrera = (int) view.getTablaCarreras().getModel().getValueAt(fila, 0);
-
-		    List<CategoriaDTO> listaCat = controller.obtenerCategorias(idCarrera);
-
-		    for (CategoriaDTO categoria : listaCat) {
-			String nombre = categoria.getNombre();
-			int inicio = categoria.getEdadInicio();
-			int fin = categoria.getEdadFin();
-			String sexo = categoria.getSexo();
-			Object[] data = { nombre, sexo, inicio, fin };
-			view.getModelTablaCategorias().insertRow(0, data);
-		    }
-		} catch (BusinessException e1) {
-		    e1.printStackTrace();
-		} catch (SQLException e1) {
-		    e1.printStackTrace();
-		}
-	    }
-	};
-    }
+//    /**
+//     * Filtrado
+//     * 
+//     * @return
+//     */
+//    private ActionListener accionGenerarClasificaciones() {
+//	return new ActionListener() {
+//
+//	    @Override
+//	    public void actionPerformed(ActionEvent e) {
+//		ClasificacionController controller = new ClasificacionController(new ClasificacionModel());
+//		try {
+//		    int fila = view.getTablaCarreras().getSelectedRow();
+//		    int idCarrera = (int) view.getTablaCarreras().getModel().getValueAt(fila, 0);
+//
+//		    List<CategoriaDTO> listaCat = controller.obtenerCategorias(idCarrera);
+//
+//		    for (CategoriaDTO categoria : listaCat) {
+//			String nombre = categoria.getNombre();
+//			int inicio = categoria.getEdadInicio();
+//			int fin = categoria.getEdadFin();
+//			String sexo = categoria.getSexo();
+//			Object[] data = { nombre, sexo, inicio, fin };
+//			view.getModelTablaCategorias().insertRow(0, data);
+//		    }
+//		} catch (BusinessException e1) {
+//		    e1.printStackTrace();
+//		} catch (SQLException e1) {
+//		    e1.printStackTrace();
+//		}
+//	    }
+//	};
+//    }
 
     private ActionListener accionCargarDatos() {
 	return new ActionListener() {
@@ -314,6 +314,11 @@ public class MenuOrganizadorController {
 
 	    @Override
 	    public void actionPerformed(ActionEvent e) {
+		// generar las clasificaciones que tuviese la carrera
+		view.getModelTablaCategorias().setRowCount(0);
+		mostrarClasificaciones();
+
+		// generar datos de los corredores
 		CorredoresController corredoresController = new CorredoresController(new CorredoresModel(),
 			new CorredoresView());
 		InscripcionController inscController = new InscripcionController();
@@ -432,6 +437,32 @@ public class MenuOrganizadorController {
 	int m = primerofin.getMinutes() - primeroinic.getMinutes();
 	int s = primerofin.getSeconds() - primeroinic.getSeconds();
 	return new Time(h, m, s);
+    }
+
+    /**
+     * Muestra las clasificaciones de la carrera
+     */
+    private void mostrarClasificaciones() {
+	ClasificacionController controller = new ClasificacionController(new ClasificacionModel());
+	try {
+	    int fila = view.getTablaCarreras().getSelectedRow();
+	    int idCarrera = (int) view.getTablaCarreras().getModel().getValueAt(fila, 0);
+
+	    List<CategoriaDTO> listaCat = controller.obtenerCategorias(idCarrera);
+
+	    for (CategoriaDTO categoria : listaCat) {
+		String nombre = categoria.getNombre();
+		int inicio = categoria.getEdadInicio();
+		int fin = categoria.getEdadFin();
+		String sexo = categoria.getSexo();
+		Object[] data = { nombre, sexo, inicio, fin };
+		view.getModelTablaCategorias().insertRow(0, data);
+	    }
+	} catch (BusinessException e1) {
+	    e1.printStackTrace();
+	} catch (SQLException e1) {
+	    e1.printStackTrace();
+	}
     }
 
     /**

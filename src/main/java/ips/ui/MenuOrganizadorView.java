@@ -29,10 +29,6 @@ public class MenuOrganizadorView extends JDialog {
     private JPanel pn_Carreras;
     private JScrollPane scrollPaneCarreras;
     private JPanel pn_BotonesCarreras;
-    private JButton btnVerClasificacion;
-
-    // ---
-    private DefaultTableModel tablemodel;
     private JPanel pnFiltros;
     private JTable tablaCarreras;
 
@@ -56,7 +52,7 @@ public class MenuOrganizadorView extends JDialog {
 
     public MenuOrganizadorView() {
 	setResizable(false);
-	tablemodel = new DefaultTableModel();
+	new DefaultTableModel();
 	setTitle("Menú: Organizador");
 	setBounds(100, 100, 1288, 666);
 	setLocationRelativeTo(null);
@@ -179,19 +175,19 @@ public class MenuOrganizadorView extends JDialog {
 	    pn_BotonesCarreras = new JPanel();
 	    pn_BotonesCarreras.setBackground(Color.WHITE);
 	    pn_BotonesCarreras.setBounds(10, 551, 619, 68);
-	    pn_BotonesCarreras.setLayout(new GridLayout(0, 2, 0, 0));
+	    pn_BotonesCarreras.setLayout(new BorderLayout(0, 0));
 	    pn_BotonesCarreras.add(getBtnBuscarCorredores());
-	    pn_BotonesCarreras.add(getBtnVerClasificacion());
+//	    pn_BotonesCarreras.add(getBtnVerClasificacion());
 	}
 	return pn_BotonesCarreras;
     }
 
-    public JButton getBtnVerClasificacion() {
-	if (btnVerClasificacion == null) {
-	    btnVerClasificacion = new JButton("Ver clasificaciones");
-	}
-	return btnVerClasificacion;
-    }
+//    public JButton getBtnVerClasificacion() {
+//	if (btnVerClasificacion == null) {
+//	    btnVerClasificacion = new JButton("Ver clasificaciones");
+//	}
+//	return btnVerClasificacion;
+//    }
 
     private JPanel getPnFiltros() {
 	if (pnFiltros == null) {
@@ -375,7 +371,7 @@ public class MenuOrganizadorView extends JDialog {
      * 
      * @return
      */
-    private JTable getTableCategorias() {
+    public JTable getTableCategorias() {
 	if (tableCategorias == null) {
 	    tableCategorias = new JTable(modelTablaCategorias);
 	    tableCategorias.setFillsViewportHeight(true);

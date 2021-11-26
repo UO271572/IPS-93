@@ -19,7 +19,10 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 public class MenuOrganizadorView extends JDialog {
-    private JScrollPane scrollPaneCorredores;
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
     private JButton btnBuscarCorredores;
     private JButton btnCrearCarrera;
     private JPanel pn_OpcionesOrganizador;
@@ -29,26 +32,35 @@ public class MenuOrganizadorView extends JDialog {
     private JPanel pn_Carreras;
     private JScrollPane scrollPaneCarreras;
     private JPanel pn_BotonesCarreras;
-    private JPanel pnFiltros;
     private JTable tablaCarreras;
 
     private DefaultTableModel modelTablaCarreras = new DefaultTableModel();
     private DefaultTableModel modelTablaCorredores = new DefaultTableModel();
     private DefaultTableModel modelTablaCategorias = new DefaultTableModel();
+    private DefaultTableModel modelTablaClub = new DefaultTableModel();
+    private DefaultTableModel modelTablaRitmo = new DefaultTableModel();
+    private DefaultTableModel modelTablaDiferencia = new DefaultTableModel();
+    private DefaultTableModel modelTablaDorsal = new DefaultTableModel();
+    private DefaultTableModel modelTablaParciales = new DefaultTableModel();
 
     private JTable tableCorredores;
     private JTabbedPane tabbedPane;
     private JScrollPane scCorredores;
     private JScrollPane scCategorias;
-    private JScrollPane scrollPane_2;
-    private JScrollPane scrollPane_3;
-    private JTable table;
+    private JScrollPane scClub;
+    private JScrollPane scRitmo;
+    private JTable tRitmo;
     private JTable tableCategorias;
-    private JTable table_2;
-    private JTable table_3;
+    private JTable tClub;
     private JPanel panel;
     private JPanel pnsur;
     private JPanel pnCentro;
+    private JScrollPane scDiferencia;
+    private JScrollPane scDorsal;
+    private JTable tDiferencia;
+    private JTable tDorsal;
+    private JScrollPane scParciales;
+    private JTable tParciales;
 
     public MenuOrganizadorView() {
 	setResizable(false);
@@ -76,15 +88,6 @@ public class MenuOrganizadorView extends JDialog {
     }
 
     // ------------------------------------------------------------------------
-
-    private JScrollPane getScrollPaneCorredores() {
-	if (scrollPaneCorredores == null) {
-	    scrollPaneCorredores = new JScrollPane();
-	    scrollPaneCorredores.setBounds(386, 254, 661, 125);
-	    scrollPaneCorredores.setViewportView(getTableCorredores());
-	}
-	return scrollPaneCorredores;
-    }
 
 //    public JList getListCorredores() {
 //	if (listCorredores == null) {
@@ -188,17 +191,6 @@ public class MenuOrganizadorView extends JDialog {
 //	}
 //	return btnVerClasificacion;
 //    }
-
-    private JPanel getPnFiltros() {
-	if (pnFiltros == null) {
-	    pnFiltros = new JPanel();
-	    pnFiltros.setBorder(new TitledBorder(null, "Filtrado por categorias", TitledBorder.LEADING,
-		    TitledBorder.TOP, null, null));
-	    pnFiltros.setBackground(Color.WHITE);
-	    pnFiltros.setBounds(384, 78, 663, 57);
-	}
-	return pnFiltros;
-    }
 
 //    private JPanel getPn_listaCorredores() {
 //	if (pn_listaCorredores == null) {
@@ -316,8 +308,12 @@ public class MenuOrganizadorView extends JDialog {
 	    tabbedPane.setBounds(639, 11, 625, 529);
 	    tabbedPane.addTab("Corredores", null, getScCorredores(), null);
 	    tabbedPane.addTab("Categorias", null, getScCategorias(), null);
-	    tabbedPane.addTab("New tab", null, getScrollPane_2(), null);
-	    tabbedPane.addTab("New tab", null, getScrollPane_3(), null);
+	    tabbedPane.addTab("Club", null, getScClub(), null);
+	    tabbedPane.addTab("Ritmo", null, getScRitmo(), null);
+	    tabbedPane.addTab("Diferencia", null, getScDiferencia(), null);
+	    tabbedPane.addTab("Dorsal", null, getScDorsal(), null);
+	    tabbedPane.addTab("Tiempos parciales", null, getScParciales(), null);
+
 	}
 	return tabbedPane;
     }
@@ -343,27 +339,32 @@ public class MenuOrganizadorView extends JDialog {
 	return scCategorias;
     }
 
-    private JScrollPane getScrollPane_2() {
-	if (scrollPane_2 == null) {
-	    scrollPane_2 = new JScrollPane();
-	    scrollPane_2.setViewportView(getTable_2());
+    private JScrollPane getScClub() {
+	if (scClub == null) {
+	    scClub = new JScrollPane();
+	    scClub.setViewportView(getTClub());
 	}
-	return scrollPane_2;
+	return scClub;
     }
 
-    private JScrollPane getScrollPane_3() {
-	if (scrollPane_3 == null) {
-	    scrollPane_3 = new JScrollPane();
-	    scrollPane_3.setViewportView(getTable());
+    private JScrollPane getScRitmo() {
+	if (scRitmo == null) {
+	    scRitmo = new JScrollPane();
+	    scRitmo.setViewportView(getTRitmo());
 	}
-	return scrollPane_3;
+	return scRitmo;
     }
 
-    private JTable getTable() {
-	if (table == null) {
-	    table = new JTable();
+    private JTable getTRitmo() {
+	if (tRitmo == null) {
+	    tRitmo = new JTable(modelTablaRitmo);
+	    DefaultTableCellRenderer renderer = (DefaultTableCellRenderer) tRitmo.getTableHeader().getDefaultRenderer();
+	    renderer.setHorizontalAlignment(JLabel.CENTER);
+	    modelTablaRitmo.addColumn("Identificador");
+	    modelTablaRitmo.addColumn("Corredor");
+	    modelTablaRitmo.addColumn("Ritmo km/h");
 	}
-	return table;
+	return tRitmo;
     }
 
     /**
@@ -389,22 +390,73 @@ public class MenuOrganizadorView extends JDialog {
 	return tableCategorias;
     }
 
-    private JTable getTable_2() {
-	if (table_2 == null) {
-	    table_2 = new JTable();
-	}
-	return table_2;
-    }
+    private JTable getTClub() {
+	if (tClub == null) {
+	    tClub = new JTable(modelTablaClub);
 
-    private JTable getTable_3() {
-	if (table_3 == null) {
-	    table_3 = new JTable();
+	    DefaultTableCellRenderer renderer = (DefaultTableCellRenderer) tClub.getTableHeader().getDefaultRenderer();
+	    renderer.setHorizontalAlignment(JLabel.CENTER);
+	    modelTablaClub.addColumn("Identificador");
+	    modelTablaClub.addColumn("Corredor");
+	    modelTablaClub.addColumn("Club perteneciente");
 	}
-	return table_3;
+	return tClub;
     }
 
     public DefaultTableModel getModelTablaCategorias() {
 	return modelTablaCategorias;
+    }
+
+    public static long getSerialversionuid() {
+	return serialVersionUID;
+    }
+
+    public DefaultTableModel getModelTablaCarreras() {
+	return modelTablaCarreras;
+    }
+
+    public DefaultTableModel getModelTablaCorredores() {
+	return modelTablaCorredores;
+    }
+
+    public DefaultTableModel getModelTablaClub() {
+	return modelTablaClub;
+    }
+
+    public DefaultTableModel getModelTablaRitmo() {
+	return modelTablaRitmo;
+    }
+
+    public DefaultTableModel getModelTablaDiferencia() {
+	return modelTablaDiferencia;
+    }
+
+    public DefaultTableModel getModelTablaDorsal() {
+	return modelTablaDorsal;
+    }
+
+    public DefaultTableModel getModelTablaParciales() {
+	return modelTablaParciales;
+    }
+
+    public JTable gettRitmo() {
+	return tRitmo;
+    }
+
+    public JTable gettClub() {
+	return tClub;
+    }
+
+    public JTable gettDiferencia() {
+	return tDiferencia;
+    }
+
+    public JTable gettDorsal() {
+	return tDorsal;
+    }
+
+    public JTable gettParciales() {
+	return tParciales;
     }
 
     public void setModelTablaCategorias(DefaultTableModel modelTablaCategorias) {
@@ -439,5 +491,73 @@ public class MenuOrganizadorView extends JDialog {
 	    pnCentro.add(getTabbedPane());
 	}
 	return pnCentro;
+    }
+
+    private JScrollPane getScDiferencia() {
+	if (scDiferencia == null) {
+	    scDiferencia = new JScrollPane();
+	    scDiferencia.setViewportView(getTableDiferencia());
+	}
+	return scDiferencia;
+    }
+
+    private JScrollPane getScDorsal() {
+	if (scDorsal == null) {
+	    scDorsal = new JScrollPane();
+	    scDorsal.setViewportView(getTableDorsal());
+	}
+	return scDorsal;
+    }
+
+    private JTable getTableDiferencia() {
+	if (tDiferencia == null) {
+	    tDiferencia = new JTable(modelTablaDiferencia);
+	    DefaultTableCellRenderer renderer = (DefaultTableCellRenderer) tDiferencia.getTableHeader()
+		    .getDefaultRenderer();
+	    renderer.setHorizontalAlignment(JLabel.CENTER);
+	    modelTablaDiferencia.addColumn("Identificador");
+	    modelTablaDiferencia.addColumn("Corredor");
+	    modelTablaDiferencia.addColumn("Diferencia");
+
+	}
+	return tDiferencia;
+    }
+
+    private JTable getTableDorsal() {
+	if (tDorsal == null) {
+	    tDorsal = new JTable(modelTablaDorsal);
+	    DefaultTableCellRenderer renderer = (DefaultTableCellRenderer) tDorsal.getTableHeader()
+		    .getDefaultRenderer();
+	    renderer.setHorizontalAlignment(JLabel.CENTER);
+	    modelTablaDorsal.addColumn("Identificador");
+	    modelTablaDorsal.addColumn("Corredor");
+	    modelTablaDorsal.addColumn("Dorsal");
+	}
+	return tDorsal;
+    }
+
+    private JScrollPane getScParciales() {
+	if (scParciales == null) {
+	    scParciales = new JScrollPane();
+	    scParciales.setViewportView(getTParciales());
+	}
+	return scParciales;
+    }
+
+    private JTable getTParciales() {
+	if (tParciales == null) {
+	    tParciales = new JTable(modelTablaParciales);
+	    DefaultTableCellRenderer renderer = (DefaultTableCellRenderer) tParciales.getTableHeader()
+		    .getDefaultRenderer();
+	    renderer.setHorizontalAlignment(JLabel.CENTER);
+	    modelTablaParciales.addColumn("Identificador");
+	    modelTablaParciales.addColumn("Corredor");
+	    modelTablaParciales.addColumn("Parcial 1");
+	    modelTablaParciales.addColumn("Parcial 2");
+	    modelTablaParciales.addColumn("Parcial 3");
+	    modelTablaParciales.addColumn("Parcial 4");
+	    modelTablaParciales.addColumn("Parcial 5");
+	}
+	return tParciales;
     }
 }

@@ -314,6 +314,12 @@ public class MenuOrganizadorController {
 
 	    @Override
 	    public void actionPerformed(ActionEvent e) {
+		// quitar los datos de todas las tablas por si hubiese alguno
+		view.getModelTablaClub().setRowCount(0);
+		view.getModelTablaRitmo().setRowCount(0);
+		view.getModelTablaDiferencia().setRowCount(0);
+		view.getModelTablaDorsal().setRowCount(0);
+		view.getModelTablaParciales().setRowCount(0);
 		// generar las clasificaciones que tuviese la carrera
 		view.getModelTablaCategorias().setRowCount(0);
 		mostrarClasificaciones();
@@ -358,7 +364,7 @@ public class MenuOrganizadorController {
 			    String ritmo = calcularRitmo(inscripcion, carrera.getDistancia()) + " km/h";
 			    String diferencial = "-----";
 			    if (inscripciones.get(0).equals(inscripcion)) {
-				diferencial = "-----";
+				diferencial = "+00:00:00";
 			    } else {
 				diferencial = "+" + calcularDiferenciaTiempo(inscripciones, inscripcion);
 			    }
@@ -371,7 +377,14 @@ public class MenuOrganizadorController {
 
 			    Object[] data = { DNI, nombre, sexo, categoria, fecha_inscripcion, estado_inscripcion, club,
 				    ritmo, diferencial, t1, t2, t3, t4, t5 };
-			    view.getTableModelCorredor().insertRow(posicion, data);
+			    // añadimos los datos a cada filtro
+			    dataFiltroCorredores(posicion, data);
+			    dataFiltroClub(posicion, data);
+			    dataFiltroRitmo(posicion, data,
+				    calcularRitmo(inscripcion, carrera.getDistancia()) + " km/h");
+			    dataFiltroDiferencia(posicion, data, calcularDiferenciaTiempo(inscripciones, inscripcion));
+			    dataFiltroDorsal(posicion, data, inscripcion.getDorsal());
+			    dataFiltroTiemposParciales(posicion, data);
 			    posicion++;
 			}
 		    } else {
@@ -386,13 +399,82 @@ public class MenuOrganizadorController {
     }
 
     /**
+     * Inserta en el modelo de datos los datos or parametro para el filtro
+     * 
+     * @param posicion
+     * @param data
+     */
+    private void dataFiltroCorredores(int posicion, Object[] data) {
+	view.getTableModelCorredor().insertRow(posicion, data);
+    }
+
+    /**
+     * Inserta en el modelo de datos los datos or parametro para el filtro
+     * 
+     * @param posicion
+     * @param data
+     */
+    private void dataFiltroClub(int posicion, Object[] data) {
+	Object[] data2 = { data[0], data[1], data[6] };
+	view.getModelTablaClub().insertRow(posicion, data2);
+    }
+
+    /**
+     * Inserta en el modelo de datos los datos or parametro para el filtro
+     * 
+     * @param posicion
+     * @param data
+     */
+    private void dataFiltroTiemposParciales(int posicion, Object[] data) {
+	Object[] data2 = { data[0], data[1], data[9], data[10], data[11], data[12], data[13] };
+	view.getModelTablaParciales().insertRow(posicion, data2);
+    }
+
+    /**
+     * Inserta en el modelo de datos los datos or parametro para el filtro
+     * 
+     * @param posicion
+     * @param data
+     */
+    private void dataFiltroDorsal(int posicion, Object[] data, int dorsal) {
+	Object[] data2 = { data[0], data[1], dorsal };
+	view.getModelTablaDorsal().insertRow(posicion, data2);
+    }
+
+    /**
+     * Inserta en el modelo de datos los datos or parametro para el filtro
+     * 
+     * @param posicion
+     * @param data
+     */
+    private void dataFiltroDiferencia(int posicion, Object[] data, String diferencia) {
+	Object[] data2 = { data[0], data[1], diferencia };
+	view.getModelTablaDiferencia().insertRow(posicion, data2);
+    }
+
+    /**
+     * Inserta en el modelo de datos los datos or parametro para el filtro
+     * 
+     * @param posicion
+     * @param data
+     */
+    private void dataFiltroRitmo(int posicion, Object[] data, String ritmo) {
+	Object[] data2 = { data[0], data[1], ritmo };
+	view.getModelTablaRitmo().insertRow(posicion, data2);
+    }
+
+    /**
      * Calcula el ritmo medio al que corrio el participante
      * 
      * @param inscripcion
      * @param distancia
      * @return
      */
+    @SuppressWarnings("deprecation")
     private String calcularRitmo(InscripcionDTO inscripcion, double distancia) {
+	if (inscripcion.getTiempofin() == null || inscripcion.getTiempoinicio() == null) {
+	    return "";
+	}
 	Time cronometraje = restarTiempo(inscripcion.getTiempofin(), inscripcion.getTiempoinicio());
 	double h = cronometraje.getHours();
 	double m = cronometraje.getMinutes() / 60.0;
@@ -411,6 +493,10 @@ public class MenuOrganizadorController {
      * @return
      */
     private String calcularDiferenciaTiempo(List<InscripcionDTO> inscripciones, InscripcionDTO inscripcion) {
+	if (inscripcion.getTiempofin() == null || inscripcion.getTiempoinicio() == null
+		|| inscripciones.get(0).getTiempofin() == null || inscripciones.get(0).getTiempoinicio() == null) {
+	    return "";
+	}
 	StringBuilder str = new StringBuilder();
 	Time primerofin = inscripciones.get(0).getTiempofin();
 	Time primeroinic = inscripciones.get(0).getTiempoinicio();

@@ -1,5 +1,6 @@
 package ips.persistence.inscripciones;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ips.business.inscripciones.InscripcionDTO;
@@ -31,7 +32,18 @@ public class InscripcionModel {
      * @return
      */
     public List<InscripcionDTO> inscripcionesOrdenarPorTiempos(int idcarrera) {
-	return db.executeQueryPojo(InscripcionDTO.class, SQL_ORDENAR_POR_TIEMPO, idcarrera);
+	List<InscripcionDTO> todo = db.executeQueryPojo(InscripcionDTO.class, SQL_ORDENAR_POR_TIEMPO, idcarrera);
+	List<InscripcionDTO> añadirAlfinal = new ArrayList<InscripcionDTO>();
+	for (InscripcionDTO inscripcion : todo) {
+	    if (inscripcion.getTiempofin() == null || inscripcion.getTiempoinicio() == null) {
+		añadirAlfinal.add(inscripcion);
+	    }
+	}
+	for (InscripcionDTO inscripcion : añadirAlfinal) {
+	    todo.remove(inscripcion);
+	}
+	todo.addAll(todo.size(), añadirAlfinal);
+	return todo;
     }
 
 }

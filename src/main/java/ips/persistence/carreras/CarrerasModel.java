@@ -47,6 +47,10 @@ public class CarrerasModel {
 
     public static final String SQL_FIND_PLAZOS_IDCARRERA = "select * from plazos where idcarrera = ?";
 
+    public static final String SQL_FIND_CARRERAS_COMPETIDAS_POR_EMAIL = "select * from carreras c, inscripciones i, corredores co\n"
+	    + "where co.email = ? and co.dnicorredor = i.dnicorredor\n"
+	    + "and i.idcarrera = c.idcarrera and fechacompeticion <= ?";
+
     public List<CarreraDisplayDTO> getListaCarreras() {
 	// List<CarreraDisplayDTO> listCarreras = new ArrayList<CarreraDisplayDTO>();
 	Date fecha = java.sql.Date.valueOf(LocalDate.now());
@@ -252,6 +256,11 @@ public class CarrerasModel {
 
     public List<PlazoDTO> verPlazosCarrera(int idCarrera) {
 	return db.executeQueryPojo(PlazoDTO.class, SQL_FIND_PLAZOS_IDCARRERA, idCarrera);
+    }
+
+    public List<CarreraDisplayDTO> getListaCarrerasCompetidasPorEmailCorredor(String email) {
+	Date fecha = new Date(System.currentTimeMillis());
+	return db.executeQueryPojo(CarreraDisplayDTO.class, SQL_FIND_CARRERAS_COMPETIDAS_POR_EMAIL, email, fecha);
     }
 
 }

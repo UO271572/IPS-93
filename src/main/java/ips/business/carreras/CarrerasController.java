@@ -79,4 +79,8 @@ public class CarrerasController {
 	return model.getMaxIdCarrera();
     }
 
+    public List<CarreraDisplayDTO> getListaCarrerasCompetidasPorEmailCorredor(String email) throws BusinessException {
+	return model.getListaCarrerasCompetidasPorEmailCorredor(email);
+    }
+
 }

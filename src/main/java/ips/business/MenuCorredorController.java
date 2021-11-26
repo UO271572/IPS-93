@@ -11,6 +11,7 @@ import javax.swing.JDialog;
 
 import ips.business.carreras.CarreraDisplayDTO;
 import ips.business.carreras.CarrerasController;
+import ips.business.comparar.VentanaCompararController;
 import ips.business.corredores.CorredorDTO;
 import ips.business.corredores.CorredoresController;
 import ips.persistence.carreras.CarrerasModel;
@@ -205,8 +206,10 @@ public class MenuCorredorController {
 	    @Override
 	    public void actionPerformed(ActionEvent e) {
 
-		VentanaCompararView compararView = new VentanaCompararView(view.getTfEmail().getText());
-
+		VentanaCompararView compararView = new VentanaCompararView();
+		VentanaCompararController controller = new VentanaCompararController(view.getTfEmail().getText(),
+			compararView);
+		compararView.setVisible(true);
 	    }
 	};
     }

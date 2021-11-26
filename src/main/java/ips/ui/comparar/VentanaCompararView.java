@@ -22,6 +22,8 @@ public class VentanaCompararView extends JDialog {
 
     private DefaultTableModel modeloCarrerasCompetidas;
     private DefaultTableModel modeloClasificacion;
+    private DefaultTableModel modeloComparacion;
+
     private JScrollPane spCarrerasCompetidas;
     private JScrollPane spClasificacion;
     private JScrollPane spComparacion;
@@ -32,6 +34,7 @@ public class VentanaCompararView extends JDialog {
     public VentanaCompararView() {
 	modeloCarrerasCompetidas = new DefaultTableModel();
 	modeloClasificacion = new DefaultTableModel();
+	modeloComparacion = new DefaultTableModel();
 
 	setModal(true);
 	setTitle("Menú Corredor: Comparación");
@@ -59,7 +62,7 @@ public class VentanaCompararView extends JDialog {
 	return pnCarrerasCompetidas;
     }
 
-    private JTable getTablaCarrerasCompetidas() {
+    public JTable getTablaCarrerasCompetidas() {
 	if (tablaCarrerasCompetidas == null) {
 	    tablaCarrerasCompetidas = new JTable(modeloCarrerasCompetidas);
 	    modeloCarrerasCompetidas.addColumn("ID Carrera");
@@ -95,13 +98,19 @@ public class VentanaCompararView extends JDialog {
     public JTable getTablaClasificacion() {
 	if (tablaClasificacion == null) {
 	    tablaClasificacion = new JTable(modeloClasificacion);
+	    modeloClasificacion.addColumn("DNI");
+	    modeloClasificacion.addColumn("Dorsal");
+	    modeloClasificacion.addColumn("Posición");
+	    modeloClasificacion.addColumn("Tiempo fin");
+
+	    tablaClasificacion.setDefaultEditor(Object.class, null);
 	}
 	return tablaClasificacion;
     }
 
-    private JButton getBtnCompararAtleta() {
+    public JButton getBtnCompararAtleta() {
 	if (btnCompararAtleta == null) {
-	    btnCompararAtleta = new JButton("Comparar con Atleta");
+	    btnCompararAtleta = new JButton("Comparar con atleta");
 	}
 	return btnCompararAtleta;
     }
@@ -118,12 +127,18 @@ public class VentanaCompararView extends JDialog {
 
     private JTable getTablaComparacion() {
 	if (tablaComparacion == null) {
-	    tablaComparacion = new JTable();
+	    tablaComparacion = new JTable(modeloComparacion);
+	    modeloComparacion.addColumn("DNI");
+	    modeloComparacion.addColumn("Dorsal");
+	    modeloComparacion.addColumn("Posición");
+	    modeloComparacion.addColumn("Tiempo fin");
+
+	    tablaComparacion.setDefaultEditor(Object.class, null);
 	}
 	return tablaComparacion;
     }
 
-    private JButton getBtnCerrar() {
+    public JButton getBtnCerrar() {
 	if (btnCerrar == null) {
 	    btnCerrar = new JButton("Cerrar");
 	    btnCerrar.setBounds(922, 454, 85, 21);
@@ -133,6 +148,14 @@ public class VentanaCompararView extends JDialog {
 
     public DefaultTableModel getModeloCarrerasCompetidas() {
 	return modeloCarrerasCompetidas;
+    }
+
+    public DefaultTableModel getModeloClasificacion() {
+	return modeloClasificacion;
+    }
+
+    public DefaultTableModel getModeloComparacion() {
+	return modeloComparacion;
     }
 
     private JScrollPane getSpCarrerasCompetidas() {

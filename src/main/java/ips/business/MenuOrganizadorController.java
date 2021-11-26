@@ -355,33 +355,47 @@ public class MenuOrganizadorController {
 
 			    String fecha_inscripcion = inscripcion.getFechainscripcion();
 			    String estado_inscripcion = inscripcion.getEstadoinscripcion();
-			    String club = inscripcion.getClub();
+			    String club = "----";
+			    if (inscripcion.getClub() != null) {
+				club = inscripcion.getClub();
+			    }
 
 			    // obtenemos la carrera seleccionada para obtener su distancia
 			    CarrerasController carrerasController = new CarrerasController();
 			    CarreraDisplayDTO carrera = carrerasController.getCarrerasById(String.valueOf(idCarrera))
 				    .get(0);
-			    String ritmo = calcularRitmo(inscripcion, carrera.getDistancia()) + " km/h";
+
+			    String ritmo = calcularRitmo(inscripcion, carrera.getDistancia());
 			    String diferencial = "-----";
 			    if (inscripciones.get(0).equals(inscripcion)) {
 				diferencial = "+00:00:00";
 			    } else {
-				diferencial = "+" + calcularDiferenciaTiempo(inscripciones, inscripcion);
+				diferencial = calcularDiferenciaTiempo(inscripciones, inscripcion);
 			    }
 
-			    Time t1 = inscripcion.getT1();
-			    Time t2 = inscripcion.getT2();
-			    Time t3 = inscripcion.getT3();
-			    Time t4 = inscripcion.getT4();
-			    Time t5 = inscripcion.getT5();
+			    String t1 = "----";
+			    String t2 = "----";
+			    String t3 = "----";
+			    String t4 = "----";
+			    String t5 = "----";
+			    if (inscripcion.getT1() != null) {
+				t1 = inscripcion.getT1().toString();
+			    } else if (inscripcion.getT2() != null) {
+				t2 = inscripcion.getT2().toString();
+			    } else if (inscripcion.getT3() != null) {
+				t3 = inscripcion.getT3().toString();
+			    } else if (inscripcion.getT4() != null) {
+				t4 = inscripcion.getT4().toString();
+			    } else if (inscripcion.getT5() != null) {
+				t5 = inscripcion.getT5().toString();
+			    }
 
 			    Object[] data = { DNI, nombre, sexo, categoria, fecha_inscripcion, estado_inscripcion, club,
 				    ritmo, diferencial, t1, t2, t3, t4, t5 };
 			    // añadimos los datos a cada filtro
 			    dataFiltroCorredores(posicion, data);
 			    dataFiltroClub(posicion, data);
-			    dataFiltroRitmo(posicion, data,
-				    calcularRitmo(inscripcion, carrera.getDistancia()) + " km/h");
+			    dataFiltroRitmo(posicion, data, calcularRitmo(inscripcion, carrera.getDistancia()));
 			    dataFiltroDiferencia(posicion, data, calcularDiferenciaTiempo(inscripciones, inscripcion));
 			    dataFiltroDorsal(posicion, data, inscripcion.getDorsal());
 			    dataFiltroTiemposParciales(posicion, data);
@@ -473,7 +487,7 @@ public class MenuOrganizadorController {
     @SuppressWarnings("deprecation")
     private String calcularRitmo(InscripcionDTO inscripcion, double distancia) {
 	if (inscripcion.getTiempofin() == null || inscripcion.getTiempoinicio() == null) {
-	    return "";
+	    return "----";
 	}
 	Time cronometraje = restarTiempo(inscripcion.getTiempofin(), inscripcion.getTiempoinicio());
 	double h = cronometraje.getHours();
@@ -482,7 +496,7 @@ public class MenuOrganizadorController {
 //	double horas = h + (m / 60) + ((s / 60) / 60);
 	double horas = h + m + s;
 //	return String.valueOf(distancia / horas);
-	return String.format("%.2f", (distancia / horas));
+	return String.format("%.2f", (distancia / horas)) + " km/h";
     }
 
     /**
@@ -495,7 +509,7 @@ public class MenuOrganizadorController {
     private String calcularDiferenciaTiempo(List<InscripcionDTO> inscripciones, InscripcionDTO inscripcion) {
 	if (inscripcion.getTiempofin() == null || inscripcion.getTiempoinicio() == null
 		|| inscripciones.get(0).getTiempofin() == null || inscripciones.get(0).getTiempoinicio() == null) {
-	    return "";
+	    return "----";
 	}
 	StringBuilder str = new StringBuilder();
 	Time primerofin = inscripciones.get(0).getTiempofin();
@@ -507,7 +521,7 @@ public class MenuOrganizadorController {
 	Time t2 = restarTiempo(segundofin, segundoinic);
 
 	str.append(restarTiempo(t2, t1));
-	return str.toString();
+	return "+" + str.toString();
     }
 
     /**

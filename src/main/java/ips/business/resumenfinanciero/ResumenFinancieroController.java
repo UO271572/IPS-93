@@ -25,7 +25,7 @@ public class ResumenFinancieroController {
 	view.getLblInscConfN().setText(getNumeroInscripcionesConfirmadas());
 	view.getLblTotalDevolverN().setText(getTotalADevolver());
 	view.getLblTotalIngresadoN().setText(getTotalIngresado());
-	view.getLblNombreCarrera().setText(idCarrera + "");
+	view.getLblNombreCarrera().setText(nombreCarrera + "");
 	view.getLblTotalN()
 		.setText((model.getTotalIngresado(idCarrera) - model.getTotalADevolver(idCarrera)) + " euros");
     }

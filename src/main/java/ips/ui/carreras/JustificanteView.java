@@ -18,6 +18,7 @@ import ips.business.BusinessException;
 import ips.business.carreras.CarreraDisplayDTO;
 import ips.business.corredores.CorredorDTO;
 import ips.business.inscripciones.InscripcionController;
+import ips.persistence.carreras.CarrerasModel;
 import ips.persistence.pagos.PagoTransferenciaBancariaModel;
 
 public class JustificanteView extends JDialog {
@@ -75,6 +76,15 @@ public class JustificanteView extends JDialog {
 		    + "IBAN: 123456 123456 123456 123456\n" + "El corredor " + corredor.getNombre() + " "
 		    + corredor.getApellidos() + " que se dispone a correr en la carrera " + corredor.getIdCarrera()
 		    + " debe abonar " + iiu.obtenerCarreraSeleccionada().getPrecio() + "€ a dicha cuenta";
+
+	    // COMPROBAR LISTA DE ESPERA
+	    CarrerasModel model = new CarrerasModel();
+
+	    if (model.getInscritosCarrera(corredor.getIdCarrera()) >= model
+		    .getPlazasDisponibles(corredor.getIdCarrera())) {
+		datos += "\nAVISO: se le ha añadido a una lista de espera para esta carrera";
+	    }
+	    // COMPROBAR LISTA DE ESPERA
 
 	    myWriter.write(datos);
 

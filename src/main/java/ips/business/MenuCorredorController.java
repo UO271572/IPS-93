@@ -107,7 +107,8 @@ public class MenuCorredorController {
 	    int plazasDisponibles = listaCarreras.get(i).getPlazasDisponibles();
 	    double distancia = listaCarreras.get(i).getDistancia();
 	    String lugar = listaCarreras.get(i).getLugar();
-	    Object[] data = { idCarerra, nombre, fecha, tipo, lugar, distancia, plazasDisponibles };
+	    String espera = listaCarreras.get(i).getListaDeEspera();
+	    Object[] data = { idCarerra, nombre, fecha, tipo, lugar, distancia, plazasDisponibles, espera };
 	    view.getTableModel().insertRow(0, data);
 	}
     }

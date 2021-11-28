@@ -34,8 +34,8 @@ public class CarrerasModel {
 
     public static final String SQL_CARRERA_BY_ID = "SELECT * FROM CARRERAS WHERE IDCARRERA=?";
 
-    public static final String SQL_INSERT_CARRERA = "INSERT INTO carreras (idcarrera,nombre,fechacompeticion,tipo,distancia,plazasdisponibles,plazasreservadas,lugar,estadocarrera) "
-	    + "VALUES (?,?,?,?,?,?,?,?,'ABIERTO')"; // Mirar con base nueva
+    public static final String SQL_INSERT_CARRERA = "INSERT INTO carreras (idcarrera,nombre,fechacompeticion,tipo,distancia,plazasdisponibles,plazasreservadas,lugar) "
+	    + "VALUES (?,?,?,?,?,?,?,?)";
 
     public static final String SQL_FIND_MAX_IDCARRERA = "select max(idcarrera) from carreras";
 
@@ -50,6 +50,43 @@ public class CarrerasModel {
 	    + "where co.email = ? and co.dnicorredor = i.dnicorredor\n"
 	    + "and i.idcarrera = c.idcarrera and fechacompeticion <= ?";
 
+    public static final String SQL_GET_NUMERO_INSCRIPCIONES_VALIDA = "SELECT COUNT(*) FROM INSCRIPCIONES WHERE IDCARRERA=? AND ESTADOINSCRIPCION<>'ANULADA'";
+
+    public static final String SQL_FIND_MAX_FECHAFIN = "select max(fechafin) from plazos where idcarrera = ? ";
+
+    /**
+     * Obtiene la ultima fecha de plazo de una carrera
+     * 
+     * @param idcarrera
+     * @return
+     */
+    public Date getMaxFechaFin(int idcarrera) {
+	// return db.executeQueryPojo(Date.class, SQL_FIND_MAX_FECHAFIN,
+	// idcarrera).get(0);
+	Connection c = null;
+	PreparedStatement pst = null;
+	Date date = null;
+	try {
+	    c = Jdbc.createThreadConnection();
+
+	    pst = c.prepareStatement(SQL_FIND_MAX_FECHAFIN);
+	    pst.setInt(1, idcarrera);
+
+	    ResultSet rs = pst.executeQuery();
+	    while (rs.next()) {
+		date = rs.getDate(1);
+	    }
+	    rs.close();
+	    c.close();
+	} catch (SQLException e) {
+	    throw new UnexpectedException(e);
+	} finally {
+	    Jdbc.close(pst);
+	}
+	return date;
+    }
+
+    
     public List<CarreraDisplayDTO> getListaCarreras() {
 	// List<CarreraDisplayDTO> listCarreras = new ArrayList<CarreraDisplayDTO>();
 	Date fecha = java.sql.Date.valueOf(LocalDate.now());

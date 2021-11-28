@@ -4,205 +4,95 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
+import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
-import ips.business.carreras.CarreraDisplayDTO;
-
 public class MenuOrganizadorView extends JDialog {
-    private JScrollPane scrollPaneCorredores;
-    private JList listCorredores;
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
     private JButton btnBuscarCorredores;
-    private JComboBox<CarreraDisplayDTO> cbCarreras;
     private JButton btnCrearCarrera;
-    private JPanel pn_FiltrosClasificacion;
     private JPanel pn_OpcionesOrganizador;
     private JButton btnCargarDatos;
     private JButton btnProcesarPagos;
     private JButton btnAsignarDorsales;
     private JPanel pn_Carreras;
     private JScrollPane scrollPaneCarreras;
-    private JList listCarreras;
     private JPanel pn_BotonesCarreras;
-    private JButton btnGenerarClasificacion;
-
-    // ---
-    private DefaultTableModel tablemodel;
-    private JTable table;
-    private JTabbedPane tabbedPane;
-    private JTabbedPane tabbedPane_1;
-    private JPanel pnFiltros;
-    private JScrollPane scrollPane;
-    private ProcesaAccion pa = new ProcesaAccion();
-    private JPanel pn_listaCorredores;
-    private JPanel pn_lista;
     private JTable tablaCarreras;
+
     private DefaultTableModel modelTablaCarreras = new DefaultTableModel();
     private DefaultTableModel modelTablaCorredores = new DefaultTableModel();
+    private DefaultTableModel modelTablaCategorias = new DefaultTableModel();
+    private DefaultTableModel modelTablaClub = new DefaultTableModel();
+    private DefaultTableModel modelTablaRitmo = new DefaultTableModel();
+    private DefaultTableModel modelTablaDiferencia = new DefaultTableModel();
+    private DefaultTableModel modelTablaDorsal = new DefaultTableModel();
+    private DefaultTableModel modelTablaParciales = new DefaultTableModel();
+
     private JTable tableCorredores;
-    private JScrollPane scrollPaneCorre;
+    private JTabbedPane tabbedPane;
+    private JScrollPane scCorredores;
+    private JScrollPane scCategorias;
+    private JScrollPane scClub;
+    private JScrollPane scRitmo;
+    private JTable tRitmo;
+    private JTable tableCategorias;
+    private JTable tClub;
+    private JPanel panel;
+    private JPanel pnsur;
+    private JPanel pnCentro;
+    private JScrollPane scDiferencia;
+    private JScrollPane scDorsal;
+    private JTable tDiferencia;
+    private JTable tDorsal;
+    private JScrollPane scParciales;
+    private JTable tParciales;
+    private JTable table_2;
+    private JTable table_3;
+    private JButton btnResumenFinanciero;
 
     public MenuOrganizadorView() {
-	tablemodel = new DefaultTableModel();
-	setTitle("Menú: Organizador");
 	setResizable(false);
+	new DefaultTableModel();
+	setTitle("Menú: Organizador");
 	setBounds(100, 100, 1288, 666);
 	setLocationRelativeTo(null);
 	getContentPane().setBackground(Color.WHITE);
-	getContentPane().setLayout(null);
-//	getContentPane().add(getScrollPaneCorredores());
-//		getContentPane().add(getCbCarreras());
-	getContentPane().add(getPn_FiltrosClasificacion());
-	getContentPane().add(getPn_OpcionesOrganizador());
-	getContentPane().add(getPn_Carreras());
-	getContentPane().add(getPn_BotonesCarreras());
-
+//	getContentPane().add(getPn_OpcionesOrganizador());
+//	getContentPane().add(getPn_BotonesCarreras());
+//	getContentPane().add(getPn_Carreras());
+	// getContentPane().add(getTabbedPane());
 	iniciar();
 
 	this.setModal(true);
     }
 
     private void iniciar() {
+	getContentPane().setLayout(new BorderLayout(0, 0));
 //	getContentPane().add(getPnFiltros());
 //	getPnFiltros().setLayout(new BorderLayout(0, 0));
-	getContentPane().add(getPn_listaCorredores());
+	// getContentPane().add(getPn_listaCorredores());
+	getContentPane().add(getPanel());
 //	getPnFiltros().add(getTabbedPane());
     }
 
-    class ProcesaAccion implements ActionListener {
-
-	public void actionPerformed(ActionEvent a) {
-	    filtrar(a.getActionCommand());
-	}
-
-	private void filtrar(String actionCommand) {
-	    // mostrar el panel y scroll y lista asociados al boton
-//	    getPn_listaCorredores().show();arreglar a jtabbed
-	}
-
-    }
-
-    public void iniciarBotonesFiltros(int i, String nombre) {
-	// getListCorredores().removeAll();
-	getPn_FiltrosClasificacion().add(crearBotonesFiltro(i, nombre));
-	getPn_FiltrosClasificacion().validate();
-	getPn_FiltrosClasificacion().repaint();
-	getPn_listaCorredores().add(crearPanelesScroll(nombre));
-    }
-
-    public JButton crearBotonesFiltro(int i, String nombre) {
-	JButton btBoton = new JButton();
-	btBoton = new JButton(nombre);
-	btBoton.setActionCommand(Integer.toString(i));
-	btBoton.addActionListener(pa);
-	btBoton.setEnabled(true);
-	return btBoton;
-    }
-
-    private JPanel crearPanelesScroll(String nombre) {
-	JPanel panel = new JPanel();
-	panel.setName("pn" + nombre);
-	panel.setLayout(new BorderLayout(0, 0));
-	panel.add(crearScrollPane(nombre));
-	panel.validate();
-	panel.repaint();
-	return panel;
-    }
-
-    private Component crearScrollPane(String nombre) {
-	JScrollPane scpanel = new JScrollPane();
-	scpanel.setName("sc" + nombre);
-	scpanel.setBounds(386, 254, 661, 125);
-	scpanel.setViewportView(crearList(nombre));
-
-	return scpanel;
-    }
-
-    private JList crearList(String nombre) {
-	JList jlist = new JList();
-	jlist.setName("jlist" + nombre);
-	jlist.setBackground(Color.WHITE);
-	return jlist;
-    }
-
-//    /**
-//     * Añadir la tabla al panel que se necesite
-//     * 
-//     * @return
-//     */
-//    public JTable getTable() {
-//	if (table == null) {
-//	    table = new JTable(tablemodel);
-//	    tablemodel.addColumn("Id Carrera");
-//	    tablemodel.addColumn("Nombre");
-//	    tablemodel.addColumn("Dorsal");
-//	    tablemodel.addColumn("Categoria");
-//	    tablemodel.addColumn("Tiempo");
-//	    table.setDefaultEditor(Object.class, null);
-//	    // table.setVisible(true);
-//	}
-//	return table;
-//    }
-//
-//    /**
-//     * Creacion dinamica de scrollpane
-//     * 
-//     * @return
-//     */
-//    public JScrollPane crearScrollPane() {
-//	JScrollPane scp = new JScrollPane(getTabbedPane());
-//	scp.setViewportView(getTable());
-//	// scp.setVisible(true);
-//	return scp;
-//    }
-
-//    /**
-//     * tABED PANE SOBRE EL QUE SE PONDRAN LOS FILTROS
-//     * 
-//     * @return
-//     */
-//    public JTabbedPane getTabbedPane() {
-//	if (tabbedPane == null) {
-//	    tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-//	    tabbedPane.setBounds(386, 56, 543, 169);
-//	    tabbedPane.addTab("New tab", null, crearScrollPane(), null);
-////	    añadir();
-////	tabbedPane.addTab("NOMBRE DEL FILTRO CATEGORIA ", null, crearScrollPane(), null);
-////	    AÑADIR TABS CUANDO SEPAMOS CUALOS SON LOS FILTROS
-//	}
-//
-//	return tabbedPane;
-//    }
-
-//    private void añadir() {
-//	tabbedPane.addTab("New tab", null, crearScrollPane(), null);
-//    }
-
     // ------------------------------------------------------------------------
-
-    private JScrollPane getScrollPaneCorredores() {
-	if (scrollPaneCorredores == null) {
-	    scrollPaneCorredores = new JScrollPane();
-	    scrollPaneCorredores.setBounds(386, 254, 661, 125);
-	    scrollPaneCorredores.setViewportView(getTableCorredores());
-	}
-	return scrollPaneCorredores;
-    }
 
 //    public JList getListCorredores() {
 //	if (listCorredores == null) {
@@ -226,23 +116,12 @@ public class MenuOrganizadorView extends JDialog {
 	return btnCrearCarrera;
     }
 
-    public JPanel getPn_FiltrosClasificacion() {
-	if (pn_FiltrosClasificacion == null) {
-	    pn_FiltrosClasificacion = new JPanel();
-	    pn_FiltrosClasificacion
-		    .setBorder(new TitledBorder(null, "Filtros", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-	    pn_FiltrosClasificacion.setBackground(Color.WHITE);
-	    pn_FiltrosClasificacion.setBounds(639, 10, 625, 83);
-	    pn_FiltrosClasificacion.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-	}
-	return pn_FiltrosClasificacion;
-    }
-
     private JPanel getPn_OpcionesOrganizador() {
 	if (pn_OpcionesOrganizador == null) {
 	    pn_OpcionesOrganizador = new JPanel();
 	    pn_OpcionesOrganizador.setBounds(639, 551, 625, 68);
 	    pn_OpcionesOrganizador.setLayout(new GridLayout(1, 0, 0, 0));
+	    pn_OpcionesOrganizador.add(getBtnResumenFinanciero());
 	    pn_OpcionesOrganizador.add(getBtnAsignarDorsales());
 	    pn_OpcionesOrganizador.add(getBtnProcesarPagos());
 	    pn_OpcionesOrganizador.add(getBtnCargarDatos());
@@ -279,7 +158,7 @@ public class MenuOrganizadorView extends JDialog {
 	    pn_Carreras.setBackground(Color.WHITE);
 	    pn_Carreras
 		    .setBorder(new TitledBorder(null, "Carreras", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-	    pn_Carreras.setBounds(10, 10, 619, 531);
+	    pn_Carreras.setBounds(10, 10, 619, 243);
 	    pn_Carreras.setLayout(new BoxLayout(pn_Carreras, BoxLayout.X_AXIS));
 	    pn_Carreras.add(getScrollPaneCarreras());
 	    // pn_Carreras.add(getListCarreras());
@@ -289,9 +168,13 @@ public class MenuOrganizadorView extends JDialog {
 
     private JScrollPane getScrollPaneCarreras() {
 	if (scrollPaneCarreras == null) {
-	    scrollPaneCarreras = new JScrollPane();
-	    scrollPaneCarreras.setAlignmentX(Component.RIGHT_ALIGNMENT);
+	    scrollPaneCarreras = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+		    JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+//	    scrollPaneCarreras = new JScrollPane();
 	    scrollPaneCarreras.setViewportView(getTablaCarreras());
+	    scrollPaneCarreras.setAlignmentX(Component.RIGHT_ALIGNMENT);
+
 	}
 	return scrollPaneCarreras;
     }
@@ -301,43 +184,32 @@ public class MenuOrganizadorView extends JDialog {
 	    pn_BotonesCarreras = new JPanel();
 	    pn_BotonesCarreras.setBackground(Color.WHITE);
 	    pn_BotonesCarreras.setBounds(10, 551, 619, 68);
-	    pn_BotonesCarreras.setLayout(new GridLayout(0, 2, 0, 0));
+	    pn_BotonesCarreras.setLayout(new BorderLayout(0, 0));
 	    pn_BotonesCarreras.add(getBtnBuscarCorredores());
-	    pn_BotonesCarreras.add(getBtnGenerarClasificacion());
+//	    pn_BotonesCarreras.add(getBtnVerClasificacion());
 	}
 	return pn_BotonesCarreras;
     }
 
-    public JButton getBtnGenerarClasificacion() {
-	if (btnGenerarClasificacion == null) {
-	    btnGenerarClasificacion = new JButton("Generar clasificaciones");
-	}
-	return btnGenerarClasificacion;
-    }
+//    public JButton getBtnVerClasificacion() {
+//	if (btnVerClasificacion == null) {
+//	    btnVerClasificacion = new JButton("Ver clasificaciones");
+//	}
+//	return btnVerClasificacion;
+//    }
 
-    private JPanel getPnFiltros() {
-	if (pnFiltros == null) {
-	    pnFiltros = new JPanel();
-	    pnFiltros.setBorder(new TitledBorder(null, "Filtrado por categorias", TitledBorder.LEADING,
-		    TitledBorder.TOP, null, null));
-	    pnFiltros.setBackground(Color.WHITE);
-	    pnFiltros.setBounds(384, 78, 663, 57);
-	}
-	return pnFiltros;
-    }
-
-    private JPanel getPn_listaCorredores() {
-	if (pn_listaCorredores == null) {
-	    pn_listaCorredores = new JPanel();
-	    pn_listaCorredores.setBackground(Color.WHITE);
-	    pn_listaCorredores.setBorder(
-		    new TitledBorder(null, "Datos de corredores", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-	    pn_listaCorredores.setBounds(639, 107, 625, 433);
-	    pn_listaCorredores.setLayout(new GridLayout(0, 1, 0, 0));
-	    pn_listaCorredores.add(getScrollPaneCorre());
-	}
-	return pn_listaCorredores;
-    }
+//    private JPanel getPn_listaCorredores() {
+//	if (pn_listaCorredores == null) {
+//	    pn_listaCorredores = new JPanel();
+//	    pn_listaCorredores.setBackground(Color.WHITE);
+//	    pn_listaCorredores.setBorder(
+//		    new TitledBorder(null, "Datos de corredores", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+//	    pn_listaCorredores.setBounds(639, 179, 625, 361);
+//	    pn_listaCorredores.setLayout(new GridLayout(0, 1, 0, 0));
+//	    pn_listaCorredores.add(getScrollPaneCorre());
+//	}
+//	return pn_listaCorredores;
+//    }
 
     /*
      * private JPanel getPn_lista() { if (pn_lista == null) { pn_lista = new
@@ -366,9 +238,21 @@ public class MenuOrganizadorView extends JDialog {
 
 	    String nombre = "Plazas disponibles";
 	    modelTablaCarreras.addColumn(nombre);
-	    tablaCarreras.getColumn(nombre).setPreferredWidth(nombre.length() * 5);
+
+	    tablaCarreras.getColumn(nombre).setPreferredWidth(nombre.length() * 7);
+	    tablaCarreras.getColumn("Fecha").setPreferredWidth("Fecha".length() * 18);
+	    tablaCarreras.getColumn("Nombre").setPreferredWidth("Nombre".length() * 20);
 
 	    tablaCarreras.setDefaultEditor(Object.class, null);
+
+//	    tablaCarreras.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+//	    tablaCarreras.getColumn(0).setPreferredWidth(50);
+//	    tablaCarreras.getColumn(1).setPreferredWidth(50);
+//	    tablaCarreras.getColumn(2).setPreferredWidth(50);
+//	    tablaCarreras.getColumn(3).setPreferredWidth(50);
+//	    tablaCarreras.getColumn(4).setPreferredWidth(50);
+//	    tablaCarreras.getColumn(5).setPreferredWidth(50);
+//	    tablaCarreras.setAutoscrolls(true);
 	}
 	return tablaCarreras;
     }
@@ -394,21 +278,301 @@ public class MenuOrganizadorView extends JDialog {
 
 	    modelTablaCorredores.addColumn("DNI");
 	    modelTablaCorredores.addColumn("Nombre");
-	    modelTablaCorredores.addColumn("Categoría");
-	    modelTablaCorredores.addColumn("Fecha inscripción");
-	    modelTablaCorredores.addColumn("Estado inscripción");
+	    modelTablaCorredores.addColumn("Sexo");
+	    modelTablaCorredores.addColumn("Categoria");
+	    modelTablaCorredores.addColumn("Fecha Insc");
+	    modelTablaCorredores.addColumn("Estado");
+	    modelTablaCorredores.addColumn("Club");
+	    modelTablaCorredores.addColumn("Ritmo");
+	    modelTablaCorredores.addColumn("Diferencia");
+	    modelTablaCorredores.addColumn("Parcial 1");
+	    modelTablaCorredores.addColumn("Parcial 2");
+	    modelTablaCorredores.addColumn("Parcial 3");
+	    modelTablaCorredores.addColumn("Parcial 4");
+	    modelTablaCorredores.addColumn("Parcial 5");
 
 	    tableCorredores.setDefaultEditor(Object.class, null);
-
+	    tableCorredores.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 	}
 	return tableCorredores;
     }
 
-    private JScrollPane getScrollPaneCorre() {
-	if (scrollPaneCorre == null) {
-	    scrollPaneCorre = new JScrollPane();
-	    scrollPaneCorre.setViewportView(getTableCorredores());
+//    private JScrollPane getScrollPaneCorre() {
+//	if (scrollPaneCorre == null) {
+//	    scrollPaneCorre = new JScrollPane();
+//	    scrollPaneCorre.setViewportView(getTableCorredores());
+//	}
+//	return scrollPaneCorre;
+//    }
+
+    private JTabbedPane getTabbedPane() {
+	if (tabbedPane == null) {
+	    tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+	    tabbedPane.setBorder(new TitledBorder(
+		    new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)),
+		    "Contenidos", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+	    tabbedPane.setBounds(639, 11, 625, 529);
+	    tabbedPane.addTab("Corredores", null, getScCorredores(), null);
+	    tabbedPane.addTab("Categorias", null, getScCategorias(), null);
+	    tabbedPane.addTab("Club", null, getScClub(), null);
+	    tabbedPane.addTab("Ritmo", null, getScRitmo(), null);
+	    tabbedPane.addTab("Diferencia", null, getScDiferencia(), null);
+	    tabbedPane.addTab("Dorsal", null, getScDorsal(), null);
+	    tabbedPane.addTab("Tiempos parciales", null, getScParciales(), null);
+
 	}
-	return scrollPaneCorre;
+	return tabbedPane;
+    }
+
+    private JScrollPane getScCorredores() {
+	if (scCorredores == null) {
+//	    scCorredores = new JScrollPane();
+	    scCorredores = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+		    JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+	    scCorredores.setViewportView(getTableCorredores());
+	    scCorredores.setAlignmentX(Component.RIGHT_ALIGNMENT);
+//	    scCorredores.setViewportView(getTableCorredores());
+	}
+	return scCorredores;
+    }
+
+    private JScrollPane getScCategorias() {
+	if (scCategorias == null) {
+	    scCategorias = new JScrollPane();
+	    scCategorias.setViewportView(getTableCategorias());
+	}
+	return scCategorias;
+    }
+
+    private JScrollPane getScClub() {
+	if (scClub == null) {
+	    scClub = new JScrollPane();
+	    scClub.setViewportView(getTClub());
+	}
+	return scClub;
+    }
+
+    private JScrollPane getScRitmo() {
+	if (scRitmo == null) {
+	    scRitmo = new JScrollPane();
+	    scRitmo.setViewportView(getTRitmo());
+	}
+	return scRitmo;
+    }
+
+    private JTable getTRitmo() {
+	if (tRitmo == null) {
+	    tRitmo = new JTable(modelTablaRitmo);
+	    DefaultTableCellRenderer renderer = (DefaultTableCellRenderer) tRitmo.getTableHeader().getDefaultRenderer();
+	    renderer.setHorizontalAlignment(JLabel.CENTER);
+	    modelTablaRitmo.addColumn("Identificador");
+	    modelTablaRitmo.addColumn("Corredor");
+	    modelTablaRitmo.addColumn("Ritmo km/h");
+	}
+	return tRitmo;
+    }
+
+    /**
+     * Tabla para las categorias
+     * 
+     * @return
+     */
+    public JTable getTableCategorias() {
+	if (tableCategorias == null) {
+	    tableCategorias = new JTable(modelTablaCategorias);
+	    tableCategorias.setFillsViewportHeight(true);
+
+	    DefaultTableCellRenderer renderer = (DefaultTableCellRenderer) tableCategorias.getTableHeader()
+		    .getDefaultRenderer();
+	    renderer.setHorizontalAlignment(JLabel.CENTER);
+
+	    modelTablaCategorias.addColumn("Nombre");
+	    modelTablaCategorias.addColumn("Sexo");
+	    modelTablaCategorias.addColumn("Edad Inicio");
+	    modelTablaCategorias.addColumn("Edad Fin");
+
+	}
+	return tableCategorias;
+    }
+
+    private JTable getTClub() {
+	if (tClub == null) {
+	    tClub = new JTable(modelTablaClub);
+
+	    DefaultTableCellRenderer renderer = (DefaultTableCellRenderer) tClub.getTableHeader().getDefaultRenderer();
+	    renderer.setHorizontalAlignment(JLabel.CENTER);
+	    modelTablaClub.addColumn("Identificador");
+	    modelTablaClub.addColumn("Corredor");
+	    modelTablaClub.addColumn("Club perteneciente");
+	}
+	return tClub;
+    }
+
+    public DefaultTableModel getModelTablaCategorias() {
+	return modelTablaCategorias;
+    }
+
+    public static long getSerialversionuid() {
+	return serialVersionUID;
+    }
+
+    public DefaultTableModel getModelTablaCarreras() {
+	return modelTablaCarreras;
+    }
+
+    public DefaultTableModel getModelTablaCorredores() {
+	return modelTablaCorredores;
+    }
+
+    public DefaultTableModel getModelTablaClub() {
+	return modelTablaClub;
+    }
+
+    public DefaultTableModel getModelTablaRitmo() {
+	return modelTablaRitmo;
+    }
+
+    public DefaultTableModel getModelTablaDiferencia() {
+	return modelTablaDiferencia;
+    }
+
+    public DefaultTableModel getModelTablaDorsal() {
+	return modelTablaDorsal;
+    }
+
+    public DefaultTableModel getModelTablaParciales() {
+	return modelTablaParciales;
+    }
+
+    public JTable gettRitmo() {
+	return tRitmo;
+    }
+
+    public JTable gettClub() {
+	return tClub;
+    }
+
+    public JTable gettDiferencia() {
+	return tDiferencia;
+    }
+
+    public JTable gettDorsal() {
+	return tDorsal;
+    }
+
+    public JTable gettParciales() {
+	return tParciales;
+    }
+
+    public void setModelTablaCategorias(DefaultTableModel modelTablaCategorias) {
+	this.modelTablaCategorias = modelTablaCategorias;
+    }
+
+   
+    private JPanel getPanel() {
+	if (panel == null) {
+	    panel = new JPanel();
+	    panel.setLayout(new BorderLayout(0, 0));
+	    panel.add(getPnsur(), BorderLayout.SOUTH);
+	    panel.add(getPnCentro(), BorderLayout.CENTER);
+	}
+	return panel;
+    }
+
+    private JPanel getPnsur() {
+	if (pnsur == null) {
+	    pnsur = new JPanel();
+	    pnsur.setLayout(new GridLayout(1, 0, 0, 0));
+	    pnsur.add(getPn_BotonesCarreras());
+	    pnsur.add(getPn_OpcionesOrganizador());
+	}
+	return pnsur;
+    }
+
+    private JPanel getPnCentro() {
+	if (pnCentro == null) {
+	    pnCentro = new JPanel();
+	    pnCentro.setLayout(new GridLayout(1, 0, 0, 0));
+	    pnCentro.add(getPn_Carreras());
+	    pnCentro.add(getTabbedPane());
+	}
+	return pnCentro;
+    }
+
+    private JScrollPane getScDiferencia() {
+	if (scDiferencia == null) {
+	    scDiferencia = new JScrollPane();
+	    scDiferencia.setViewportView(getTableDiferencia());
+	}
+	return scDiferencia;
+    }
+
+    private JScrollPane getScDorsal() {
+	if (scDorsal == null) {
+	    scDorsal = new JScrollPane();
+	    scDorsal.setViewportView(getTableDorsal());
+	}
+	return scDorsal;
+    }
+
+    private JTable getTableDiferencia() {
+	if (tDiferencia == null) {
+	    tDiferencia = new JTable(modelTablaDiferencia);
+	    DefaultTableCellRenderer renderer = (DefaultTableCellRenderer) tDiferencia.getTableHeader()
+		    .getDefaultRenderer();
+	    renderer.setHorizontalAlignment(JLabel.CENTER);
+	    modelTablaDiferencia.addColumn("Identificador");
+	    modelTablaDiferencia.addColumn("Corredor");
+	    modelTablaDiferencia.addColumn("Diferencia");
+
+	}
+	return tDiferencia;
+    }
+
+    private JTable getTableDorsal() {
+	if (tDorsal == null) {
+	    tDorsal = new JTable(modelTablaDorsal);
+	    DefaultTableCellRenderer renderer = (DefaultTableCellRenderer) tDorsal.getTableHeader()
+		    .getDefaultRenderer();
+	    renderer.setHorizontalAlignment(JLabel.CENTER);
+	    modelTablaDorsal.addColumn("Identificador");
+	    modelTablaDorsal.addColumn("Corredor");
+	    modelTablaDorsal.addColumn("Dorsal");
+	}
+	return tDorsal;
+    }
+
+    private JScrollPane getScParciales() {
+	if (scParciales == null) {
+	    scParciales = new JScrollPane();
+	    scParciales.setViewportView(getTParciales());
+	}
+	return scParciales;
+    }
+
+    private JTable getTParciales() {
+	if (tParciales == null) {
+	    tParciales = new JTable(modelTablaParciales);
+	    DefaultTableCellRenderer renderer = (DefaultTableCellRenderer) tParciales.getTableHeader()
+		    .getDefaultRenderer();
+	    renderer.setHorizontalAlignment(JLabel.CENTER);
+	    modelTablaParciales.addColumn("Identificador");
+	    modelTablaParciales.addColumn("Corredor");
+	    modelTablaParciales.addColumn("Parcial 1");
+	    modelTablaParciales.addColumn("Parcial 2");
+	    modelTablaParciales.addColumn("Parcial 3");
+	    modelTablaParciales.addColumn("Parcial 4");
+	    modelTablaParciales.addColumn("Parcial 5");
+	}
+	return tParciales;
+    }
+
+    public JButton getBtnResumenFinanciero() {
+	if (btnResumenFinanciero == null) {
+	    btnResumenFinanciero = new JButton("Resumen financiero");
+	    btnResumenFinanciero.setFont(new Font("Tahoma", Font.PLAIN, 10));
+	}
+	return btnResumenFinanciero;
     }
 }

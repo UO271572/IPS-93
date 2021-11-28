@@ -3,7 +3,6 @@ package ips.business.corredores;
 import java.util.List;
 
 import ips.business.BusinessException;
-import ips.business.carreras.CarreraDisplayDTO;
 import ips.business.carreras.CarrerasController;
 import ips.persistence.carreras.CarrerasModel;
 import ips.persistence.corredores.CorredoresModel;
@@ -28,7 +27,7 @@ public class CorredoresController {
     public List<CorredorDTO> getCorredoresByIdCarrera(int idCarrera) throws BusinessException {
 	CarrerasController carrerasController = new CarrerasController(new CarrerasModel(), new CarrerasView());
 	// Si da nulo es que no existe y no hay que hacer nada mas
-	CarreraDisplayDTO carrera = carrerasController.findByIdCarrera(idCarrera);
+	// CarreraDisplayDTO carrera = carrerasController.findByIdCarrera(idCarrera);
 	List<CorredorDTO> corredores = model.getListaCorredoresByIdCarrera(idCarrera);
 	return corredores;
     }

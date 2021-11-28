@@ -1,5 +1,6 @@
 package ips.persistence.inscripciones;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ips.business.inscripciones.InscripcionDTO;
@@ -13,6 +14,29 @@ public class InscripcionModel {
     private static final String SQL_INSCRIPCION_DNI_ID = "select * from inscripciones where dnicorredor = ? and idcarrera = ?";
     private static final String SQL_ADD_INSCRIPCION = "insert into inscripciones(dnicorredor, idcarrera,ESTADOINSCRIPCION , FECHAINSCRIPCION, incidencia, club) values (?, ?, ?, ?, ?, ?)";
     private static final String SQL_UPDATE_INSCRIPCION_CLUB = "UPDATE inscripciones SET estadoinscripcion = ?, incidencia = ?, fechainscripcion = ?, club = ? WHERE dnicorredor = ? and idcarrera = ?";
+    public static final String SQL_ORDENAR_POR_TIEMPO = "select * from inscripciones where (idcarrera = ? ) order by (tiempofin - tiempoinicio)";
+
+    /**
+     * Ordena por tiempos mas rapidos a mas lentos los resultados de la carrera de
+     * los corredores
+     * 
+     * @param idcarrera
+     * @return
+     */
+    public List<InscripcionDTO> inscripcionesOrdenarPorTiempos(int idcarrera) {
+	List<InscripcionDTO> todo = db.executeQueryPojo(InscripcionDTO.class, SQL_ORDENAR_POR_TIEMPO, idcarrera);
+	List<InscripcionDTO> añadirAlfinal = new ArrayList<InscripcionDTO>();
+	for (InscripcionDTO inscripcion : todo) {
+	    if (inscripcion.getTiempofin() == null || inscripcion.getTiempoinicio() == null) {
+		añadirAlfinal.add(inscripcion);
+	    }
+	}
+	for (InscripcionDTO inscripcion : añadirAlfinal) {
+	    todo.remove(inscripcion);
+	}
+	todo.addAll(todo.size(), añadirAlfinal);
+	return todo;
+    }
 
     public void updateInscripciones(List<InscripcionDTO> lista) {
 	for (InscripcionDTO i : lista)

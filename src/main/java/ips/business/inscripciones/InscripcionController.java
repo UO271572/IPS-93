@@ -10,6 +10,7 @@ import java.util.List;
 
 import ips.business.BusinessCheck;
 import ips.business.BusinessException;
+import ips.business.plazos.PlazoDTO;
 import ips.persistence.carreras.CarrerasModel;
 import ips.persistence.inscripciones.InscripcionModel;
 import ips.persistence.pagos.PagoTarjetaModel;
@@ -17,7 +18,7 @@ import ips.persistence.pagos.PagoTransferenciaBancariaModel;
 import ips.ui.carreras.InscripcionView;
 
 public class InscripcionController {
-
+    private static final int PRECIO_POR_DEFECTO = 5;
     private PagoTarjetaModel model;
     private PagoTransferenciaBancariaModel modelBanco;
     private InscripcionModel imodel;
@@ -150,6 +151,51 @@ public class InscripcionController {
 		resultado[1] = resultado[1] + 1;
 	    }
 	}
+
+	return resultado;
+    }
+
+    /**
+     * Ordena por tiempos mas rapidos a mas lentos los resultados de la carrera de
+     * los corredores
+     * 
+     * @param idcarrera
+     * @return
+     */
+    public List<InscripcionDTO> listInscripcionesByTime(int idcarrera) {
+	return imodel.inscripcionesOrdenarPorTiempos(idcarrera);
+    }
+
+    public double getPrecioCarrera(int idCarrera, LocalDate fechaInscripcion) {
+
+	CarrerasModel carrerasModel = new CarrerasModel();
+
+	double resultado;
+
+	List<PlazoDTO> plazos = carrerasModel.verPlazosCarrera(idCarrera);
+
+	if (plazos.isEmpty()) { // La carrera no tiene plazos asociados
+	    return PRECIO_POR_DEFECTO;
+	}
+
+	PlazoDTO plazoElegido = null;
+
+	for (int i = 0; i < plazos.size(); i++) {
+	    LocalDate fechaInicioPlazo = plazos.get(i).getFechaInicio().toLocalDate();
+	    LocalDate fechaFinPlazo = plazos.get(i).getFechaFin().toLocalDate();
+
+	    if (fechaInscripcion.isAfter(fechaInicioPlazo) && fechaInscripcion.isBefore(fechaFinPlazo)) {
+		if (i != 0) {
+		    plazoElegido = plazos.get(i);
+		}
+	    }
+	}
+
+	if (plazoElegido == null) { // La fecha de inscripción del atleta no está dentro de ningún plazo
+	    plazoElegido = plazos.get(0);
+	}
+
+	resultado = plazoElegido.getCuota();
 
 	return resultado;
     }

@@ -14,12 +14,15 @@ import ips.business.carreras.CarreraDisplayDTO;
 import ips.business.carreras.CarrerasController;
 import ips.business.corredores.CorredorDTO;
 import ips.business.corredores.CorredoresController;
+import ips.business.comparar.VentanaCompararController;
 import ips.persistence.carreras.CarrerasModel;
 import ips.persistence.corredores.CorredoresModel;
 import ips.ui.MenuCorredorView;
 import ips.ui.MenuInscripcionClubView;
+import ips.ui.carreras.EstadoInscripcionesView;
 import ips.ui.carreras.CarrerasView;
 import ips.ui.carreras.InscripcionView;
+import ips.ui.comparar.VentanaCompararView;
 import ips.ui.corredores.CorredoresView;
 import ips.util.Printer;
 
@@ -45,6 +48,8 @@ public class MenuCorredorController {
 	view.getRdbtnAbiertas().addActionListener(accionBotonVerNoCompetidas());
 	view.getBtnInscribirse().addActionListener(accionBtnInscribirse());
 	view.getBtnInscribirClub().addActionListener(accionBotonInscribirClub());
+	view.getBtnVerInscripciones().addActionListener(accionVerInscripciones());
+	view.getBtnComparar().addActionListener(accionAbrirVentanaComparacion());
     }
 
     public WindowAdapter notCloseDirectly() {
@@ -107,7 +112,8 @@ public class MenuCorredorController {
 	    int plazasDisponibles = listaCarreras.get(i).getPlazasRestantes();
 	    double distancia = listaCarreras.get(i).getDistancia();
 	    String lugar = listaCarreras.get(i).getLugar();
-	    Object[] data = { idCarerra, nombre, fecha, tipo, lugar, distancia, plazasDisponibles };
+	    String espera = listaCarreras.get(i).getListaDeEspera();
+	    Object[] data = { idCarerra, nombre, fecha, tipo, lugar, distancia, plazasDisponibles, espera };
 	    view.getTableModel().insertRow(0, data);
 	}
     }
@@ -249,4 +255,32 @@ public class MenuCorredorController {
 	    return true;
     }
 
+    private ActionListener accionAbrirVentanaComparacion() {
+    	return new ActionListener() {
+
+    	    @Override
+    	    public void actionPerformed(ActionEvent e) {
+
+    		VentanaCompararView compararView = new VentanaCompararView();
+    		VentanaCompararController controller = new VentanaCompararController(view.getTfEmail().getText(),
+    			compararView);
+    		compararView.setVisible(true);
+    	    }
+    	};
+        }
+
+        private ActionListener accionVerInscripciones() {
+    	return new ActionListener() {
+    	    @Override
+    	    public void actionPerformed(ActionEvent e) {
+    		EstadoInscripcionesView estado = null;
+    		try {
+    		    estado = new EstadoInscripcionesView();
+    		} catch (BusinessException e1) {
+    		    e1.printStackTrace();
+    		}
+    		estado.setVisible(true);
+    	    }
+    	};
+}
 }

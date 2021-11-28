@@ -18,6 +18,7 @@ public class CarreraDisplayDTO {
     private int plazasRestantes;
     private String lugar;
     private String estadoCarrera;
+    private String listaDeEspera;// = "NO";
 
     public String getEstadoCarrera() {
 	return estadoCarrera;
@@ -64,6 +65,14 @@ public class CarreraDisplayDTO {
 	this.distancia = distancia;
 	this.fechaCompeticion = fechaC;
 	this.tipo = tipo;
+    }
+
+    public CarreraDisplayDTO(int id, String nombre, Date fechaI, Date fechaF, int precio, double distancia, Date fechaC,
+	    String tipo, String listaDeEspera) {
+
+	this(id, nombre, fechaI, fechaF, precio, distancia, fechaC, tipo);
+
+	this.listaDeEspera = listaDeEspera;
     }
 
     public void setIdCarrera(int idCarrera) {
@@ -143,4 +152,11 @@ public class CarreraDisplayDTO {
 	return Printer.print(this);
     }
 
+    public String getListaDeEspera() {
+	return listaDeEspera;
+    }
+
+    public void setListaDeEspera(String listaDeEspera) {
+	this.listaDeEspera = listaDeEspera;
+    }
 }

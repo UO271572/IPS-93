@@ -9,6 +9,7 @@ import java.util.List;
 import ips.business.BusinessCheck;
 import ips.business.BusinessException;
 import ips.business.categorias.CategoriaDTO;
+import ips.business.inscripciones.InscripcionDTO;
 import ips.persistence.clasificaciones.ClasificacionModel;
 
 /**
@@ -48,4 +49,14 @@ public class ClasificacionController {
 //	BusinessCheck.isFalse(listaDto.isEmpty(), "No hay clasificacion disponible");
 //	return listaDto;
 //    }
+
+    public List<InscripcionDTO> obtenerClasificacionAbsoluta(int idcarrera) {
+
+	return model.obtenerClasificacionAbsoluta(idcarrera);
+
+    }
+
+    public List<InscripcionDTO> obtenerClasificacionAbsolutaCorredor(int idCarrera, String email) {
+	return model.obtenerClasificacionAbsolutaCorredor(idCarrera, email);
+    }
 }

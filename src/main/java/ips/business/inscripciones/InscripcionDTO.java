@@ -3,6 +3,7 @@
  */
 package ips.business.inscripciones;
 
+import java.sql.Date;
 import java.sql.Time;
 
 import ips.util.Printer;
@@ -15,9 +16,10 @@ public class InscripcionDTO {
     private String dnicorredor;
     private int idcarrera;
     private String estadoinscripcion;
-    private String fechainscripcion;
+    private Date fechainscripcion;
     private int dorsal;
     private String incidencia;
+    private String club;
     private Time tiempoinicio;
     private Time tiempofin;
 
@@ -90,12 +92,20 @@ public class InscripcionDTO {
 	this.estadoinscripcion = estadoinscripcion;
     }
 
-    public String getFechainscripcion() {
+    public Date getFechainscripcion() {
 	return fechainscripcion;
     }
 
-    public void setFechainscripcion(String fechainscripcion) {
+    public void setFechainscripcion(Date fechainscripcion) {
 	this.fechainscripcion = fechainscripcion;
+    }
+
+    public String getClub() {
+	return club;
+    }
+
+    public void setClub(String club) {
+	this.club = club;
     }
 
     public String toString() {

@@ -20,6 +20,11 @@ public class CorredoresController {
 	this.view = view;
     }
 
+    public CorredoresController() {
+	this.model = new CorredoresModel();
+	this.view = new CorredoresView();
+    }
+
     public List<CorredorDTO> getCorredoresByIdCarrera(int idCarrera) throws BusinessException {
 	CarrerasController carrerasController = new CarrerasController(new CarrerasModel(), new CarrerasView());
 	// Si da nulo es que no existe y no hay que hacer nada mas
@@ -45,6 +50,14 @@ public class CorredoresController {
 
     public void addCorredor(CorredorDTO corredor) {
 	model.addCorredor(corredor);
+    }
+
+    public List<CorredorDTO> getCorredorByDNI(String dniCorredor) {
+	return model.findCorredorByDNI(dniCorredor);
+    }
+
+    public void updateCorredor(CorredorDTO corredor) {
+	model.updateCorredor(corredor);
     }
 
 }

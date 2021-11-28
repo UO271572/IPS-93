@@ -5,140 +5,142 @@ import java.sql.Date;
 import ips.util.Printer;
 
 public class CarreraDisplayDTO {
-	private int idCarrera;
-	private String nombre;
-	private Date fechaInicio;
-	private Date fechaFin;
-	private Date fechaCompeticion;
-	private double precio;//arreglar a double en la base de datos 
-	private double distancia;
-	private String tipo;
-	private int plazasDisponibles;
-	private int plazasReservadas;
-	private String lugar;
-	private String estadoCarrera;
-	
-	public String getEstadoCarrera() {
-		return estadoCarrera;
-	}
+    private int idCarrera;
+    private String nombre;
+    private Date fechaInicio;
+    private Date fechaFin;
+    private Date fechaCompeticion;
+    private double precio;// arreglar a double en la base de datos
+    private double distancia;
+    private String tipo;
+    private int plazasTotales;
+    private int plazasReservadas;
+    private int plazasRestantes;
+    private String lugar;
+    private String estadoCarrera;
 
-	public void setEstadoCarrera(String estadoCarrera) {
-		this.estadoCarrera = estadoCarrera;
-	}
+    public String getEstadoCarrera() {
+	return estadoCarrera;
+    }
 
-	public Date getFechaCompeticion() {
-		return fechaCompeticion;
-	}
+    public void setEstadoCarrera(String estadoCarrera) {
+	this.estadoCarrera = estadoCarrera;
+    }
 
-	public void setFechaCompeticion(Date fechaCompeticion) {
-		this.fechaCompeticion = fechaCompeticion;
-	}
+    public Date getFechaCompeticion() {
+	return fechaCompeticion;
+    }
 
-	public double getDistancia() {
-		return distancia;
-	}
+    public void setFechaCompeticion(Date fechaCompeticion) {
+	this.fechaCompeticion = fechaCompeticion;
+    }
 
-	public void setDistancia(double distancia) {
-		this.distancia = distancia;
-	}
+    public double getDistancia() {
+	return distancia;
+    }
 
-	public int getIdCarrera() {
-		return idCarrera;
-	}
+    public void setDistancia(double distancia) {
+	this.distancia = distancia;
+    }
 
-	public void setPrecio(double precio) {
-		this.precio = precio;
-	}
+    public int getIdCarrera() {
+	return idCarrera;
+    }
 
-	
-	
-	public CarreraDisplayDTO() {
-	}
+    public void setPrecio(double precio) {
+	this.precio = precio;
+    }
 
-	public CarreraDisplayDTO(int id, String nombre, Date fechaI, Date fechaF, int precio,
-			double distancia, Date fechaC, String tipo ) {
-		this.idCarrera = id;
-		this.nombre = nombre;
-		this.fechaInicio = fechaI;
-		this.fechaFin = fechaF;
-		this.precio = precio;
-		this.distancia = distancia;
-		this.fechaCompeticion = fechaC;
-		this.tipo = tipo;
-	}
+    public CarreraDisplayDTO() {
+    }
 
+    public CarreraDisplayDTO(int id, String nombre, Date fechaI, Date fechaF, int precio, double distancia, Date fechaC,
+	    String tipo) {
+	this.idCarrera = id;
+	this.nombre = nombre;
+	this.fechaInicio = fechaI;
+	this.fechaFin = fechaF;
+	this.precio = precio;
+	this.distancia = distancia;
+	this.fechaCompeticion = fechaC;
+	this.tipo = tipo;
+    }
 
-	public void setIdCarrera(int idCarrera) {
-		this.idCarrera = idCarrera;
-	}
+    public void setIdCarrera(int idCarrera) {
+	this.idCarrera = idCarrera;
+    }
 
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
+    public void setNombre(String nombre) {
+	this.nombre = nombre;
+    }
 
-	public void setFechaInicio(Date fechaInicio) {
-		this.fechaInicio = fechaInicio;
-	}
+    public void setFechaInicio(Date fechaInicio) {
+	this.fechaInicio = fechaInicio;
+    }
 
-	public void setFechaFin(Date fechaFin) {
-		this.fechaFin = fechaFin;
-	}
+    public void setFechaFin(Date fechaFin) {
+	this.fechaFin = fechaFin;
+    }
 
-	public String getNombre() {
-		return this.nombre;
-	}
+    public String getNombre() {
+	return this.nombre;
+    }
 
-	public Date getFechaInicio() {
-		return this.fechaInicio;
-	}
+    public Date getFechaInicio() {
+	return this.fechaInicio;
+    }
 
-	public Date getFechaFin() {
-		return this.fechaFin;
-	}
+    public Date getFechaFin() {
+	return this.fechaFin;
+    }
 
-	public double getPrecio() {
-		return this.precio;
-	}
+    public double getPrecio() {
+	return this.precio;
+    }
 
-	public String getTipo() {
-		return tipo;
-	}
+    public String getTipo() {
+	return tipo;
+    }
 
-	public void setTipo(String tipo) {
-		this.tipo = tipo;
-	}
+    public void setTipo(String tipo) {
+	this.tipo = tipo;
+    }
 
-	public int getPlazasDisponibles() {
-		return plazasDisponibles;
-	}
+    public int getPlazasTotales() {
+	return plazasTotales;
+    }
 
-	public void setPlazasDisponibles(int plazasDisponibles) {
-		this.plazasDisponibles = plazasDisponibles;
-	}
-	
-	
-	
-	
-	public int getPlazasReservadas() {
-		return plazasReservadas;
-	}
+    public void setPlazasTotales(int plazasTotales) {
+	this.plazasTotales = plazasTotales;
+    }
 
-	public void setPlazasReservadas(int plazasReservadas) {
-		this.plazasReservadas = plazasReservadas;
-	}
+    public int getPlazasReservadas() {
+	return plazasReservadas;
+    }
 
-	public String getLugar() {
-		return lugar;
-	}
+    public void setPlazasRestantes(int plazasRestantes) {
+	this.plazasRestantes = plazasRestantes;
+    }
 
-	public void setLugar(String lugar) {
-		this.lugar = lugar;
-	}
+    public int getPlazasRestantes() {
+	return plazasRestantes;
+    }
 
-	public String toString() {
-		
-		return Printer.print(this);
-	}
+    public void setPlazasReservadas(int plazasReservadas) {
+	this.plazasReservadas = plazasReservadas;
+    }
 
-	
+    public String getLugar() {
+	return lugar;
+    }
+
+    public void setLugar(String lugar) {
+	this.lugar = lugar;
+    }
+
+    public String toString() {
+
+	return Printer.print(this);
+    }
+
 }

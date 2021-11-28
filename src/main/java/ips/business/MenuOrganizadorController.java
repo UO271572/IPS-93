@@ -396,6 +396,7 @@ public class MenuOrganizadorController {
 	    @Override
 	    public void actionPerformed(ActionEvent e) {
 		MenuCrearCarreraView crearCarrera = new MenuCrearCarreraView();
+		MenuCrearCarreraController crearCarreraController = new MenuCrearCarreraController(crearCarrera);
 		crearCarrera.setVisible(true);
 	    }
 	};
@@ -417,7 +418,7 @@ public class MenuOrganizadorController {
 	    String nombre = listaCarreras.get(i).getNombre();
 	    Date fecha = listaCarreras.get(i).getFechaCompeticion();
 	    String tipo = listaCarreras.get(i).getTipo();
-	    int plazasDisponibles = listaCarreras.get(i).getPlazasDisponibles();
+	    int plazasDisponibles = listaCarreras.get(i).getPlazasTotales();
 	    double distancia = listaCarreras.get(i).getDistancia();
 	    String lugar = listaCarreras.get(i).getLugar();
 	    Object[] data = { idCarerra, nombre, fecha, tipo, lugar, distancia, plazasDisponibles };

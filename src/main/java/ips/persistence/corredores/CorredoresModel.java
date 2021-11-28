@@ -16,7 +16,11 @@ public class CorredoresModel {
 
     private final static String SQL_EMAIL_CORREDORES = "select email from corredores";
 
-    private final static String SQL_ADD_CORREDOR = "insert into corredores(dnicorredor, nombre, apellidos, fechanacimiento, sexo, email) where (?, ?, ?, ?, ?, ?)";
+    private final static String SQL_ADD_CORREDOR = "insert into corredores(dnicorredor, nombre, apellidos, fechanacimiento, sexo, email) values (?, ?, ?, ?, ?, ?)";
+
+    private final static String SQL_CORREDOR_BY_DNI = "select * from corredores where dnicorredor = ?";
+
+    private final static String SQL_UPDATE_CORREDOR_EMAIL = "UPDATE corredores SET email = ? WHERE dnicorredor = ?";
 
     public List<CorredorDTO> getListaCorredoresByIdCarrera(int idCarrera) {
 	return db.executeQueryPojo(CorredorDTO.class, SQL_LISTA_CORREDORES_BY_IDCARRERA, idCarrera);
@@ -35,5 +39,14 @@ public class CorredoresModel {
     public void addCorredor(CorredorDTO corredor) {
 	db.executeUpdate(SQL_ADD_CORREDOR, corredor.getDniCorredor(), corredor.getNombre(), corredor.getApellidos(),
 		corredor.getFechaNacimiento(), corredor.getSexo(), corredor.getEmail());
+    }
+
+    public List<CorredorDTO> findCorredorByDNI(String dniCorredor) {
+	return db.executeQueryPojo(CorredorDTO.class, SQL_CORREDOR_BY_DNI, dniCorredor);
+    }
+
+    public void updateCorredor(CorredorDTO corredor) {
+	// Igual cambiar
+	db.executeUpdate(SQL_UPDATE_CORREDOR_EMAIL, corredor.getEmail(), corredor.getDniCorredor());
     }
 }

@@ -21,7 +21,7 @@ public class Printer {
 	sb.append(" ");
 	sb.append("Fecha competicion: " + carrera.getFechaCompeticion());
 	sb.append(" ");
-	sb.append("Plazas disponibles: " + carrera.getPlazasDisponibles());
+	sb.append("Plazas disponibles: " + carrera.getPlazasTotales());
 	sb.append(" ");
 	sb.append("Plazas reservadas: " + carrera.getPlazasReservadas());
 	return sb.toString();

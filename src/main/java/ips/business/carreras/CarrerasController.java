@@ -22,9 +22,9 @@ public class CarrerasController {
 	view = new CarrerasView();
     }
 
-    public List<CarreraDisplayDTO> getListaCarreras() throws BusinessException {
+    public List<CarreraDisplayDTO> getListaCarreras() {
 	List<CarreraDisplayDTO> carreras = model.getListaCarreras();
-	BusinessCheck.isTrue(!carreras.isEmpty(), "No hay carreras disponibles");
+	// BusinessCheck.isTrue(!carreras.isEmpty(), "No hay carreras disponibles");
 	return carreras;
     }
 
@@ -54,9 +54,10 @@ public class CarrerasController {
 	return carreras;
     }
 
-    public List<CarreraDisplayDTO> getCarrerasById(String idCarrera) throws BusinessException {
+    public List<CarreraDisplayDTO> getCarrerasById(int idCarrera) {
 	List<CarreraDisplayDTO> carreras = model.getCarreraById(idCarrera);
-	BusinessCheck.isTrue(!carreras.isEmpty(), "No hay carreras con dicho identificador");
+	// BusinessCheck.isTrue(!carreras.isEmpty(), "No hay carreras con dicho
+	// identificador");
 	return carreras;
     }
 
@@ -77,6 +78,10 @@ public class CarrerasController {
 
     public int getMaxIdCarrera() {
 	return model.getMaxIdCarrera();
+    }
+
+    public void updatePlazasRestantesCarrera(CarreraDisplayDTO carrera) {
+	model.updatePlazasRestantesCarrera(carrera);
     }
 
 }

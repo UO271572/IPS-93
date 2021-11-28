@@ -54,6 +54,7 @@ public class MenuCorredorView extends JDialog {
 
     private final ButtonGroup buttonGroup = new ButtonGroup();
     private DefaultTableModel model;
+    private JButton btnInscribirClub;
 
     public MenuCorredorView() {
 	model = new DefaultTableModel();
@@ -76,6 +77,7 @@ public class MenuCorredorView extends JDialog {
 	getContentPane().add(getBtnVerInscripciones());
 	getContentPane().add(getBtnInscribirse());
 	getContentPane().add(getPnFormulario());
+	getContentPane().add(getBtnInscribirClub());
     }
 
     public DefaultTableModel getTableModel() {
@@ -172,7 +174,7 @@ public class MenuCorredorView extends JDialog {
 		    estado.setVisible(true);
 		}
 	    });
-	    btnVerInscripciones.setBounds(581, 572, 134, 38);
+	    btnVerInscripciones.setBounds(512, 589, 134, 38);
 	}
 	return btnVerInscripciones;
     }
@@ -181,7 +183,7 @@ public class MenuCorredorView extends JDialog {
 	if (btnInscribirse == null) {
 	    btnInscribirse = new JButton("Inscribirse");
 	    btnInscribirse.setEnabled(true);
-	    btnInscribirse.setBounds(744, 572, 105, 38);
+	    btnInscribirse.setBounds(773, 589, 105, 38);
 	}
 	return btnInscribirse;
     }
@@ -338,4 +340,13 @@ public class MenuCorredorView extends JDialog {
 	}
 	return cbSexo;
     }
+
+    public JButton getBtnInscribirClub() {
+	if (btnInscribirClub == null) {
+	    btnInscribirClub = new JButton("Inscribir club");
+	    btnInscribirClub.setBounds(656, 589, 107, 38);
+	}
+	return btnInscribirClub;
+    }
+
 }

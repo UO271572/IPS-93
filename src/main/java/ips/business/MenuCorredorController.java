@@ -8,6 +8,7 @@ import java.sql.Date;
 import java.util.List;
 
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 
 import ips.business.carreras.CarreraDisplayDTO;
 import ips.business.carreras.CarrerasController;
@@ -16,6 +17,7 @@ import ips.business.corredores.CorredoresController;
 import ips.persistence.carreras.CarrerasModel;
 import ips.persistence.corredores.CorredoresModel;
 import ips.ui.MenuCorredorView;
+import ips.ui.MenuInscripcionClubView;
 import ips.ui.carreras.CarrerasView;
 import ips.ui.carreras.InscripcionView;
 import ips.ui.corredores.CorredoresView;
@@ -26,6 +28,8 @@ public class MenuCorredorController {
     private MenuCorredorView view;
     private CarrerasController cc;
     private CorredoresController coc;
+
+    private final static int CODIGO_ERROR_NO_SELECCION = -404;
 
     public MenuCorredorController(MenuCorredorView view) {
 	this.view = view;
@@ -40,6 +44,7 @@ public class MenuCorredorController {
 	view.getRdbtnVerTodas().addActionListener(accionBotonVerTodas());
 	view.getRdbtnAbiertas().addActionListener(accionBotonVerNoCompetidas());
 	view.getBtnInscribirse().addActionListener(accionBtnInscribirse());
+	view.getBtnInscribirClub().addActionListener(accionBotonInscribirClub());
     }
 
     public WindowAdapter notCloseDirectly() {
@@ -69,14 +74,14 @@ public class MenuCorredorController {
 	};
     }
 
-    private void inicializarTablaCarrerasSinFiltro() {
+    public void inicializarTablaCarrerasSinFiltro() {
 	vaciarTabla();
-	try {
-	    List<CarreraDisplayDTO> listaCarreras = cc.getListaCarreras();
-	    añadirListaCarrerasTabla(listaCarreras);
-	} catch (BusinessException e1) {
-	    Printer.printBusinessException(e1);
-	}
+	// try {
+	List<CarreraDisplayDTO> listaCarreras = cc.getListaCarreras();
+	añadirListaCarrerasTabla(listaCarreras);
+	// } catch (BusinessException e1) {
+	// Printer.printBusinessException(e1);
+	// }
     }
 
     private void vaciarTabla() {
@@ -99,7 +104,7 @@ public class MenuCorredorController {
 	    String nombre = listaCarreras.get(i).getNombre();
 	    Date fecha = listaCarreras.get(i).getFechaCompeticion();
 	    String tipo = listaCarreras.get(i).getTipo();
-	    int plazasDisponibles = listaCarreras.get(i).getPlazasDisponibles();
+	    int plazasDisponibles = listaCarreras.get(i).getPlazasRestantes();
 	    double distancia = listaCarreras.get(i).getDistancia();
 	    String lugar = listaCarreras.get(i).getLugar();
 	    Object[] data = { idCarerra, nombre, fecha, tipo, lugar, distancia, plazasDisponibles };
@@ -120,6 +125,54 @@ public class MenuCorredorController {
 	    }
 	};
 
+    }
+
+    private ActionListener accionBotonInscribirClub() {
+	return new ActionListener() {
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+		// TODO se abre dos veces
+		MenuInscripcionClubView clubView = new MenuInscripcionClubView();
+		MenuInscripcionClubController clubController = new MenuInscripcionClubController(clubView);
+		clubController.setMenuCorredor(returnThis());
+		int idCarrera = getIdCarreraFromTable();
+		if (idCarrera != CODIGO_ERROR_NO_SELECCION) {
+		    if (checkCarreraAbierta(idCarrera)) {
+			clubController.setIdCarrera(idCarrera);
+			clubView.setVisible(true);
+		    }
+		} else {
+		    JOptionPane.showMessageDialog(null, "Debes seleccionar una carrera abierta");
+		}
+	    }
+	};
+
+    }
+
+    private MenuCorredorController returnThis() {
+	return this;
+    }
+
+    private boolean checkCarreraAbierta(int idCarrera) {
+	List<CarreraDisplayDTO> listaCarrerasAbiertas = cc.getListaCarreras();
+	for (CarreraDisplayDTO carrera : listaCarrerasAbiertas) {
+	    if (carrera.getIdCarrera() == idCarrera) {
+		return true;
+	    }
+
+	}
+	JOptionPane.showMessageDialog(null, "La carrera con ID " + idCarrera + " no está abierta");
+	return false;
+    }
+
+    private int getIdCarreraFromTable() {
+	int column = 0;
+	int row = view.getTable().getSelectedRow();
+	if (column >= 0 && row >= 0) {
+	    return Integer.parseInt(view.getTableModel().getValueAt(row, column).toString());
+	} else {
+	    return CODIGO_ERROR_NO_SELECCION;
+	}
     }
 
     private void abrirVentanaInscripcion() throws BusinessException {

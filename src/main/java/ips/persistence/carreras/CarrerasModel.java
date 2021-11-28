@@ -21,8 +21,8 @@ public class CarrerasModel {
 
     public static final String SQL_LISTA_CARRERAS = "select * from carreras order by fechacompeticion desc";
 
-    public static final String SQL_LISTA_CARRERAS_ABIERTAS = "select * from carreras c where (select min(fechaFin) from plazos p2 where p2.idcarrera = c.idCarrera) <= ? "
-	    + "and (select min(fechaFin) from plazos p2 where p2.idcarrera = c.idCarrera) <= ?";
+    public static final String SQL_LISTA_CARRERAS_ABIERTAS = "select * from carreras c where (select min(fechaInicio) from plazos p2 where p2.idcarrera = c.idCarrera) <= ? "
+	    + "and (select max(fechaFin) from plazos p2 where p2.idcarrera = c.idCarrera) >= ?";
 
     public static final String SQL_LISTA_CARRERAS_NO_COMPETIDAS = "select * from carreras where fechacompeticion >= ? order by fechacompeticion asc";
 
@@ -35,8 +35,8 @@ public class CarrerasModel {
 
     public static final String SQL_CARRERA_BY_ID = "SELECT * FROM CARRERAS WHERE IDCARRERA=?";
 
-    public static final String SQL_INSERT_CARRERA = "INSERT INTO carreras (idcarrera,nombre,fechacompeticion,tipo,distancia,plazasdisponibles,plazasreservadas,lugar,estadocarrera) "
-	    + "VALUES (?,?,?,?,?,?,?,?,'ABIERTO')"; // Mirar con base nueva
+    public static final String SQL_INSERT_CARRERA = "INSERT INTO carreras (idcarrera,nombre,fechacompeticion,tipo,distancia,plazastotales,plazasreservadas,lugar,plazasrestantes,estadocarrera) "
+	    + "VALUES (?,?,?,?,?,?,?,?,?,'ABIERTO')"; // Mirar con base nueva
 
     public static final String SQL_FIND_MAX_IDCARRERA = "select max(idcarrera) from carreras";
 
@@ -46,6 +46,8 @@ public class CarrerasModel {
     public static final String SQL_FIND_PRECIO_IDCARRERA = "select precio from carreras where idcarrera = ?";
 
     public static final String SQL_FIND_PLAZOS_IDCARRERA = "select * from plazos where idcarrera = ?";
+
+    private final static String SQL_UPDATE_CARRERA_PLAZASRESTANTES = "UPDATE carreras SET PLAZASRESTANTES = ? WHERE idcarrera = ?";
 
     public List<CarreraDisplayDTO> getListaCarreras() {
 	// List<CarreraDisplayDTO> listCarreras = new ArrayList<CarreraDisplayDTO>();
@@ -79,7 +81,7 @@ public class CarrerasModel {
 	return db.executeQueryPojo(CarreraDisplayDTO.class, SQL_CARRERAS_INSCRIPCION, fecha);
     }
 
-    public List<CarreraDisplayDTO> getCarreraById(String idCarrera) {
+    public List<CarreraDisplayDTO> getCarreraById(int idCarrera) {
 	List<CarreraDisplayDTO> carrera = db.executeQueryPojo(CarreraDisplayDTO.class, SQL_CARRERA_BY_ID, idCarrera);
 	return carrera;
     }
@@ -97,9 +99,10 @@ public class CarrerasModel {
 	    pst.setDate(3, carrera.getFechaCompeticion());
 	    pst.setString(4, carrera.getTipo());
 	    pst.setDouble(5, carrera.getDistancia());
-	    pst.setInt(6, carrera.getPlazasDisponibles());
+	    pst.setInt(6, carrera.getPlazasTotales());
 	    pst.setInt(7, carrera.getPlazasReservadas());
 	    pst.setString(8, carrera.getLugar());
+	    pst.setInt(9, carrera.getPlazasRestantes());
 
 	    pst.executeUpdate();
 	    c.close();
@@ -252,6 +255,10 @@ public class CarrerasModel {
 
     public List<PlazoDTO> verPlazosCarrera(int idCarrera) {
 	return db.executeQueryPojo(PlazoDTO.class, SQL_FIND_PLAZOS_IDCARRERA, idCarrera);
+    }
+
+    public void updatePlazasRestantesCarrera(CarreraDisplayDTO carrera) {
+	db.executeUpdate(SQL_UPDATE_CARRERA_PLAZASRESTANTES, carrera.getPlazasRestantes(), carrera.getIdCarrera());
     }
 
 }

@@ -3,6 +3,7 @@ package ips.business.inscripciones;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -71,8 +72,8 @@ public class InscripcionController {
 		// ha realizado
 		List<InscripcionDTO> inscripcion = modelBanco.verPagosCarrera(idCarrera, campos[0]);
 
-		String fechaInscripcion = inscripcion.get(0).getFechainscripcion();
-		LocalDate fechaLocalDate = LocalDate.parse(fechaInscripcion);
+		Date fechaInscripcion = inscripcion.get(0).getFechainscripcion();
+		LocalDate fechaLocalDate = fechaInscripcion.toLocalDate();
 
 		precioCarrera = carrerasModel.getPrecioCarrera(idCarrera, fechaLocalDate);
 
@@ -103,12 +104,12 @@ public class InscripcionController {
 		// si es igual pasamos a comprobar la fecha
 		// comprobar que se haya hecho antes de 48h
 		if (LocalDate.parse(campos[1])
-			.compareTo(LocalDate.parse(inscripcion.get(0).getFechainscripcion()).plusDays(2)) > 0) { // Ha
-														 // pagado
-														 // más
-														 // de
-														 // 48h
-														 // después
+			.compareTo(inscripcion.get(0).getFechainscripcion().toLocalDate().plusDays(2)) > 0) { // Ha
+													      // pagado
+													      // más
+													      // de
+													      // 48h
+													      // después
 		    // System.out.println("El pago se ha hecho más de 48h después");
 		    // System.out.println("" + inscripcion.get(0).getDnicorredor() + idCarrera +
 		    // "Devolver " + campos[2] + " euros");
@@ -136,9 +137,9 @@ public class InscripcionController {
 	List<InscripcionDTO> pendientesDePago = modelBanco.verPendientesDePago(idCarrera);
 
 	for (InscripcionDTO pendiente : pendientesDePago) {
-	    if (LocalDate.now().compareTo(LocalDate.parse(pendiente.getFechainscripcion()).plusDays(2)) > 0) { // No ha
-													       // pagado
-													       // en 48h
+	    if (LocalDate.now().compareTo(pendiente.getFechainscripcion().toLocalDate().plusDays(2)) > 0) { // No ha
+													    // pagado
+													    // en 48h
 		// System.out.println("El atleta " + pendiente.getDnicorredor() + " inscrito en
 		// la carrera " + idCarrera
 		// + " no ha pagado en 48h, se le anula inscripcion");
@@ -155,6 +156,18 @@ public class InscripcionController {
 
     public void updateInscripciones(List<InscripcionDTO> lista) throws BusinessException {
 	imodel.updateInscripciones(lista);
+    }
+
+    public List<InscripcionDTO> findInscripcionByDNIAndIDCarrera(String dniCorredor, int idCarrera) {
+	return imodel.findInscripcionByDNIAndIDCarrera(dniCorredor, idCarrera);
+    }
+
+    public void addInscripcion(InscripcionDTO inscripcionNueva) {
+	imodel.addInscripcion(inscripcionNueva);
+    }
+
+    public void updateInscripcion(InscripcionDTO inscripcionNueva) {
+	imodel.updateInscripcion(inscripcionNueva);
     }
 
 }

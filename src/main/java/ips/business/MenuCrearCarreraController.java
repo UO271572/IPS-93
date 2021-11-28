@@ -255,9 +255,10 @@ public class MenuCrearCarreraController {
 			    "Se ha creado la carrera con los siguientes datos:\n" + "\n\t-Id: " + carrera.getIdCarrera()
 				    + "\n\t-Nombre: " + carrera.getNombre() + "\n\t-Lugar: " + carrera.getLugar()
 				    + "\n\t-Tipo: " + carrera.getTipo() + "\n\t-Distancia: " + carrera.getDistancia()
-				    + "km\n\t-Plazas totales: " + carrera.getPlazasDisponibles()
-				    + "\n\t-Fecha de competicion: " + carrera.getFechaCompeticion()
-				    + "\n\t-Plazas reservadas: " + carrera.getPlazasReservadas());
+				    + "km\n\t-Plazas totales: " + carrera.getPlazasTotales()
+				    + "\n\t-Plazas reservadas: " + carrera.getPlazasReservadas()
+				    + "\n\t-Fecha de competicion: " + carrera.getFechaCompeticion());
+
 		    view.dispose();
 		} else {
 		    JOptionPane.showMessageDialog(view, "Datos incorrectos. Por favor, reviselos.");
@@ -294,9 +295,10 @@ public class MenuCrearCarreraController {
 	carrera.setFechaCompeticion(date);
 	carrera.setIdCarrera(idCarrera);
 	carrera.setNombre(view.getTxNombre().getText());
-	carrera.setPlazasDisponibles((int) view.getSpPlazas().getValue());
+	carrera.setPlazasTotales((int) view.getSpPlazas().getValue());
 	carrera.setPlazasReservadas((int) view.getSpPlazasReservadas().getValue());
 	carrera.setLugar(view.getTxLugar().getText());
+	carrera.setPlazasRestantes(carrera.getPlazasTotales() - carrera.getPlazasReservadas());
 	if (view.getRdbtnMontana().isSelected()) {
 	    carrera.setTipo(view.getRdbtnMontana().getText());
 	} else {

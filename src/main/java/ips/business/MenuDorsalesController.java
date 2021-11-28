@@ -2,6 +2,7 @@ package ips.business;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Date;
 import java.sql.Time;
 import java.util.List;
 
@@ -42,11 +43,12 @@ public class MenuDorsalesController {
 
 	int fila = menOrgView.getTablaCarreras().getSelectedRow();
 	List<CarreraDisplayDTO> listaCarreras = null;
-	try {
-	    listaCarreras = cc.getCarrerasById((String) menOrgView.getTablaCarreras().getModel().getValueAt(fila, 0));
-	} catch (BusinessException e) {
-	    e.printStackTrace();
-	}
+	// try {
+	listaCarreras = cc.getCarrerasById(
+		Integer.parseInt(menOrgView.getTablaCarreras().getModel().getValueAt(fila, 0).toString()));
+	// } catch (BusinessException e) {
+	// e.printStackTrace();
+	// }
 
 	CarreraDisplayDTO dto = listaCarreras.get(0);// ((CarreraDisplayDTO)
 						     // menOrgView.getListCarreras().getSelectedValue());
@@ -101,7 +103,7 @@ public class MenuDorsalesController {
 	    String dnicorredor = listaActualizacion.get(i).getDnicorredor();
 	    int idcarrera = listaActualizacion.get(i).getIdcarrera();
 	    String estadoinscripcion = listaActualizacion.get(i).getEstadoinscripcion();
-	    String fechainscripcion = listaActualizacion.get(i).getFechainscripcion();
+	    Date fechainscripcion = listaActualizacion.get(i).getFechainscripcion(); // CambioLocalDate
 	    int dorsal = listaActualizacion.get(i).getDorsal();
 	    String incidencia = listaActualizacion.get(i).getIncidencia();
 	    Time tiempoInicio = listaActualizacion.get(i).getTiempoinicio();

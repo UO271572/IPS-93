@@ -152,7 +152,7 @@ public class InscripcionView extends JDialog {
 	CarreraDisplayDTO carrera = obtenerCarreraSeleccionada();
 	if (comprobaciones(corredor, carrera)) {
 	    corredor.setIdCarrera(carrera.getIdCarrera());
-	    carrera.setPlazasDisponibles(carrera.getPlazasDisponibles() - 1);
+	    carrera.setPlazasTotales(carrera.getPlazasTotales() - 1);
 	    corredor.setEstadoInscripcion("Pre-inscrito");
 
 	    JustificanteView jv = new JustificanteView(this);

@@ -18,6 +18,7 @@ import ips.persistence.carreras.CarrerasModel;
 import ips.persistence.corredores.CorredoresModel;
 import ips.ui.MenuCorredorView;
 import ips.ui.carreras.CarrerasView;
+import ips.ui.carreras.EstadoInscripcionesView;
 import ips.ui.carreras.InscripcionView;
 import ips.ui.comparar.VentanaCompararView;
 import ips.ui.corredores.CorredoresView;
@@ -42,7 +43,7 @@ public class MenuCorredorController {
 	view.getRdbtnVerTodas().addActionListener(accionBotonVerTodas());
 	view.getRdbtnAbiertas().addActionListener(accionBotonVerNoCompetidas());
 	view.getBtnInscribirse().addActionListener(accionBtnInscribirse());
-
+	view.getBtnVerInscripciones().addActionListener(accionVerInscripciones());
 	view.getBtnComparar().addActionListener(accionAbrirVentanaComparacion());
     }
 
@@ -212,6 +213,22 @@ public class MenuCorredorController {
 		compararView.setVisible(true);
 	    }
 	};
+    }
+
+    private ActionListener accionVerInscripciones() {
+	return new ActionListener() {
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+		EstadoInscripcionesView estado = null;
+		try {
+		    estado = new EstadoInscripcionesView();
+		} catch (BusinessException e1) {
+		    e1.printStackTrace();
+		}
+		estado.setVisible(true);
+	    }
+	};
+
     }
 
 }

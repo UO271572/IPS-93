@@ -16,7 +16,6 @@ import ips.util.UnexpectedException;
 
 public class CarrerasModel {
 
-    private static final int PRECIO_POR_DEFECTO = 5;
     private Database db = new Database();
 
     public static final String SQL_LISTA_CARRERAS = "select * from carreras order by fechacompeticion desc";
@@ -187,71 +186,6 @@ public class CarrerasModel {
 	    Jdbc.close(pst);
 
 	}
-    }
-
-    public double getPrecioCarrera(int idCarrera, LocalDate fechaInscripcion) {
-
-	double resultado;
-
-	List<PlazoDTO> plazos = verPlazosCarrera(idCarrera);
-
-	if (plazos.isEmpty()) { // La carrera no tiene plazos asociados
-	    return PRECIO_POR_DEFECTO;
-	}
-
-	PlazoDTO plazoElegido = null;
-
-	for (int i = 0; i < plazos.size(); i++) {
-	    LocalDate fechaInicioPlazo = plazos.get(i).getFechaInicio().toLocalDate();
-	    LocalDate fechaFinPlazo = plazos.get(i).getFechaFin().toLocalDate();
-
-	    if (fechaInscripcion.isAfter(fechaInicioPlazo) && fechaInscripcion.isBefore(fechaFinPlazo)) {
-		if (i != 0) {
-		    plazoElegido = plazos.get(i);
-		}
-	    }
-	}
-
-	if (plazoElegido == null) { // La fecha de inscripción del atleta no está dentro de ningún plazo
-	    plazoElegido = plazos.get(0);
-	}
-
-	resultado = plazoElegido.getCuota();
-
-	return resultado;
-//	Connection c = null;
-//	PreparedStatement pst = null;
-//
-//	double resultado;
-//
-//	try {
-//	    c = Jdbc.createThreadConnection();
-//	    // pst = c.prepareStatement(SQL_FIND_PRECIO_IDCARRERA);
-//	    // Cambiar a que saque los plazos con ese idCarrera
-//	    // despues usando la fecha de inscripción del atleta ver en qué plazo cae, coger
-//	    // y retornar la cuota de ese plazo
-//
-//	    pst = c.prepareStatement(SQL_FIND_PLAZOS_IDCARRERA);
-//	    pst.setInt(1, idCarrera);
-//
-//	    ResultSet rs = pst.executeQuery();
-//
-//	    if (rs.next() == false) {
-//		System.out.print("fallo");
-//	    }
-//
-//	    resultado = rs.getDouble(1);
-//
-//	    c.close();
-//
-//	} catch (SQLException e) {
-//	    throw new UnexpectedException(e);
-//	} finally {
-//	    Jdbc.close(pst);
-//
-//	}
-//
-//	return resultado;
     }
 
     public List<PlazoDTO> verPlazosCarrera(int idCarrera) {

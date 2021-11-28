@@ -1,8 +1,6 @@
 package ips.ui;
 
 import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
@@ -20,9 +18,6 @@ import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
-
-import ips.business.BusinessException;
-import ips.ui.carreras.EstadoInscripcionesView;
 
 public class MenuCorredorView extends JDialog {
 
@@ -160,20 +155,9 @@ public class MenuCorredorView extends JDialog {
     }
 
     // [ADRI]
-    private JButton getBtnVerInscripciones() {
+    public JButton getBtnVerInscripciones() {
 	if (btnVerInscripciones == null) {
 	    btnVerInscripciones = new JButton("Ver inscripciones");
-	    btnVerInscripciones.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-		    EstadoInscripcionesView estado = null;
-		    try {
-			estado = new EstadoInscripcionesView();
-		    } catch (BusinessException e1) {
-			e1.printStackTrace();
-		    }
-		    estado.setVisible(true);
-		}
-	    });
 	    btnVerInscripciones.setBounds(581, 572, 134, 38);
 	}
 	return btnVerInscripciones;

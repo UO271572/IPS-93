@@ -628,7 +628,7 @@ public class MenuOrganizadorController {
 	    String nombre = listaCarreras.get(i).getNombre();
 	    Date fecha = listaCarreras.get(i).getFechaCompeticion();
 	    String tipo = listaCarreras.get(i).getTipo();
-	    int plazasDisponibles = listaCarreras.get(i).getPlazasTotales();
+	    int plazasDisponibles = listaCarreras.get(i).getPlazasRestantes();
 	    double distancia = listaCarreras.get(i).getDistancia();
 	    String lugar = listaCarreras.get(i).getLugar();
 	    Object[] data = { idCarerra, nombre, fecha, tipo, lugar, distancia, plazasDisponibles };

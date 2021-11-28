@@ -31,7 +31,8 @@ public class CarrerasModel {
 												      // fechafin>=? and
 												      // fechaInicio<=?";
 
-    public static final String SQL_CARRERAS_INSCRIPCION = "SELECT * FROM CARRERAS where fechacompeticion>=? and plazasDisponibles>0";
+    public static final String SQL_CARRERAS_INSCRIPCION = "SELECT * FROM CARRERAS where fechacompeticion>=? and plazasDisponibles>0"; // error
+																      // v2
 
     public static final String SQL_CARRERA_BY_ID = "SELECT * FROM CARRERAS WHERE IDCARRERA=?";
 

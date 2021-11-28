@@ -86,7 +86,6 @@ public class CarrerasModel {
 	return date;
     }
 
-    
     public List<CarreraDisplayDTO> getListaCarreras() {
 	// List<CarreraDisplayDTO> listCarreras = new ArrayList<CarreraDisplayDTO>();
 	Date fecha = java.sql.Date.valueOf(LocalDate.now());
@@ -232,6 +231,36 @@ public class CarrerasModel {
     public List<CarreraDisplayDTO> getListaCarrerasCompetidasPorEmailCorredor(String email) {
 	Date fecha = new Date(System.currentTimeMillis());
 	return db.executeQueryPojo(CarreraDisplayDTO.class, SQL_FIND_CARRERAS_COMPETIDAS_POR_EMAIL, email, fecha);
+    }
+
+    public int getInscritosCarrera(int idCarrera) {
+	Connection c = null;
+	PreparedStatement pst = null;
+
+	int res = 0;
+
+	try {
+	    c = Jdbc.createThreadConnection();
+
+	    pst = c.prepareStatement(SQL_GET_NUMERO_INSCRIPCIONES_VALIDA);
+
+	    pst.setInt(1, idCarrera);
+
+	    ResultSet rs = pst.executeQuery();
+
+	    if (rs.next()) {
+		res = rs.getInt(1);
+	    }
+
+	    c.close();
+	} catch (SQLException e) {
+	    throw new UnexpectedException(e);
+	} finally {
+	    Jdbc.close(pst);
+
+	}
+
+	return res;
     }
 
 }

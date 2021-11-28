@@ -80,6 +80,10 @@ public class CarrerasController {
 	return model.getMaxIdCarrera();
     }
 
+    public List<CarreraDisplayDTO> getListaCarrerasCompetidasPorEmailCorredor(String email) throws BusinessException {
+	return model.getListaCarrerasCompetidasPorEmailCorredor(email);
+    }
+    
     /**
      * Obtiene la ultima fecha de plazo de una carrera
      * 

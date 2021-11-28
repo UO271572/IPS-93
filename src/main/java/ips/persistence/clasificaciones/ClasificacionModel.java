@@ -14,6 +14,7 @@ import java.util.List;
 
 import ips.business.categorias.CategoriaDTO;
 import ips.business.clasificaciones.ClasificacionDTO;
+import ips.business.inscripciones.InscripcionDTO;
 import ips.util.Database;
 import ips.util.Jdbc;
 
@@ -43,6 +44,10 @@ public class ClasificacionModel {
 	    + "and ((YEAR(?)-YEAR(c.fechanacimiento)) between (cat.edadinicio = ?) and (cat.edadfin = ?)));";
     // SEXO SERA: Masculino Femenino
     public static final String SQL_CATEGORIAS = "select * from categorias where idcarrera = ?";
+
+    public static final String SQL_OBTENER_CLASIFICACION_ABSOLUTA = "select * from inscripciones where (idcarrera = ?) order by (tiempoFin - tiempoInicio)";
+
+    public static final String SQL_OBTENER_CLASIFICACION_ABSOLUTA_CORREDOR = "select * from inscripciones i, corredores c where (i.idcarrera = ?) and c.email = ? and i.dnicorredor = c.dnicorredor order by (i.tiempoFin - i.tiempoInicio)";
 
     /**
      * Obtiene las categorias de una carrera
@@ -86,6 +91,14 @@ public class ClasificacionModel {
 	    list.add(dto);
 	}
 	return list;
+    }
+
+    public List<InscripcionDTO> obtenerClasificacionAbsoluta(int idcarrera) {
+	return db.executeQueryPojo(InscripcionDTO.class, SQL_OBTENER_CLASIFICACION_ABSOLUTA, idcarrera);
+    }
+
+    public List<InscripcionDTO> obtenerClasificacionAbsolutaCorredor(int idCarrera, String email) {
+	return db.executeQueryPojo(InscripcionDTO.class, SQL_OBTENER_CLASIFICACION_ABSOLUTA_CORREDOR, idCarrera, email);
     }
 
 //    public List<ClasificacionDTO> getClasificacionBySex(int idcarrera) throws SQLException {

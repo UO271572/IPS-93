@@ -28,6 +28,7 @@ import ips.business.corredores.CorredorDTO;
 import ips.business.corredores.CorredoresController;
 import ips.business.inscripciones.InscripcionController;
 import ips.business.inscripciones.InscripcionDTO;
+import ips.business.resumenfinanciero.ResumenFinancieroController;
 import ips.persistence.carreras.CarrerasModel;
 import ips.persistence.clasificaciones.ClasificacionModel;
 import ips.persistence.corredores.CorredoresModel;
@@ -37,6 +38,7 @@ import ips.ui.MenuOrganizadorView;
 import ips.ui.carreras.CarrerasView;
 import ips.ui.corredores.CorredoresView;
 import ips.ui.inscripciones.DorsalesView;
+import ips.ui.resumenfinanciero.ResumenFinancieroView;
 import ips.util.Printer;
 
 public class MenuOrganizadorController {
@@ -62,6 +64,7 @@ public class MenuOrganizadorController {
 //	view.getBtMostrarClasificacionSinFiltro().addActionListener(accionBotonClasificaSinFiltro());
 	view.getBtnCargarDatos().addActionListener(accionCargarDatos());
 	// cargarCarrerasEnTabla();
+	view.getBtnResumenFinanciero().addActionListener(accionAbrirResumenFinanciero());
 
     }
 
@@ -600,6 +603,7 @@ public class MenuOrganizadorController {
 	    @Override
 	    public void actionPerformed(ActionEvent e) {
 		MenuCrearCarreraView crearCarrera = new MenuCrearCarreraView();
+		new MenuCrearCarreraController(crearCarrera);
 		crearCarrera.setVisible(true);
 	    }
 	};
@@ -632,6 +636,27 @@ public class MenuOrganizadorController {
 
     private void vaciarTabla(DefaultTableModel tableModelCarreras) {
 	tableModelCarreras.setRowCount(0);
+    }
+
+    private ActionListener accionAbrirResumenFinanciero() {
+	return new ActionListener() {
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+		int fila = view.getTablaCarreras().getSelectedRow();
+
+		if (fila != -1) {
+		    int idCarrera = (int) view.getTablaCarreras().getModel().getValueAt(fila, 0);
+		    String nombreCarrera = (String) view.getTablaCarreras().getModel().getValueAt(fila, 1);
+
+		    ResumenFinancieroView resumenView = new ResumenFinancieroView();
+		    ResumenFinancieroController resumenFinancieroController = new ResumenFinancieroController(
+			    resumenView, idCarrera, nombreCarrera);
+		    resumenView.setVisible(true);
+		} else {
+		    JOptionPane.showMessageDialog(view, "Hay que seleccionar una carrera");
+		}
+	    }
+	};
     }
 
 }

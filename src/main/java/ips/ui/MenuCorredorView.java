@@ -1,8 +1,6 @@
 package ips.ui;
 
 import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
@@ -20,9 +18,6 @@ import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
-
-import ips.business.BusinessException;
-import ips.ui.carreras.EstadoInscripcionesView;
 
 public class MenuCorredorView extends JDialog {
 
@@ -54,6 +49,7 @@ public class MenuCorredorView extends JDialog {
 
     private final ButtonGroup buttonGroup = new ButtonGroup();
     private DefaultTableModel model;
+    private JButton btnComparar;
 
     public MenuCorredorView() {
 	model = new DefaultTableModel();
@@ -76,6 +72,7 @@ public class MenuCorredorView extends JDialog {
 	getContentPane().add(getBtnVerInscripciones());
 	getContentPane().add(getBtnInscribirse());
 	getContentPane().add(getPnFormulario());
+	getContentPane().add(getBtnComparar());
     }
 
     public DefaultTableModel getTableModel() {
@@ -112,6 +109,7 @@ public class MenuCorredorView extends JDialog {
 	    model.addColumn("Lugar");
 	    model.addColumn("Distancia");
 	    model.addColumn("Plazas disponibles");
+	    model.addColumn("Lista de espera");
 	    table.setDefaultEditor(Object.class, null);
 	}
 	return table;
@@ -158,20 +156,9 @@ public class MenuCorredorView extends JDialog {
     }
 
     // [ADRI]
-    private JButton getBtnVerInscripciones() {
+    public JButton getBtnVerInscripciones() {
 	if (btnVerInscripciones == null) {
 	    btnVerInscripciones = new JButton("Ver inscripciones");
-	    btnVerInscripciones.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-		    EstadoInscripcionesView estado = null;
-		    try {
-			estado = new EstadoInscripcionesView();
-		    } catch (BusinessException e1) {
-			e1.printStackTrace();
-		    }
-		    estado.setVisible(true);
-		}
-	    });
 	    btnVerInscripciones.setBounds(581, 572, 134, 38);
 	}
 	return btnVerInscripciones;
@@ -337,5 +324,13 @@ public class MenuCorredorView extends JDialog {
 	    cbSexo.setBounds(75, 149, 106, 22);
 	}
 	return cbSexo;
+    }
+
+    public JButton getBtnComparar() {
+	if (btnComparar == null) {
+	    btnComparar = new JButton("Comparar");
+	    btnComparar.setBounds(744, 524, 105, 38);
+	}
+	return btnComparar;
     }
 }

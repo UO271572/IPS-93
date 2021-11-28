@@ -16,7 +16,6 @@ import ips.util.UnexpectedException;
 
 public class CarrerasModel {
 
-    private static final int PRECIO_POR_DEFECTO = 5;
     private Database db = new Database();
 
     public static final String SQL_LISTA_CARRERAS = "select * from carreras order by fechacompeticion desc";
@@ -46,6 +45,12 @@ public class CarrerasModel {
     public static final String SQL_FIND_PRECIO_IDCARRERA = "select precio from carreras where idcarrera = ?";
 
     public static final String SQL_FIND_PLAZOS_IDCARRERA = "select * from plazos where idcarrera = ?";
+
+    public static final String SQL_FIND_CARRERAS_COMPETIDAS_POR_EMAIL = "select * from carreras c, inscripciones i, corredores co\n"
+	    + "where co.email = ? and co.dnicorredor = i.dnicorredor\n"
+	    + "and i.idcarrera = c.idcarrera and fechacompeticion <= ?";
+
+    public static final String SQL_GET_NUMERO_INSCRIPCIONES_VALIDA = "SELECT COUNT(*) FROM INSCRIPCIONES WHERE IDCARRERA=? AND ESTADOINSCRIPCION<>'ANULADA'";
 
     public static final String SQL_FIND_MAX_FECHAFIN = "select max(fechafin) from plazos where idcarrera = ? ";
 
@@ -219,73 +224,43 @@ public class CarrerasModel {
 	}
     }
 
-    public double getPrecioCarrera(int idCarrera, LocalDate fechaInscripcion) {
-
-	double resultado;
-
-	List<PlazoDTO> plazos = verPlazosCarrera(idCarrera);
-
-	if (plazos.isEmpty()) { // La carrera no tiene plazos asociados
-	    return PRECIO_POR_DEFECTO;
-	}
-
-	PlazoDTO plazoElegido = null;
-
-	for (int i = 0; i < plazos.size(); i++) {
-	    LocalDate fechaInicioPlazo = plazos.get(i).getFechaInicio().toLocalDate();
-	    LocalDate fechaFinPlazo = plazos.get(i).getFechaFin().toLocalDate();
-
-	    if (fechaInscripcion.isAfter(fechaInicioPlazo) && fechaInscripcion.isBefore(fechaFinPlazo)) {
-		if (i != 0) {
-		    plazoElegido = plazos.get(i);
-		}
-	    }
-	}
-
-	if (plazoElegido == null) { // La fecha de inscripción del atleta no está dentro de ningún plazo
-	    plazoElegido = plazos.get(0);
-	}
-
-	resultado = plazoElegido.getCuota();
-
-	return resultado;
-//	Connection c = null;
-//	PreparedStatement pst = null;
-//
-//	double resultado;
-//
-//	try {
-//	    c = Jdbc.createThreadConnection();
-//	    // pst = c.prepareStatement(SQL_FIND_PRECIO_IDCARRERA);
-//	    // Cambiar a que saque los plazos con ese idCarrera
-//	    // despues usando la fecha de inscripción del atleta ver en qué plazo cae, coger
-//	    // y retornar la cuota de ese plazo
-//
-//	    pst = c.prepareStatement(SQL_FIND_PLAZOS_IDCARRERA);
-//	    pst.setInt(1, idCarrera);
-//
-//	    ResultSet rs = pst.executeQuery();
-//
-//	    if (rs.next() == false) {
-//		System.out.print("fallo");
-//	    }
-//
-//	    resultado = rs.getDouble(1);
-//
-//	    c.close();
-//
-//	} catch (SQLException e) {
-//	    throw new UnexpectedException(e);
-//	} finally {
-//	    Jdbc.close(pst);
-//
-//	}
-//
-//	return resultado;
-    }
-
     public List<PlazoDTO> verPlazosCarrera(int idCarrera) {
 	return db.executeQueryPojo(PlazoDTO.class, SQL_FIND_PLAZOS_IDCARRERA, idCarrera);
+    }
+
+    public List<CarreraDisplayDTO> getListaCarrerasCompetidasPorEmailCorredor(String email) {
+	Date fecha = new Date(System.currentTimeMillis());
+	return db.executeQueryPojo(CarreraDisplayDTO.class, SQL_FIND_CARRERAS_COMPETIDAS_POR_EMAIL, email, fecha);
+    }
+
+    public int getInscritosCarrera(int idCarrera) {
+	Connection c = null;
+	PreparedStatement pst = null;
+
+	int res = 0;
+
+	try {
+	    c = Jdbc.createThreadConnection();
+
+	    pst = c.prepareStatement(SQL_GET_NUMERO_INSCRIPCIONES_VALIDA);
+
+	    pst.setInt(1, idCarrera);
+
+	    ResultSet rs = pst.executeQuery();
+
+	    if (rs.next()) {
+		res = rs.getInt(1);
+	    }
+
+	    c.close();
+	} catch (SQLException e) {
+	    throw new UnexpectedException(e);
+	} finally {
+	    Jdbc.close(pst);
+
+	}
+
+	return res;
     }
 
 }

@@ -3,6 +3,8 @@ package ips.ui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 
 import javax.swing.BoxLayout;
@@ -61,6 +63,9 @@ public class MenuOrganizadorView extends JDialog {
     private JTable tDorsal;
     private JScrollPane scParciales;
     private JTable tParciales;
+    private JTable table_2;
+    private JTable table_3;
+    private JButton btnResumenFinanciero;
 
     public MenuOrganizadorView() {
 	setResizable(false);
@@ -116,6 +121,7 @@ public class MenuOrganizadorView extends JDialog {
 	    pn_OpcionesOrganizador = new JPanel();
 	    pn_OpcionesOrganizador.setBounds(639, 551, 625, 68);
 	    pn_OpcionesOrganizador.setLayout(new GridLayout(1, 0, 0, 0));
+	    pn_OpcionesOrganizador.add(getBtnResumenFinanciero());
 	    pn_OpcionesOrganizador.add(getBtnAsignarDorsales());
 	    pn_OpcionesOrganizador.add(getBtnProcesarPagos());
 	    pn_OpcionesOrganizador.add(getBtnCargarDatos());
@@ -463,6 +469,7 @@ public class MenuOrganizadorView extends JDialog {
 	this.modelTablaCategorias = modelTablaCategorias;
     }
 
+   
     private JPanel getPanel() {
 	if (panel == null) {
 	    panel = new JPanel();
@@ -559,5 +566,13 @@ public class MenuOrganizadorView extends JDialog {
 	    modelTablaParciales.addColumn("Parcial 5");
 	}
 	return tParciales;
+    }
+
+    public JButton getBtnResumenFinanciero() {
+	if (btnResumenFinanciero == null) {
+	    btnResumenFinanciero = new JButton("Resumen financiero");
+	    btnResumenFinanciero.setFont(new Font("Tahoma", Font.PLAIN, 10));
+	}
+	return btnResumenFinanciero;
     }
 }

@@ -131,7 +131,13 @@ public class VentanaCompararView extends JDialog {
 	    modeloComparacion.addColumn("DNI");
 	    modeloComparacion.addColumn("Dorsal");
 	    modeloComparacion.addColumn("Posición");
+	    modeloComparacion.addColumn("Ritmo por km");
 	    modeloComparacion.addColumn("Tiempo fin");
+	    modeloComparacion.addColumn("T1");
+	    modeloComparacion.addColumn("T2");
+	    modeloComparacion.addColumn("T3");
+	    modeloComparacion.addColumn("T4");
+	    modeloComparacion.addColumn("T5");
 
 	    tablaComparacion.setDefaultEditor(Object.class, null);
 	}

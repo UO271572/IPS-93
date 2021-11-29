@@ -25,6 +25,8 @@ public class VentanaCompararController {
     private VentanaCompararView view;
     private String email;
 
+    private List<InscripcionDTO> corredores;
+
     public VentanaCompararController(String email, VentanaCompararView view) {
 	this.email = email;
 	this.view = view;
@@ -92,7 +94,7 @@ public class VentanaCompararController {
 
 		int fila = view.getTablaCarrerasCompetidas().getSelectedRow();
 		int idCarrera = (int) view.getTablaCarrerasCompetidas().getModel().getValueAt(fila, 0);
-		List<InscripcionDTO> corredores = controller.obtenerClasificacionAbsoluta(idCarrera);
+		corredores = controller.obtenerClasificacionAbsoluta(idCarrera);
 
 		añadirListaCorredoresTabla(corredores);
 	    }
@@ -134,23 +136,45 @@ public class VentanaCompararController {
 
 		int fila = view.getTablaCarrerasCompetidas().getSelectedRow();
 		int idCarrera = (int) view.getTablaCarrerasCompetidas().getModel().getValueAt(fila, 0);
-		List<InscripcionDTO> corredores = controller.obtenerClasificacionAbsolutaCorredor(idCarrera, email);
+		List<InscripcionDTO> corredor = controller.obtenerClasificacionAbsolutaCorredor(idCarrera, email);
 
-		String dni = corredores.get(0).getDnicorredor();
-		int dorsal = corredores.get(0).getDorsal();
-		int posicion = 0;
+		String dni = corredor.get(0).getDnicorredor();
+		int dorsal = corredor.get(0).getDorsal();
+
+		// int posicion = corredores.indexOf(corredor.get(0)) + 1;
+
+		int pos = 0;
+
+		for (InscripcionDTO c : corredores) {
+		    pos++;
+		    if (c.getDnicorredor().equals(corredor.get(0).getDnicorredor())) {
+			break;
+		    }
+		}
 
 		// double ritmoPorKm
 
-		Time tiempoFin = corredores.get(0).getTiempofin();
+		CarrerasController carrerasController = new CarrerasController();
+		CarreraDisplayDTO carrera = carrerasController.getCarrerasById(idCarrera).get(0);
+
+		String ritmo = calcularRitmo(corredor.get(0), carrera.getDistancia());
+
+		Time tiempoFin = corredor.get(0).getTiempofin();
 		// tiempos parciales
 
-		Object[] data = { dni, dorsal, posicion, tiempoFin };
+		Object[] data = { dni, dorsal, pos, ritmo, tiempoFin, corredor.get(0).getT1(), corredor.get(0).getT2(),
+			corredor.get(0).getT3(), corredor.get(0).getT4(), corredor.get(0).getT5() };
 		modelo.insertRow(0, data);
 
 		int indice = view.getTablaClasificacion().getSelectedRow();
 
-		modelo.addRow(view.getModeloClasificacion().getDataVector().get(indice));
+		InscripcionDTO otroCorredor = corredores.get(indice);
+		Object[] dataOtro = { otroCorredor.getDnicorredor(), otroCorredor.getDorsal(),
+			corredores.indexOf(otroCorredor) + 1, calcularRitmo(otroCorredor, carrera.getDistancia()),
+			otroCorredor.getTiempofin(), otroCorredor.getT1(), otroCorredor.getT2(), otroCorredor.getT3(),
+			otroCorredor.getT4(), otroCorredor.getT5() };
+
+		modelo.addRow(dataOtro);
 	    }
 	};
     }
@@ -164,6 +188,43 @@ public class VentanaCompararController {
 		view.dispose();
 	    }
 	};
+    }
+
+    /**
+     * Calcula el ritmo medio al que corrio el participante
+     * 
+     * @param inscripcion
+     * @param distancia
+     * @return
+     */
+    @SuppressWarnings("deprecation")
+    private String calcularRitmo(InscripcionDTO inscripcion, double distancia) {
+	if (inscripcion.getTiempofin() == null || inscripcion.getTiempoinicio() == null) {
+	    return "----";
+	}
+	Time cronometraje = restarTiempo(inscripcion.getTiempofin(), inscripcion.getTiempoinicio());
+	double h = cronometraje.getHours();
+	double m = cronometraje.getMinutes() / 60.0;
+	double s = (cronometraje.getSeconds() / 60.0) / 60.0;
+//	double horas = h + (m / 60) + ((s / 60) / 60);
+	double horas = h + m + s;
+//	return String.valueOf(distancia / horas);
+	return String.format("%.2f", (distancia / horas)) + " km/h";
+    }
+
+    /**
+     * Resta dos tiempos y lo devuelve en un nuevo objeto Time
+     * 
+     * @param primerofin
+     * @param primeroinic
+     * @return
+     */
+    @SuppressWarnings("deprecation")
+    private Time restarTiempo(Time primerofin, Time primeroinic) {
+	int h = primerofin.getHours() - primeroinic.getHours();
+	int m = primerofin.getMinutes() - primeroinic.getMinutes();
+	int s = primerofin.getSeconds() - primeroinic.getSeconds();
+	return new Time(h, m, s);
     }
 
 }

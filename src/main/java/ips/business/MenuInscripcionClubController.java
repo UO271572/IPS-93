@@ -53,10 +53,12 @@ public class MenuInscripcionClubController {
 	view.getBtnInscribir().addActionListener(accionIncribirCorredor());
 	view.getBtnFinalizar().addActionListener(accionFinalizar());
 	view.getBtnEligeUnFichero().addActionListener(accionFichero());
+
     }
 
     public void setIdCarrera(int idCarrera) {
 	this.idCarrera = idCarrera;
+	view.getLabel().setText(idCarrera + "");
     }
 
     private ActionListener accionIncribirCorredor() {
@@ -158,7 +160,7 @@ public class MenuInscripcionClubController {
 			carrerasController.updatePlazasRestantesCarrera(carrera);
 			JOptionPane.showMessageDialog(null,
 				"Se han introducido con exito a " + inscripcionesNuevas
-					+ " corredores.\nSe han actualizado" + "las inscripciones de "
+					+ " corredores.\nSe han actualizado" + " las inscripciones de "
 					+ (corredores.size() - inscripcionesNuevas) + " corredores");
 			corredorController.inicializarTablaCarrerasSinFiltro();
 			view.dispose();
@@ -207,6 +209,7 @@ public class MenuInscripcionClubController {
 	    } else {
 		// Posibilidad de cambiar todo menos dni
 		corredoresController.updateCorredor(corredor);
+		inscripcionesNuevas++;
 	    }
 	}
     }
@@ -272,7 +275,7 @@ public class MenuInscripcionClubController {
     private void borrarCorredoresNecesarios(int corredoresBorrar) {
 	int i = 0;
 	while (i < corredoresBorrar) {
-	    corredores.remove(corredores.size());
+	    corredores.remove(corredores.size() - 1);
 	    i++;
 	}
 
@@ -341,10 +344,10 @@ public class MenuInscripcionClubController {
     private boolean checkDNIAndEmailInTable(String email, String dni) {
 	for (CorredorDTO corredor : corredores) {
 	    if (corredor.getEmail().equals(email)) {
-		// JOptionPane.showMessageDialog(null, "Ya existe un corredor con ese Email");
+		JOptionPane.showMessageDialog(null, "Ya existe un corredor con ese Email");
 		return true;
 	    } else if (corredor.getDniCorredor().equals(dni)) {
-		// JOptionPane.showMessageDialog(null, "Ya existe un corredor con ese DNI");
+		JOptionPane.showMessageDialog(null, "Ya existe un corredor con ese DNI");
 
 		return true;
 	    }

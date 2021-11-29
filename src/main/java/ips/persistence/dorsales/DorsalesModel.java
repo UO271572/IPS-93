@@ -22,7 +22,7 @@ public class DorsalesModel {
     private Database db = new Database();
 
     public final String SQL_FIND_ALL_BY_DORSAL = "select * from inscripciones where idcarrera = ? and estadoinscripcion = 'INSCRITO' order by dorsal";
-    public final String SQL_FIND_CORREDORES_ORDER_BY_FECHA = "select c.dnicorredor, c.nombre "
+    public final String SQL_FIND_CORREDORES_ORDER_BY_FECHA = "select c.dnicorredor, c.nombre,i.dorsal "
 	    + "from corredores c, inscripciones i "
 	    + "where i.idcarrera = ? and i.estadoinscripcion = 'INSCRITO' and c.dnicorredor = i.dnicorredor "
 	    + "order by i.fechainscripcion";
@@ -32,6 +32,7 @@ public class DorsalesModel {
     public final String SQL_ASIGNAR_DORSAL = "UPDATE INSCRIPCIONES SET dorsal = ? where dnicorredor = ? and idcarrera = ? and estadoinscripcion = 'INSCRITO'";
     public final String SQL_SIGUIENTE_DORSAL = "select dorsal from inscripciones where idcarrera = ? order by dorsal";
     public static final String SQL_FIND_MAX_DORSAL = "select max(dorsal) from inscripciones where idcarrera = ?";
+    public final String SQL_NUMERO_DORSAL = "select dorsal from inscripciones where idcarrera = ? and dnicorredor =?";
 
     /**
      * Devuelve la lista de inscripciones de una carrera ordenados por el numero de
@@ -59,12 +60,11 @@ public class DorsalesModel {
 	// obtener el maximo numero de plazas (segun la carrera)
 	CarrerasModel carrera = new CarrerasModel();
 	int plazas = carrera.getPlazasDisponibles(idCarrera);
-
 	// Obtener las plazas reservadas
 	int reservadas = carrera.getPlazasReservadas(idCarrera);
 
 	// comprobar que el numero de corredores no excede las plazas
-	if (corredores.size() > (plazas - reservadas)) {
+	if (corredores.size() > plazas || plazas <= 0) {
 	    JOptionPane.showMessageDialog(null,
 		    "El numero de corredores inscritos supera al de las plazas que dispone la carrera");
 	    throw new BusinessException(
@@ -75,11 +75,18 @@ public class DorsalesModel {
 	// recorrer los corredores y asignarles el dorsal
 	for (CorredorDTO c : corredores) {
 	    String dni = c.getDniCorredor();
-	    int dorsal = encuentraDorsal(idCarrera, plazas, reservadas);
-	    if (dorsal > plazas) {
-		JOptionPane.showMessageDialog(null, "Se alcanzo el numero maximo de dorsales para esta carrera");
-		throw new BusinessException("Se alcanzo el numero maximo de dorsales para esta carrera");
+	    // ya tiene dorsal
+	    int dorsalasignado = c.getDorsal();
+	    if (dorsalasignado != 0) {
+		JOptionPane.showMessageDialog(null, "Un corredor ya tiene dorsal asignado");
+		throw new BusinessException(c + " ya tiene dorsal asignado");
+//		throw new IllegalArgumentException();
 	    }
+	    int dorsal = encuentraDorsal(idCarrera, plazas, reservadas);
+//	    if (dorsal > plazas) {
+//		JOptionPane.showMessageDialog(null, "Se alcanzo el numero maximo de dorsales para esta carrera");
+//		throw new BusinessException("Se alcanzo el numero maximo de dorsales para esta carrera");
+//	    }
 	    db.executeUpdate(SQL_ASIGNAR_DORSAL, dorsal, dni, idCarrera);
 	}
 

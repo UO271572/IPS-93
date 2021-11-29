@@ -391,13 +391,17 @@ public class MenuOrganizadorController {
 			    String t5 = "----";
 			    if (inscripcion.getT1() != null) {
 				t1 = inscripcion.getT1().toString();
-			    } else if (inscripcion.getT2() != null) {
+			    }
+			    if (inscripcion.getT2() != null) {
 				t2 = inscripcion.getT2().toString();
-			    } else if (inscripcion.getT3() != null) {
+			    }
+			    if (inscripcion.getT3() != null) {
 				t3 = inscripcion.getT3().toString();
-			    } else if (inscripcion.getT4() != null) {
+			    }
+			    if (inscripcion.getT4() != null) {
 				t4 = inscripcion.getT4().toString();
-			    } else if (inscripcion.getT5() != null) {
+			    }
+			    if (inscripcion.getT5() != null) {
 				t5 = inscripcion.getT5().toString();
 			    }
 

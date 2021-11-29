@@ -41,7 +41,7 @@ public class CarrerasModel {
 
     public static final String SQL_FIND_MAX_IDCARRERA = "select max(idcarrera) from carreras";
 
-    public static final String SQL_FIND_PLAZAS = "select plazasdisponibles from carreras where idcarrera = ?";
+    public static final String SQL_FIND_PLAZAS_RESTANTES = "select plazasrestantes from carreras where idcarrera = ?";
     public static final String SQL_FIND_PLAZASRESERVADAS = "select plazasreservadas from carreras where idcarrera = ?";
 
     public static final String SQL_FIND_PRECIO_IDCARRERA = "select precio from carreras where idcarrera = ?";
@@ -158,7 +158,7 @@ public class CarrerasModel {
 	try {
 	    c = Jdbc.createThreadConnection();
 
-	    pst = c.prepareStatement(SQL_FIND_PLAZAS);
+	    pst = c.prepareStatement(SQL_FIND_PLAZAS_RESTANTES);
 	    pst.setInt(1, idcarrera);
 
 	    ResultSet rs = pst.executeQuery();

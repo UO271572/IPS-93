@@ -55,7 +55,8 @@ public class MenuDorsalesController {
 	if (dto == null) {
 	    JOptionPane.showMessageDialog(null, "Debes seleccionar una carrera");
 	} else {
-	    if (isCarreraCerrada(cc.getMaxFechaFin(dto.getIdCarrera()))) {
+	    // cc.getMaxFechaFin(dto.getIdCarrera())
+	    if (isCarreraCerrada(dto.getFechaCompeticion())) {
 
 		asignarDorsalesACorredores(dto);
 		mostrarDorsales(dto);

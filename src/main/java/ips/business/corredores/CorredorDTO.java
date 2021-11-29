@@ -21,6 +21,15 @@ public class CorredorDTO {
     private int idCarrera;
     private String estadoInscripcion;
     private Date fechaInscripcion;
+    private int Dorsal;
+
+    public int getDorsal() {
+	return Dorsal;
+    }
+
+    public void setDorsal(int dorsal) {
+	Dorsal = dorsal;
+    }
 
     public String getDniCorredor() {
 	return dniCorredor;

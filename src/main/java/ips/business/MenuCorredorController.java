@@ -118,7 +118,7 @@ public class MenuCorredorController {
     public void inicializarTablaCarrerasSinFiltro() {
 	vaciarTabla();
 	// try {
-	List<CarreraDisplayDTO> listaCarreras = cc.getListaCarreras();
+	listaCarreras = cc.getListaCarreras();
 	añadirListaCarrerasTabla(listaCarreras);
 
     }

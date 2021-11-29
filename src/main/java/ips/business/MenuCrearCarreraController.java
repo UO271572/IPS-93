@@ -50,7 +50,6 @@ public class MenuCrearCarreraController {
     }
 
     public void initController() {
-
 	idCarrera = cc.getMaxIdCarrera() + 1;
 	this.crearPlazosController = new VentanaCrearPlazoController(idCarrera);
 	view.addWindowListener(notCloseDirectly());
@@ -250,6 +249,9 @@ public class MenuCrearCarreraController {
 		    //
 
 		    plazoController.insertPlazos(plazos);
+
+		    String tiempos = guardarTiemposIntermedio();
+
 		    // double scale = Math.pow(10, -2);
 		    JOptionPane.showMessageDialog(null,
 			    "Se ha creado la carrera con los siguientes datos:\n" + "\n\t-Id: " + carrera.getIdCarrera()
@@ -257,7 +259,8 @@ public class MenuCrearCarreraController {
 				    + "\n\t-Tipo: " + carrera.getTipo() + "\n\t-Distancia: " + carrera.getDistancia()
 				    + "km\n\t-Plazas totales: " + carrera.getPlazasDisponibles()
 				    + "\n\t-Fecha de competicion: " + carrera.getFechaCompeticion()
-				    + "\n\t-Plazas reservadas: " + carrera.getPlazasReservadas());
+				    + "\n\t-Plazas reservadas: " + carrera.getPlazasReservadas()
+				    + "\n\t-Tiempos intermedios: " + tiempos);
 		    view.dispose();
 		} else {
 		    JOptionPane.showMessageDialog(view, "Datos incorrectos. Por favor, reviselos.");
@@ -266,6 +269,32 @@ public class MenuCrearCarreraController {
 	    }
 
 	};
+    }
+
+    private String guardarTiemposIntermedio() {
+	String mensaje = "";
+	CarreraDisplayDTO carrera = getCamposCarrera();
+	if (view.getTxT1().getText() != "") {
+	    carrera.setTi_1(view.getTxT1().getText());
+	    mensaje += "\tT1: " + carrera.getTi_1();
+	}
+	if (view.getTxT2().getText() != "") {
+	    carrera.setTi_2(view.getTxT2().getText());
+	    mensaje += "\tT2: " + carrera.getTi_2();
+	}
+	if (view.getTxT3().getText() != "") {
+	    carrera.setTi_3(view.getTxT3().getText());
+	    mensaje += "\tT3: " + carrera.getTi_3();
+	}
+	if (view.getTxT4().getText() != "") {
+	    carrera.setTi_4(view.getTxT4().getText());
+	    mensaje += "\tT4: " + carrera.getTi_4();
+	}
+	if (view.getTxT5().getText() != "") {
+	    carrera.setTi_5(view.getTxT5().getText());
+	    mensaje += "\tT5: " + carrera.getTi_5();
+	}
+	return mensaje;
     }
 
     private boolean checkCamposCrearCarrera() {

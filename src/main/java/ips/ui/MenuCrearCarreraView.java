@@ -84,6 +84,7 @@ public class MenuCrearCarreraView extends JDialog {
 	setTitle("Organizador: Creacion de carrera");
 	setBounds(100, 100, 892, 649);
 	setLocationRelativeTo(null);
+	setModal(true);
 	modelPlazos = new DefaultTableModel();
 	getContentPane().setBackground(Color.WHITE);
 	getContentPane().setLayout(null);

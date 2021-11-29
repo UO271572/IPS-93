@@ -232,6 +232,7 @@ public class MenuCorredorController {
 	} else {
 	    inscripcion(corredor, carrera);
 	    MenuInscripcionView inscripcion = new MenuInscripcionView();
+	    MenuInscripcionController inscripcionCOntroller = new MenuInscripcionController(inscripcion);
 	    inscripcion.setCorredor(corredor);
 	    inscripcion.setCarrera(getCarrera());
 	    inscripcion.setVisible(true);
@@ -257,6 +258,7 @@ public class MenuCorredorController {
 	    if (corredor != null) {
 		inscripcion(corredor, carrera);
 		MenuInscripcionView inscripcion = new MenuInscripcionView();
+		MenuInscripcionController inscripcionCOntroller = new MenuInscripcionController(inscripcion);
 		inscripcion.setCorredor(corredor);
 		inscripcion.setCarrera(getCarrera());
 		inscripcion.setVisible(true);

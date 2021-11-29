@@ -59,7 +59,7 @@ public class MenuCorredorView extends JDialog {
 	setResizable(false);
 	setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	setModal(true);
-	setBounds(100, 100, 892, 700);
+	setBounds(100, 100, 953, 700);
 	setLocationRelativeTo(null);
 
 	getContentPane().setBackground(Color.WHITE);
@@ -95,7 +95,7 @@ public class MenuCorredorView extends JDialog {
     public JScrollPane getSpCarreras() {
 	if (spCarreras == null) {
 	    spCarreras = new JScrollPane();
-	    spCarreras.setBounds(37, 72, 639, 307);
+	    spCarreras.setBounds(37, 72, 753, 307);
 	    spCarreras.setViewportView(getTable());
 	}
 	return spCarreras;
@@ -122,7 +122,7 @@ public class MenuCorredorView extends JDialog {
 	if (rdbtnVerTodas == null) {
 	    rdbtnVerTodas = new JRadioButton("Abiertas");
 	    buttonGroup.add(rdbtnVerTodas);
-	    rdbtnVerTodas.setBounds(727, 72, 105, 21);
+	    rdbtnVerTodas.setBounds(813, 72, 105, 21);
 	    rdbtnVerTodas.setSelected(true);
 	}
 	return rdbtnVerTodas;
@@ -132,7 +132,7 @@ public class MenuCorredorView extends JDialog {
 	if (rdbtnAbiertas == null) {
 	    rdbtnAbiertas = new JRadioButton("No competidas");
 	    buttonGroup.add(rdbtnAbiertas);
-	    rdbtnAbiertas.setBounds(727, 109, 105, 21);
+	    rdbtnAbiertas.setBounds(813, 109, 105, 21);
 	}
 	return rdbtnAbiertas;
     }
@@ -161,7 +161,7 @@ public class MenuCorredorView extends JDialog {
     public JButton getBtnVerInscripciones() {
 	if (btnVerInscripciones == null) {
 	    btnVerInscripciones = new JButton("Ver inscripciones");
-	    btnVerInscripciones.setBounds(578, 524, 134, 38);
+	    btnVerInscripciones.setBounds(647, 523, 134, 38);
 	}
 	return btnVerInscripciones;
     }
@@ -170,7 +170,7 @@ public class MenuCorredorView extends JDialog {
 	if (btnInscribirse == null) {
 	    btnInscribirse = new JButton("Inscribirse");
 	    btnInscribirse.setEnabled(true);
-	    btnInscribirse.setBounds(744, 572, 105, 38);
+	    btnInscribirse.setBounds(813, 571, 105, 38);
 	}
 	return btnInscribirse;
     }
@@ -331,7 +331,7 @@ public class MenuCorredorView extends JDialog {
     public JButton getBtnInscribirClub() {
 	if (btnInscribirClub == null) {
 	    btnInscribirClub = new JButton("Inscribir club");
-	    btnInscribirClub.setBounds(597, 572, 107, 38);
+	    btnInscribirClub.setBounds(666, 571, 107, 38);
 	}
 	return btnInscribirClub;
     }
@@ -339,7 +339,7 @@ public class MenuCorredorView extends JDialog {
     public JButton getBtnComparar() {
 	if (btnComparar == null) {
 	    btnComparar = new JButton("Comparar");
-	    btnComparar.setBounds(744, 524, 105, 38);
+	    btnComparar.setBounds(813, 523, 105, 38);
 	}
 	return btnComparar;
     }

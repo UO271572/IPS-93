@@ -98,4 +98,9 @@ public class CarrerasController {
     public List<CarreraDisplayDTO> getListaCarrerasCompetidasPorEmailCorredor(String email) throws BusinessException {
 	return model.getListaCarrerasCompetidasPorEmailCorredor(email);
     }
+
+    public void actualizarPlazasCarrera(CarreraDisplayDTO carrera) {
+	model.actualizarPlazasCarrera(carrera);
+    }
+
 }

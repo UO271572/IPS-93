@@ -5,6 +5,7 @@ import java.sql.Date;
 import ips.util.Printer;
 
 public class CarreraDisplayDTO {
+
     private int idCarrera;
     private String nombre;
     private Date fechaInicio;
@@ -19,38 +20,14 @@ public class CarreraDisplayDTO {
     private String lugar;
     private String estadoCarrera;
     private String listaDeEspera;// = "NO";
-
-    public String getEstadoCarrera() {
-	return estadoCarrera;
-    }
-
-    public void setEstadoCarrera(String estadoCarrera) {
-	this.estadoCarrera = estadoCarrera;
-    }
-
-    public Date getFechaCompeticion() {
-	return fechaCompeticion;
-    }
-
-    public void setFechaCompeticion(Date fechaCompeticion) {
-	this.fechaCompeticion = fechaCompeticion;
-    }
-
-    public double getDistancia() {
-	return distancia;
-    }
-
-    public void setDistancia(double distancia) {
-	this.distancia = distancia;
-    }
-
-    public int getIdCarrera() {
-	return idCarrera;
-    }
-
-    public void setPrecio(double precio) {
-	this.precio = precio;
-    }
+    // Tiempos intermedios posibles (nombre)
+    private String t1;
+    private String t2;
+    private String t3;
+    private String t4;
+    private String t5;
+    private Date fechamaxcancelacion = null;
+    private double porcentajedevo = -1;
 
     public CarreraDisplayDTO() {
     }
@@ -67,44 +44,60 @@ public class CarreraDisplayDTO {
 	this.tipo = tipo;
     }
 
-    public CarreraDisplayDTO(int id, String nombre, Date fechaI, Date fechaF, int precio, double distancia, Date fechaC,
-	    String tipo, String listaDeEspera) {
-
-	this(id, nombre, fechaI, fechaF, precio, distancia, fechaC, tipo);
-
-	this.listaDeEspera = listaDeEspera;
+    public int getIdCarrera() {
+	return idCarrera;
     }
 
     public void setIdCarrera(int idCarrera) {
 	this.idCarrera = idCarrera;
     }
 
+    public String getNombre() {
+	return nombre;
+    }
+
     public void setNombre(String nombre) {
 	this.nombre = nombre;
+    }
+
+    public Date getFechaInicio() {
+	return fechaInicio;
     }
 
     public void setFechaInicio(Date fechaInicio) {
 	this.fechaInicio = fechaInicio;
     }
 
+    public Date getFechaFin() {
+	return fechaFin;
+    }
+
     public void setFechaFin(Date fechaFin) {
 	this.fechaFin = fechaFin;
     }
 
-    public String getNombre() {
-	return this.nombre;
+    public Date getFechaCompeticion() {
+	return fechaCompeticion;
     }
 
-    public Date getFechaInicio() {
-	return this.fechaInicio;
-    }
-
-    public Date getFechaFin() {
-	return this.fechaFin;
+    public void setFechaCompeticion(Date fechaCompeticion) {
+	this.fechaCompeticion = fechaCompeticion;
     }
 
     public double getPrecio() {
-	return this.precio;
+	return precio;
+    }
+
+    public void setPrecio(double precio) {
+	this.precio = precio;
+    }
+
+    public double getDistancia() {
+	return distancia;
+    }
+
+    public void setDistancia(double distancia) {
+	this.distancia = distancia;
     }
 
     public String getTipo() {
@@ -127,16 +120,16 @@ public class CarreraDisplayDTO {
 	return plazasReservadas;
     }
 
-    public void setPlazasRestantes(int plazasRestantes) {
-	this.plazasRestantes = plazasRestantes;
+    public void setPlazasReservadas(int plazasReservadas) {
+	this.plazasReservadas = plazasReservadas;
     }
 
     public int getPlazasRestantes() {
 	return plazasRestantes;
     }
 
-    public void setPlazasReservadas(int plazasReservadas) {
-	this.plazasReservadas = plazasReservadas;
+    public void setPlazasRestantes(int plazasRestantes) {
+	this.plazasRestantes = plazasRestantes;
     }
 
     public String getLugar() {
@@ -147,9 +140,12 @@ public class CarreraDisplayDTO {
 	this.lugar = lugar;
     }
 
-    public String toString() {
+    public String getEstadoCarrera() {
+	return estadoCarrera;
+    }
 
-	return Printer.print(this);
+    public void setEstadoCarrera(String estadoCarrera) {
+	this.estadoCarrera = estadoCarrera;
     }
 
     public String getListaDeEspera() {
@@ -159,4 +155,65 @@ public class CarreraDisplayDTO {
     public void setListaDeEspera(String listaDeEspera) {
 	this.listaDeEspera = listaDeEspera;
     }
+
+    public String getT1() {
+	return t1;
+    }
+
+    public void setT1(String t1) {
+	this.t1 = t1;
+    }
+
+    public String getT2() {
+	return t2;
+    }
+
+    public void setT2(String t2) {
+	this.t2 = t2;
+    }
+
+    public String getT3() {
+	return t3;
+    }
+
+    public void setT3(String t3) {
+	this.t3 = t3;
+    }
+
+    public String getT4() {
+	return t4;
+    }
+
+    public void setT4(String t4) {
+	this.t4 = t4;
+    }
+
+    public String getT5() {
+	return t5;
+    }
+
+    public void setT5(String t5) {
+	this.t5 = t5;
+    }
+
+    public Date getFechamaxcancelacion() {
+	return fechamaxcancelacion;
+    }
+
+    public void setFechamaxcancelacion(Date fechamaxcancelacion) {
+	this.fechamaxcancelacion = fechamaxcancelacion;
+    }
+
+    public double getPorcentajedevo() {
+	return porcentajedevo;
+    }
+
+    public void setPorcentajedevo(double porcentajedevo) {
+	this.porcentajedevo = porcentajedevo;
+    }
+
+    public String toString() {
+	return Printer.print(this);
+    }
+
 }

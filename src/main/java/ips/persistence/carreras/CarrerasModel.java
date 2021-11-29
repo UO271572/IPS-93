@@ -19,6 +19,8 @@ public class CarrerasModel {
     private static final int PRECIO_POR_DEFECTO = 5;
     private Database db = new Database();
 
+    private static final String SQL_UPDATE_PLAZAS = "update carreras set plazasrestantes = ? where idcarrera = ?";
+
     public static final String SQL_LISTA_CARRERAS = "select * from carreras order by fechacompeticion desc";
 
     public static final String SQL_LISTA_CARRERAS_ABIERTAS = "select * from carreras c where (select min(fechaInicio) from plazos p2 where p2.idcarrera = c.idCarrera) <= ? "
@@ -330,4 +332,9 @@ public class CarrerasModel {
 
 	return res;
     }
+
+    public void actualizarPlazasCarrera(CarreraDisplayDTO carrera) {
+	db.executeUpdate(SQL_UPDATE_PLAZAS, carrera.getPlazasRestantes() + 1, carrera.getIdCarrera());
+    }
+
 }

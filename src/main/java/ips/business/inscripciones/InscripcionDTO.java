@@ -1,6 +1,3 @@
-/**
- * 
- */
 package ips.business.inscripciones;
 
 import java.sql.Date;
@@ -8,11 +5,8 @@ import java.sql.Time;
 
 import ips.util.Printer;
 
-/**
- * @author PC
- *
- */
 public class InscripcionDTO {
+
     private String dnicorredor;
     private int idcarrera;
     private String estadoinscripcion;
@@ -22,11 +16,26 @@ public class InscripcionDTO {
     private String club;
     private Time tiempoinicio;
     private Time tiempofin;
+    // Tiempos intermedios posibles
     private Time t1;
     private Time t2;
     private Time t3;
     private Time t4;
     private Time t5;
+    private Date fechacancelacion;
+
+//	public Time getTiempoInicio() {
+//		return tiempoInicio;
+//	}
+//	public void setTiempoInicio(Time tiempoInicio) {
+//		this.tiempoInicio = tiempoInicio;
+//	}
+//	public Time getTiempoFin() {
+//		return tiempoFin;
+//	}
+//	public void setTiempoFin(Time tiempoFin) {
+//		this.tiempoFin = tiempoFin;
+//	}
 
     public Time getTiempofin() {
 	return tiempofin;
@@ -98,6 +107,14 @@ public class InscripcionDTO {
 
     public void setClub(String club) {
 	this.club = club;
+    }
+
+    public Date getFechacancelacion() {
+	return fechacancelacion;
+    }
+
+    public void setFechacancelacion(Date fechacancelacion) {
+	this.fechacancelacion = fechacancelacion;
     }
 
     public String toString() {

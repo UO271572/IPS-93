@@ -1,6 +1,3 @@
-/**
- * 
- */
 package ips.business;
 
 import java.awt.event.ActionEvent;
@@ -19,12 +16,9 @@ import ips.business.inscripciones.InscripcionController;
 import ips.business.inscripciones.InscripcionDTO;
 import ips.persistence.pagos.PagoTarjetaModel;
 import ips.ui.MenuInscripcionView;
+import ips.ui.carreras.JustificanteView;
 import ips.util.Printer;
 
-/**
- * @author PC
- *
- */
 public class MenuInscripcionController {
 
     private MenuInscripcionView view;
@@ -37,6 +31,23 @@ public class MenuInscripcionController {
     public void initController() {
 	view.addWindowListener(notCloseDirectly());
 	view.getBtValidar().addActionListener(actionValidar());
+	view.getBtFinalizar().addActionListener(actionFinalizar());
+    }
+
+    private ActionListener actionFinalizar() {
+	return new ActionListener() {
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+		try {
+		    if (view.getRdbtnTransferenciaBancaria().isSelected()) {
+			JustificanteView jv = new JustificanteView(view);
+			jv.setVisible(true);
+		    }
+		} catch (BusinessException e1) {
+		    e1.printStackTrace();
+		}
+	    }
+	};
     }
 
     public WindowAdapter notCloseDirectly() {
@@ -56,26 +67,17 @@ public class MenuInscripcionController {
 
     private ActionListener actionValidar() {
 	return new ActionListener() {
-
 	    @Override
 	    public void actionPerformed(ActionEvent e) {
 		InscripcionController controller = new InscripcionController(new PagoTarjetaModel());
-
 		try {
 		    if (validarTarjeta() && validarCamposCorredor()) {
 			List<InscripcionDTO> listaActualizacion = controller.actualizarPagoConTarjeta(
-				view.getTxCorredor().getText(),
-				view.getInscView().obtenerCarreraSeleccionada().getIdCarrera());
-
+				view.getTxCorredor().getText(), view.getCarrera().getIdCarrera());
 			// model.addAll(listaActualizacion);
 			InscripcionDTO[] inscripciones = arrayListToArray(listaActualizacion);
-			view.getListUpdates().setModel(new DefaultComboBoxModel<InscripcionDTO>(inscripciones));// añadir
-														// al
-														// componente
-														// la
-														// lista
-														// de
-														// actualizaciones;
+			// añadir al componente la lista de actualizaciones
+			view.getListUpdates().setModel(new DefaultComboBoxModel<InscripcionDTO>(inscripciones));
 			// simular con jdialog la pasarela de pago
 			JOptionPane.showMessageDialog(null, "Se esta tramitando el pago... Inscripcion realizada!");
 		    }

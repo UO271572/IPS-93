@@ -12,18 +12,19 @@ import javax.swing.JOptionPane;
 
 import ips.business.carreras.CarreraDisplayDTO;
 import ips.business.carreras.CarrerasController;
+import ips.business.comparar.VentanaCompararController;
 import ips.business.corredores.CorredorDTO;
 import ips.business.corredores.CorredoresController;
-import ips.business.comparar.VentanaCompararController;
+import ips.business.inscripciones.EstadoInscripcionesController;
 import ips.persistence.carreras.CarrerasModel;
 import ips.persistence.corredores.CorredoresModel;
 import ips.ui.MenuCorredorView;
 import ips.ui.MenuInscripcionClubView;
-import ips.ui.carreras.EstadoInscripcionesView;
+import ips.ui.MenuInscripcionView;
 import ips.ui.carreras.CarrerasView;
-import ips.ui.carreras.InscripcionView;
 import ips.ui.comparar.VentanaCompararView;
 import ips.ui.corredores.CorredoresView;
+import ips.ui.inscripciones.EstadoInscripcionesView;
 import ips.util.Printer;
 
 public class MenuCorredorController {
@@ -33,6 +34,7 @@ public class MenuCorredorController {
     private CorredoresController coc;
 
     private final static int CODIGO_ERROR_NO_SELECCION = -404;
+    private List<CarreraDisplayDTO> listaCarreras;
 
     public MenuCorredorController(MenuCorredorView view) {
 	this.view = view;
@@ -48,8 +50,42 @@ public class MenuCorredorController {
 	view.getRdbtnAbiertas().addActionListener(accionBotonVerNoCompetidas());
 	view.getBtnInscribirse().addActionListener(accionBtnInscribirse());
 	view.getBtnInscribirClub().addActionListener(accionBotonInscribirClub());
-	view.getBtnVerInscripciones().addActionListener(accionVerInscripciones());
 	view.getBtnComparar().addActionListener(accionAbrirVentanaComparacion());
+	view.getBtnVerInscripciones().addActionListener(accionBtnVerInscripciones());
+    }
+
+    private ActionListener accionBtnVerInscripciones() {
+	return new ActionListener() {
+	    public void actionPerformed(ActionEvent e) {
+		comprobarCorredor();
+	    }
+	};
+    }
+
+    private void comprobarCorredor() {
+	CorredorDTO corredor = emailRegistrado();
+	if (corredor != null)
+	    abrirVentanaInscripciones(corredor);
+	else {
+	    if (!view.getPnFormulario().isVisible())
+		view.getPnFormulario().setVisible(true);
+	    else {
+		corredor = recogidaDatos();
+		if (corredor != null)
+		    abrirVentanaInscripciones(corredor);
+	    }
+	}
+    }
+
+    private void abrirVentanaInscripciones(CorredorDTO corredor) {
+	try {
+	    EstadoInscripcionesView estado = new EstadoInscripcionesView();
+	    estado.setCorredor(corredor);
+	    new EstadoInscripcionesController(estado);
+	    estado.setVisible(true);
+	} catch (BusinessException e) {
+	    Printer.printBusinessException(e);
+	}
     }
 
     public WindowAdapter notCloseDirectly() {
@@ -84,9 +120,8 @@ public class MenuCorredorController {
 	// try {
 	List<CarreraDisplayDTO> listaCarreras = cc.getListaCarreras();
 	añadirListaCarrerasTabla(listaCarreras);
-	// } catch (BusinessException e1) {
-	// Printer.printBusinessException(e1);
-	// }
+	listaCarreras = cc.getListaCarreras();
+	añadirListaCarrerasTabla(listaCarreras);
     }
 
     private void vaciarTabla() {
@@ -96,7 +131,7 @@ public class MenuCorredorController {
     private void inicializarTablaCarrerasConFiltro() {
 	vaciarTabla();
 	try {
-	    List<CarreraDisplayDTO> listaCarreras = cc.getListaCarrerasFiltradas();
+	    listaCarreras = cc.getListaCarrerasFiltradas();
 	    añadirListaCarrerasTabla(listaCarreras);
 	} catch (BusinessException e1) {
 	    Printer.printBusinessException(e1);
@@ -122,11 +157,10 @@ public class MenuCorredorController {
 	return new ActionListener() {
 	    @Override
 	    public void actionPerformed(ActionEvent e) {
-		inicializarTablaCarrerasSinFiltro();
 		try {
 		    abrirVentanaInscripcion();
 		} catch (BusinessException e1) {
-		    e1.printStackTrace();
+		    Printer.printBusinessException(e1);
 		}
 	    }
 	};
@@ -182,13 +216,27 @@ public class MenuCorredorController {
     }
 
     private void abrirVentanaInscripcion() throws BusinessException {
+	CarreraDisplayDTO carrera = getCarrera();
+	if (carrera == null) {
+	    JOptionPane.showMessageDialog(view, "Debe seleccionar una carrera");
+	    return;
+	}
 	CorredorDTO corredor = emailRegistrado();
-	if (corredor != null) {
-	    InscripcionView inscripcion = new InscripcionView();
-	    inscripcion.setCorredor(corredor);
-	    inscripcion.setVisible(true);
-	} else
+	if (corredor == null) {
 	    registrarCorredor();
+	    return;
+	}
+	if (corredor.getIdCarrera() == carrera.getIdCarrera()) {
+	    JOptionPane.showMessageDialog(view, "Debe seleccionar una carrera en la que no esté ya inscrito", "ERROR",
+		    JOptionPane.ERROR_MESSAGE);
+	    return;
+	} else {
+	    inscripcion(corredor, carrera);
+	    MenuInscripcionView inscripcion = new MenuInscripcionView();
+	    inscripcion.setCorredor(corredor);
+	    inscripcion.setCarrera(getCarrera());
+	    inscripcion.setVisible(true);
+	}
     }
 
     private CorredorDTO emailRegistrado() {
@@ -202,9 +250,16 @@ public class MenuCorredorController {
 	    view.getPnFormulario().setVisible(true);
 	else {
 	    CorredorDTO corredor = recogidaDatos();
+	    CarreraDisplayDTO carrera = getCarrera();
+	    if (carrera == null) {
+		JOptionPane.showMessageDialog(view, "Debe seleccionar una carrera");
+		return;
+	    }
 	    if (corredor != null) {
-		InscripcionView inscripcion = new InscripcionView();
+		inscripcion(corredor, carrera);
+		MenuInscripcionView inscripcion = new MenuInscripcionView();
 		inscripcion.setCorredor(corredor);
+		inscripcion.setCarrera(getCarrera());
 		inscripcion.setVisible(true);
 	    }
 	}
@@ -256,31 +311,30 @@ public class MenuCorredorController {
     }
 
     private ActionListener accionAbrirVentanaComparacion() {
-    	return new ActionListener() {
+	return new ActionListener() {
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+		VentanaCompararView compararView = new VentanaCompararView();
+		VentanaCompararController controller = new VentanaCompararController(view.getTfEmail().getText(),
+			compararView);
+		compararView.setVisible(true);
+	    }
+	};
+    }
 
-    	    @Override
-    	    public void actionPerformed(ActionEvent e) {
+    private void inscripcion(CorredorDTO corredor, CarreraDisplayDTO carrera) {
+	corredor.setIdCarrera(carrera.getIdCarrera());
+	// Anteriormente plazasDisponibles
+	carrera.setPlazasRestantes(carrera.getPlazasRestantes() - 1);
+	corredor.setEstadoInscripcion("Pre-inscrito");
+    }
 
-    		VentanaCompararView compararView = new VentanaCompararView();
-    		VentanaCompararController controller = new VentanaCompararController(view.getTfEmail().getText(),
-    			compararView);
-    		compararView.setVisible(true);
-    	    }
-    	};
-        }
+    public CarreraDisplayDTO getCarrera() {
+	CarreraDisplayDTO carrera = null;
+	int i = view.getTable().getSelectedRow();
+	if (i > -1)
+	    carrera = listaCarreras.get(i);
+	return carrera;
+    }
 
-        private ActionListener accionVerInscripciones() {
-    	return new ActionListener() {
-    	    @Override
-    	    public void actionPerformed(ActionEvent e) {
-    		EstadoInscripcionesView estado = null;
-    		try {
-    		    estado = new EstadoInscripcionesView();
-    		} catch (BusinessException e1) {
-    		    e1.printStackTrace();
-    		}
-    		estado.setVisible(true);
-    	    }
-    	};
-}
 }

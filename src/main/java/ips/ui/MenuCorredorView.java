@@ -158,11 +158,10 @@ public class MenuCorredorView extends JDialog {
 	return tfEmail;
     }
 
-    // [ADRI]
     public JButton getBtnVerInscripciones() {
 	if (btnVerInscripciones == null) {
 	    btnVerInscripciones = new JButton("Ver inscripciones");
-	    btnVerInscripciones.setBounds(581, 572, 134, 38);
+	    btnVerInscripciones.setBounds(578, 524, 134, 38);
 	}
 	return btnVerInscripciones;
     }
@@ -332,7 +331,7 @@ public class MenuCorredorView extends JDialog {
     public JButton getBtnInscribirClub() {
 	if (btnInscribirClub == null) {
 	    btnInscribirClub = new JButton("Inscribir club");
-	    btnInscribirClub.setBounds(656, 589, 107, 38);
+	    btnInscribirClub.setBounds(597, 572, 107, 38);
 	}
 	return btnInscribirClub;
     }

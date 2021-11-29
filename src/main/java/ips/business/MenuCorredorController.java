@@ -120,8 +120,7 @@ public class MenuCorredorController {
 	// try {
 	List<CarreraDisplayDTO> listaCarreras = cc.getListaCarreras();
 	añadirListaCarrerasTabla(listaCarreras);
-	listaCarreras = cc.getListaCarreras();
-	añadirListaCarrerasTabla(listaCarreras);
+
     }
 
     private void vaciarTabla() {

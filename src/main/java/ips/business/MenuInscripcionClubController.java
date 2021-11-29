@@ -222,7 +222,7 @@ public class MenuInscripcionClubController {
 	    inscripcionesController.addInscripcion(inscripcionNueva);
 	} else {
 	    // Update de la inscripcion
-	    inscripcionNueva.setEstadoinscripcion("CAMBIO A CLUB " + inscripcionNueva.getClub());
+	    inscripcionNueva.setIncidencia("CAMBIO A CLUB " + inscripcionNueva.getClub());
 	    inscripcionesController.updateInscripcion(inscripcionNueva);
 	}
 	// Si no existe se crea

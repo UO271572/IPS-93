@@ -32,6 +32,7 @@ public class VentanaCompararView extends JDialog {
      * Create the dialog.
      */
     public VentanaCompararView() {
+	setResizable(false);
 	modeloCarrerasCompetidas = new DefaultTableModel();
 	modeloClasificacion = new DefaultTableModel();
 	modeloComparacion = new DefaultTableModel();

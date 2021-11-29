@@ -207,9 +207,9 @@ public class VentanaCompararController {
 	double m = cronometraje.getMinutes() / 60.0;
 	double s = (cronometraje.getSeconds() / 60.0) / 60.0;
 //	double horas = h + (m / 60) + ((s / 60) / 60);
-	double horas = h + m + s;
+	double horas = (h + m + s) * 60;
 //	return String.valueOf(distancia / horas);
-	return String.format("%.2f", (distancia / horas)) + " km/h";
+	return String.format("%.2f", (distancia / horas)) + " min/km";
     }
 
     /**

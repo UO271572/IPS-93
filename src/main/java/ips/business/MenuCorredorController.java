@@ -232,9 +232,11 @@ public class MenuCorredorController {
 	} else {
 	    inscripcion(corredor, carrera);
 	    MenuInscripcionView inscripcion = new MenuInscripcionView();
+
 	    inscripcion.setCorredor(corredor);
 	    inscripcion.setCarrera(getCarrera());
 	    inscripcion.setVisible(true);
+	    new MenuInscripcionController(inscripcion);
 	}
     }
 

@@ -2,8 +2,8 @@ package ips.ui;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -29,6 +29,9 @@ import com.toedter.calendar.JDateChooser;
 import ips.business.categorias.CategoriaDTO;
 
 public class MenuCrearCarreraView extends JDialog {
+
+    private static final long serialVersionUID = 1L;
+
     private JTextField txNombre;
     private JLabel lblNombre;
     private JLabel lblLugar;
@@ -62,12 +65,26 @@ public class MenuCrearCarreraView extends JDialog {
     private JScrollPane panel_Categorias;
     private JList lista_Categorias;
     private JPanel pnCrearCategorias_1;
+    private JPanel pnCrearTiemposIntermedios;
+    private JScrollPane scrollPane_1;
+    private JTextField txT1;
+    private JTextField txT2;
+    private JTextField txT3;
+    private JTextField txT4;
+    private JTextField txT5;
+    private JLabel lbT1;
+    private JLabel lbT2;
+    private JLabel lbT3;
+    private JLabel lbT4;
+    private JLabel lbT5;
+    private JLabel lbTiempos;
 
     public MenuCrearCarreraView() {
 	setResizable(false);
 	setTitle("Organizador: Creacion de carrera");
-	setBounds(100, 100, 892, 437);
+	setBounds(100, 100, 892, 649);
 	setLocationRelativeTo(null);
+	setModal(true);
 	modelPlazos = new DefaultTableModel();
 	getContentPane().setBackground(Color.WHITE);
 	getContentPane().setLayout(null);
@@ -92,7 +109,7 @@ public class MenuCrearCarreraView extends JDialog {
 	// getContentPane().add(getBtnModificar());
 	getContentPane().add(getPnCrearCategorias());
 	getContentPane().add(getPnCrearCategorias_1());
-	this.setModal(true);
+	getContentPane().add(getPnCrearTiemposIntermedios());
     }
 
     public JTextField getTxNombre() {
@@ -209,11 +226,7 @@ public class MenuCrearCarreraView extends JDialog {
     public JButton getBtnGuardar() {
 	if (btnGuardar == null) {
 	    btnGuardar = new JButton("Guardar");
-	    btnGuardar.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-		}
-	    });
-	    btnGuardar.setBounds(692, 377, 85, 21);
+	    btnGuardar.setBounds(661, 574, 85, 21);
 	}
 	return btnGuardar;
     }
@@ -229,7 +242,7 @@ public class MenuCrearCarreraView extends JDialog {
     public JButton getBtnCancelar() {
 	if (btnCancelar == null) {
 	    btnCancelar = new JButton("Cancelar");
-	    btnCancelar.setBounds(793, 377, 85, 21);
+	    btnCancelar.setBounds(769, 574, 85, 21);
 	}
 	return btnCancelar;
     }
@@ -387,5 +400,126 @@ public class MenuCrearCarreraView extends JDialog {
 	    pnCrearCategorias_1.add(getBtnBorrar());
 	}
 	return pnCrearCategorias_1;
+    }
+
+    private JPanel getPnCrearTiemposIntermedios() {
+	if (pnCrearTiemposIntermedios == null) {
+	    pnCrearTiemposIntermedios = new JPanel();
+	    pnCrearTiemposIntermedios.setLayout(null);
+	    pnCrearTiemposIntermedios.setBorder(new TitledBorder(
+		    new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)),
+		    "Tiempos intermedios", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+	    pnCrearTiemposIntermedios.setBackground(Color.WHITE);
+	    pnCrearTiemposIntermedios.setBounds(13, 383, 422, 212);
+	    pnCrearTiemposIntermedios.add(getLbT1());
+	    pnCrearTiemposIntermedios.add(getTxT1());
+	    pnCrearTiemposIntermedios.add(getLbT2());
+	    pnCrearTiemposIntermedios.add(getTxT2());
+	    pnCrearTiemposIntermedios.add(getLbT3());
+	    pnCrearTiemposIntermedios.add(getTxT3());
+	    pnCrearTiemposIntermedios.add(getLbT4());
+	    pnCrearTiemposIntermedios.add(getTxT4());
+	    pnCrearTiemposIntermedios.add(getLbT5());
+	    pnCrearTiemposIntermedios.add(getTxT5());
+	    pnCrearTiemposIntermedios.add(getLbTiempos());
+	}
+	return pnCrearTiemposIntermedios;
+    }
+
+    public JLabel getLbT1() {
+	if (lbT1 == null) {
+	    lbT1 = new JLabel("Primero:");
+	    lbT1.setBounds(22, 66, 85, 26);
+	}
+	return lbT1;
+    }
+
+    public JTextField getTxT1() {
+	if (txT1 == null) {
+	    txT1 = new JTextField();
+	    txT1.setBounds(22, 103, 114, 23);
+	    txT1.setColumns(10);
+	}
+	return txT1;
+    }
+
+    public JLabel getLbT2() {
+	if (lbT2 == null) {
+	    lbT2 = new JLabel("Segundo:");
+	    lbT2.setBounds(152, 66, 85, 26);
+	}
+	return lbT2;
+    }
+
+    public JTextField getTxT2() {
+	if (txT2 == null) {
+	    txT2 = new JTextField();
+	    txT2.setColumns(10);
+	    txT2.setBounds(152, 103, 114, 23);
+	}
+	return txT2;
+    }
+
+    public JLabel getLbT3() {
+	if (lbT3 == null) {
+	    lbT3 = new JLabel("Tercero:");
+	    lbT3.setBounds(282, 66, 85, 26);
+	}
+	return lbT3;
+    }
+
+    public JTextField getTxT3() {
+	if (txT3 == null) {
+	    txT3 = new JTextField();
+	    txT3.setBounds(282, 103, 114, 23);
+	    txT3.setColumns(10);
+	}
+	return txT3;
+    }
+
+    public JLabel getLbT4() {
+	if (lbT4 == null) {
+	    lbT4 = new JLabel("Cuarto:");
+	    lbT4.setBounds(73, 137, 85, 26);
+	}
+	return lbT4;
+    }
+
+    public JTextField getTxT4() {
+	if (txT4 == null) {
+	    txT4 = new JTextField();
+	    txT4.setBounds(72, 173, 114, 23);
+	    txT4.setColumns(10);
+	}
+	return txT4;
+    }
+
+    public JLabel getLbT5() {
+	if (lbT5 == null) {
+	    lbT5 = new JLabel("Quinto:");
+	    lbT5.setBounds(224, 137, 85, 26);
+	}
+	return lbT5;
+    }
+
+    public JTextField getTxT5() {
+	if (txT5 == null) {
+	    txT5 = new JTextField();
+	    txT5.setBounds(224, 173, 114, 23);
+	    txT5.setColumns(10);
+	}
+	return txT5;
+    }
+
+    public JLabel getLbTiempos() {
+	if (lbTiempos == null) {
+	    lbTiempos = new JLabel("Indique el nombre o punto kilométrico de los tiempos que quiera:");
+	    lbTiempos.setBounds(22, 24, 374, 36);
+	}
+	return lbTiempos;
+    }
+
+    public List<String> setLista() {
+	return new ArrayList<String>();
     }
 }

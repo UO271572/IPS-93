@@ -250,6 +250,9 @@ public class MenuCrearCarreraController {
 		    //
 
 		    plazoController.insertPlazos(plazos);
+
+		    String tiempos = guardarTiemposIntermedio();
+
 		    // double scale = Math.pow(10, -2);
 		    JOptionPane.showMessageDialog(null,
 			    "Se ha creado la carrera con los siguientes datos:\n" + "\n\t-Id: " + carrera.getIdCarrera()
@@ -257,7 +260,8 @@ public class MenuCrearCarreraController {
 				    + "\n\t-Tipo: " + carrera.getTipo() + "\n\t-Distancia: " + carrera.getDistancia()
 				    + "km\n\t-Plazas totales: " + carrera.getPlazasTotales()
 				    + "\n\t-Plazas reservadas: " + carrera.getPlazasReservadas()
-				    + "\n\t-Fecha de competicion: " + carrera.getFechaCompeticion());
+				    + "\n\t-Fecha de competicion: " + carrera.getFechaCompeticion()
+				    + "\n\t-Tiempos intermedios: " + tiempos);
 
 		    view.dispose();
 		} else {
@@ -267,6 +271,32 @@ public class MenuCrearCarreraController {
 	    }
 
 	};
+    }
+
+    private String guardarTiemposIntermedio() {
+	String mensaje = "";
+	CarreraDisplayDTO carrera = getCamposCarrera();
+	if (view.getTxT1().getText() != "") {
+	    carrera.setT1(view.getTxT1().getText());
+	    mensaje += "\tT1: " + carrera.getT1();
+	}
+	if (view.getTxT2().getText() != "") {
+	    carrera.setT2(view.getTxT2().getText());
+	    mensaje += "\tT2: " + carrera.getT2();
+	}
+	if (view.getTxT3().getText() != "") {
+	    carrera.setT3(view.getTxT3().getText());
+	    mensaje += "\tT3: " + carrera.getT3();
+	}
+	if (view.getTxT4().getText() != "") {
+	    carrera.setT4(view.getTxT4().getText());
+	    mensaje += "\tT4: " + carrera.getT4();
+	}
+	if (view.getTxT5().getText() != "") {
+	    carrera.setT5(view.getTxT5().getText());
+	    mensaje += "\tT5: " + carrera.getT5();
+	}
+	return mensaje;
     }
 
     private boolean checkCamposCrearCarrera() {

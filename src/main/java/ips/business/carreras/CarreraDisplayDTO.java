@@ -30,6 +30,7 @@ public class CarreraDisplayDTO {
     private double porcentajedevo = -1;
 
     public CarreraDisplayDTO() {
+
     }
 
     public CarreraDisplayDTO(int id, String nombre, Date fechaI, Date fechaF, int precio, double distancia, Date fechaC,

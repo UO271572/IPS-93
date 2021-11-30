@@ -60,16 +60,21 @@ public class DorsalesModel {
 	// obtener el maximo numero de plazas (segun la carrera)
 	CarrerasModel carrera = new CarrerasModel();
 	int plazas = carrera.getPlazasDisponibles(idCarrera);
+	if (plazas <= 0) {
+	    JOptionPane.showMessageDialog(null, "El numero de plazas disponibles se ha agotado");
+	    throw new BusinessException("El numero de plazas disponibles se ha agotado");
+	}
+
 	// Obtener las plazas reservadas
 	int reservadas = carrera.getPlazasReservadas(idCarrera);
 
 	// comprobar que el numero de corredores no excede las plazas
-	if (corredores.size() > plazas || plazas <= 0) {
-	    JOptionPane.showMessageDialog(null,
-		    "El numero de corredores inscritos supera al de las plazas que dispone la carrera");
-	    throw new BusinessException(
-		    "El numero de corredores inscritos supera al de las plazas que dispone la carrera");
-	}
+//	if (corredores.size() > plazas || plazas <= 0) {
+//	    JOptionPane.showMessageDialog(null,
+//		    "El numero de corredores inscritos supera al de las plazas que dispone la carrera");
+//	    throw new BusinessException(
+//		    "El numero de corredores inscritos supera al de las plazas que dispone la carrera");
+//	}
 
 	// obtener el numero de dorsal que le toca al corredor
 	// recorrer los corredores y asignarles el dorsal
@@ -78,9 +83,8 @@ public class DorsalesModel {
 	    // ya tiene dorsal
 	    int dorsalasignado = c.getDorsal();
 	    if (dorsalasignado != 0) {
-		JOptionPane.showMessageDialog(null, "Un corredor ya tiene dorsal asignado");
+		JOptionPane.showMessageDialog(null, "Ya han sido asignados los dorsales");
 		throw new BusinessException(c + " ya tiene dorsal asignado");
-//		throw new IllegalArgumentException();
 	    }
 	    int dorsal = encuentraDorsal(idCarrera, plazas, reservadas);
 //	    if (dorsal > plazas) {

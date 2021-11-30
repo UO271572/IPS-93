@@ -202,14 +202,15 @@ public class MenuInscripcionClubController {
 	List<CorredorDTO> corredorEnBD = corredoresController.getCorredorByDNI(corredor.getDniCorredor());
 	if (corredorEnBD.size() <= 0) {
 	    corredoresController.addCorredor(corredor);
-	    inscripcionesNuevas++;
+	    // inscripcionesNuevas++;
 	} else {
 	    if (corredorEnBD.get(0).getEmail().equals(corredor.getEmail())) {
+		// inscripcionesNuevas++;
 		return;
 	    } else {
 		// Posibilidad de cambiar todo menos dni
 		corredoresController.updateCorredor(corredor);
-		inscripcionesNuevas++;
+
 	    }
 	}
     }
@@ -223,6 +224,7 @@ public class MenuInscripcionClubController {
 	if (inscripcionBD.size() == 0) {
 	    // Creamos la inscripcion
 	    inscripcionesController.addInscripcion(inscripcionNueva);
+	    inscripcionesNuevas++;
 	} else {
 	    // Update de la inscripcion
 	    inscripcionNueva.setIncidencia("CAMBIO A CLUB " + inscripcionNueva.getClub());

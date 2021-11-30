@@ -37,6 +37,8 @@ public class MenuInscripcionClubController {
 
     private int inscripcionesNuevas;
 
+    private int inscripcionesCambiadas;
+
     private int plazasRestantes = 0;
 
     private MenuCorredorController corredorController;
@@ -44,6 +46,7 @@ public class MenuInscripcionClubController {
     public MenuInscripcionClubController(MenuInscripcionClubView view) {
 	this.view = view;
 	inscripcionesNuevas = 0;
+	inscripcionesCambiadas = 0;
 	corredoresController = new CorredoresController();
 	inscripcionesController = new InscripcionController();
 	initController();
@@ -144,9 +147,10 @@ public class MenuInscripcionClubController {
 		    plazasRestantes = carrera.getPlazasRestantes();
 		    if (plazasRestantes > 0) {
 			// borramos los que no se pueda. los que no se pueden ni llegan a corredores
-			if (plazasRestantes < corredores.size()) {
-			    borrarCorredoresNecesarios(corredores.size() - plazasRestantes);
-			}
+			/*
+			 * if (plazasRestantes < corredores.size()) {
+			 * borrarCorredoresNecesarios(corredores.size() - plazasRestantes); }
+			 */
 			// Si entran todos saltamos aqui directamente
 
 			// buscar por dni en corredores, si no esta se mete, si esta se hace update de
@@ -156,12 +160,12 @@ public class MenuInscripcionClubController {
 			    inscribirCorredor(corredor);
 			}
 			// Actualizamos las plazas
-			carrera.setPlazasRestantes(plazasRestantes - inscripcionesNuevas);
+			carrera.setPlazasRestantes(plazasRestantes);
 			carrerasController.updatePlazasRestantesCarrera(carrera);
 			JOptionPane.showMessageDialog(null,
 				"Se han introducido con exito a " + inscripcionesNuevas
 					+ " corredores.\nSe han actualizado" + " las inscripciones de "
-					+ (corredores.size() - inscripcionesNuevas) + " corredores");
+					+ (inscripcionesCambiadas) + " corredores");
 			corredorController.inicializarTablaCarrerasSinFiltro();
 			view.dispose();
 
@@ -200,16 +204,18 @@ public class MenuInscripcionClubController {
 
     private void checkCorredorRegistrado(CorredorDTO corredor) {
 	List<CorredorDTO> corredorEnBD = corredoresController.getCorredorByDNI(corredor.getDniCorredor());
-	if (corredorEnBD.size() <= 0) {
+	if (corredorEnBD.size() <= 0 && plazasRestantes > 0) {
 	    corredoresController.addCorredor(corredor);
 	    // inscripcionesNuevas++;
-	} else {
+	} else if (corredorEnBD.size() > 0) {
 	    if (corredorEnBD.get(0).getEmail().equals(corredor.getEmail())) {
 		// inscripcionesNuevas++;
 		return;
 	    } else {
 		// Posibilidad de cambiar todo menos dni
-		corredoresController.updateCorredor(corredor);
+		if (!corredoresController.isEmailUsado(corredor.getEmail())) {
+		    corredoresController.updateCorredor(corredor);
+		}
 
 	    }
 	}
@@ -223,12 +229,17 @@ public class MenuInscripcionClubController {
 	InscripcionDTO inscripcionNueva = crearInscripcion(corredor.getDniCorredor());
 	if (inscripcionBD.size() == 0) {
 	    // Creamos la inscripcion
-	    inscripcionesController.addInscripcion(inscripcionNueva);
-	    inscripcionesNuevas++;
+	    if (plazasRestantes > 0) {
+		inscripcionesController.addInscripcion(inscripcionNueva);
+		plazasRestantes--;
+		inscripcionesNuevas++;
+	    }
 	} else {
 	    // Update de la inscripcion
 	    inscripcionNueva.setIncidencia("CAMBIO A CLUB " + inscripcionNueva.getClub());
 	    inscripcionesController.updateInscripcion(inscripcionNueva);
+	    inscripcionesCambiadas++;
+
 	}
 	// Si no existe se crea
     }

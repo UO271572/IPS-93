@@ -59,4 +59,12 @@ public class CorredoresController {
 	model.updateCorredor(corredor);
     }
 
+    public boolean isEmailUsado(String email) {
+	List<CorredorDTO> corredorConEmail = model.findCorredorByEmail(email);
+	if (corredorConEmail == null || corredorConEmail.size() <= 0) {
+	    return false;
+	}
+	return true;
+    }
+
 }

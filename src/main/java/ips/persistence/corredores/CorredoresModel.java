@@ -22,6 +22,8 @@ public class CorredoresModel {
 
     private final static String SQL_UPDATE_CORREDOR_EMAIL = "UPDATE corredores SET email = ? WHERE dnicorredor = ?";
 
+    private final static String SQL_FIND_CORREDOR_BY_EMAIL = "select * from corredores where email = ?";
+
     public List<CorredorDTO> getListaCorredoresByIdCarrera(int idCarrera) {
 	return db.executeQueryPojo(CorredorDTO.class, SQL_LISTA_CORREDORES_BY_IDCARRERA, idCarrera);
     }
@@ -48,5 +50,10 @@ public class CorredoresModel {
     public void updateCorredor(CorredorDTO corredor) {
 	// Igual cambiar
 	db.executeUpdate(SQL_UPDATE_CORREDOR_EMAIL, corredor.getEmail(), corredor.getDniCorredor());
+    }
+
+    ///
+    public List<CorredorDTO> findCorredorByEmail(String email) {
+	return db.executeQueryPojo(CorredorDTO.class, SQL_FIND_CORREDOR_BY_EMAIL, email);
     }
 }

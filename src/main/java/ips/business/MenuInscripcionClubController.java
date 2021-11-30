@@ -175,7 +175,8 @@ public class MenuInscripcionClubController {
 			    List<CorredorDTO> corredorEnBD = corredoresController
 				    .getCorredorByDNI(corredor.getDniCorredor());
 			    if (corredorEnBD.size() > 0) {
-				if (!corredorEnBD.get(0).getEmail().equals(corredor.getEmail())) {
+				if (!corredorEnBD.get(0).getEmail().equals(corredor.getEmail())
+					&& !corredoresController.isEmailUsado(corredor.getEmail())) {
 				    corredoresController.updateCorredor(corredor);
 
 				}
